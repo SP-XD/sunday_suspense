@@ -22,7 +22,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.3
-  very_good_analysis: ^5.1.0
+  very_good_analysis: ^6.0.0
 
   flutter_gen_runner: ^5.6.0
   device_preview: ^1.2.0
