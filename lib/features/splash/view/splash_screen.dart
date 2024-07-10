@@ -313,7 +313,7 @@ class SplashScreen extends StatelessWidget {
       Positioned(
         top: mediaQuery.height * 0.75,
         left: 0,
-        child: Assets.images.cloudInverted
+        child: Assets.images.cloudOriginal
             .image(
               height: 300,
             )
