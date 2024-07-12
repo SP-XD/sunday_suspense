@@ -13,25 +13,38 @@ class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   /// File path: assets/images/cloud_inverted.png
-  AssetGenImage get cloudInverted => const AssetGenImage('assets/images/cloud_inverted.png');
+  AssetGenImage get cloudInverted =>
+      const AssetGenImage('assets/images/cloud_inverted.png');
 
   /// File path: assets/images/cloud_original.png
-  AssetGenImage get cloudOriginal => const AssetGenImage('assets/images/cloud_original.png');
+  AssetGenImage get cloudOriginal =>
+      const AssetGenImage('assets/images/cloud_original.png');
 
   /// File path: assets/images/haunted_house_frame1.jpg
-  AssetGenImage get hauntedHouseFrame1 => const AssetGenImage('assets/images/haunted_house_frame1.jpg');
+  AssetGenImage get hauntedHouseFrame1 =>
+      const AssetGenImage('assets/images/haunted_house_frame1.jpg');
 
   /// File path: assets/images/haunted_house_frame2.jpg
-  AssetGenImage get hauntedHouseFrame2 => const AssetGenImage('assets/images/haunted_house_frame2.jpg');
+  AssetGenImage get hauntedHouseFrame2 =>
+      const AssetGenImage('assets/images/haunted_house_frame2.jpg');
 
   /// File path: assets/images/moon.png
   AssetGenImage get moon => const AssetGenImage('assets/images/moon.png');
 
+  /// File path: assets/images/owl.png
+  AssetGenImage get owl => const AssetGenImage('assets/images/owl.png');
+
   /// File path: assets/images/splash_bg blurs.png
-  AssetGenImage get splashBgBlurs => const AssetGenImage('assets/images/splash_bg blurs.png');
+  AssetGenImage get splashBgBlurs =>
+      const AssetGenImage('assets/images/splash_bg blurs.png');
 
   /// File path: assets/images/splash_title.png
-  AssetGenImage get splashTitle => const AssetGenImage('assets/images/splash_title.png');
+  AssetGenImage get splashTitle =>
+      const AssetGenImage('assets/images/splash_title.png');
+
+  /// File path: assets/images/top_left_bg_blur.png
+  AssetGenImage get topLeftBgBlur =>
+      const AssetGenImage('assets/images/top_left_bg_blur.png');
 
   /// List of all assets
   List<AssetGenImage> get values => [
@@ -40,8 +53,10 @@ class $AssetsImagesGen {
         hauntedHouseFrame1,
         hauntedHouseFrame2,
         moon,
+        owl,
         splashBgBlurs,
-        splashTitle
+        splashTitle,
+        topLeftBgBlur
       ];
 }
 
