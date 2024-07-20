@@ -2,12 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:midnight_suspense/gen/assets.gen.dart';
 
-class MoonAndCloudsAppBar extends StatelessWidget {
-  const MoonAndCloudsAppBar({super.key});
+class SearchBar extends StatelessWidget {
+  const SearchBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -61,24 +60,27 @@ class MoonAndCloudsAppBar extends StatelessWidget {
                   Positioned(
                     right: -120,
                     top: -15,
-                    child: Assets.images.cloudInverted
-                        .image(
-                          height: 100,
-                        )
-                        .animate()
-                        .slideX(
-                          duration: 6000.ms,
-                          begin: 0,
-                          end: -0.1,
-                          curve: Curves.decelerate,
-                        ),
+                    child: Opacity(
+                      opacity: 0.9,
+                      child: Assets.images.cloudInverted
+                          .image(
+                            height: 100,
+                          )
+                          .animate()
+                          .slideX(
+                            duration: 6000.ms,
+                            begin: 0,
+                            end: -0.1,
+                            curve: Curves.decelerate,
+                          ),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
           Positioned(
-            top: 140,
+            top: 150,
             left: 20,
             right: 20,
             child: SizedBox(
@@ -88,11 +90,13 @@ class MoonAndCloudsAppBar extends StatelessWidget {
                 style: TextStyle(color: Colors.grey),
                 decoration: InputDecoration(
                   hintText: "Search...",
-                  hintStyle: TextStyle(color: Colors.grey.shade600, fontWeight: FontWeight.w100),
-                  suffixIcon: Icon(
-                    Icons.search,
-                    size: 30,
+                  hintStyle: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w100),
+                  suffixIcon: Assets.images.charmSearch.svg(
+                    width: 20,
+                    height: 20,
+                    colorFilter: ColorFilter.mode(Colors.grey.shade700, BlendMode.srcATop),
                   ),
+                  suffixIconConstraints: BoxConstraints.tightFor(width: 60, height: 30),
                   contentPadding: EdgeInsets.only(
                     left: 80,
                     top: 20,
@@ -103,30 +107,36 @@ class MoonAndCloudsAppBar extends StatelessWidget {
                   border: GradientOutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                       colors: [
-                        Colors.redAccent,
+                        Colors.red,
+                        Colors.grey.shade800.withOpacity(0.5),
+                        Colors.grey.shade800.withOpacity(0.5),
                         Colors.grey.shade800,
-                        Colors.yellow.shade100,
-                        Colors.grey.shade800,
+                        Colors.grey.shade800.withOpacity(0.5),
                       ],
-                      stops: [0.25, 0.4, 0.6, 0.8],
-                      transform: GradientRotation(1),
+                      stops: [0.1, 0.35, 0.4, 0.6, 0.7],
+                      transform: GradientRotation(0.9),
                     ),
-                    width: 0.2,
+                    width: 1.5,
                   ),
                   enabledBorder: GradientOutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                       colors: [
-                        Colors.redAccent,
+                        Colors.red,
+                        Colors.grey.shade800.withOpacity(0.5),
+                        Colors.grey.shade800.withOpacity(0.5),
                         Colors.grey.shade800,
-                        Colors.yellow.shade100,
-                        Colors.grey.shade800,
+                        Colors.grey.shade800.withOpacity(0.5),
                       ],
-                      stops: [0.25, 0.4, 0.6, 0.8],
-                      transform: GradientRotation(1),
+                      stops: [0.1, 0.35, 0.4, 0.6, 0.7],
+                      transform: GradientRotation(0.9),
                     ),
-                    width: 0.2,
+                    width: 1.5,
                   ),
                   focusedBorder: GradientOutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
@@ -134,15 +144,16 @@ class MoonAndCloudsAppBar extends StatelessWidget {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.redAccent,
+                        Colors.red,
+                        Colors.grey.shade800.withOpacity(0.5),
+                        Colors.grey.shade800.withOpacity(0.5),
                         Colors.grey.shade800,
-                        Colors.yellow.shade200,
-                        Colors.grey.shade800,
+                        Colors.grey.shade800.withOpacity(0.5),
                       ],
-                      stops: [0.25, 0.4, 0.6, 0.8],
-                      transform: GradientRotation(1),
+                      stops: [0.1, 0.35, 0.4, 0.6, 0.7],
+                      transform: GradientRotation(0.9),
                     ),
-                    width: 0.2,
+                    width: 1.5,
                   ),
                 ),
               ),
@@ -150,7 +161,7 @@ class MoonAndCloudsAppBar extends StatelessWidget {
           ),
           Positioned(
               left: 20,
-              top: 40,
+              top: 45,
               child: Assets.images.owl.image(
                 height: 170,
               )),

@@ -8,25 +8,27 @@
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/charm_search.svg
+  SvgGenImage get charmSearch => const SvgGenImage('assets/images/charm_search.svg');
+
   /// File path: assets/images/cloud_inverted.png
-  AssetGenImage get cloudInverted =>
-      const AssetGenImage('assets/images/cloud_inverted.png');
+  AssetGenImage get cloudInverted => const AssetGenImage('assets/images/cloud_inverted.png');
 
   /// File path: assets/images/cloud_original.png
-  AssetGenImage get cloudOriginal =>
-      const AssetGenImage('assets/images/cloud_original.png');
+  AssetGenImage get cloudOriginal => const AssetGenImage('assets/images/cloud_original.png');
 
   /// File path: assets/images/haunted_house_frame1.jpg
-  AssetGenImage get hauntedHouseFrame1 =>
-      const AssetGenImage('assets/images/haunted_house_frame1.jpg');
+  AssetGenImage get hauntedHouseFrame1 => const AssetGenImage('assets/images/haunted_house_frame1.jpg');
 
   /// File path: assets/images/haunted_house_frame2.jpg
-  AssetGenImage get hauntedHouseFrame2 =>
-      const AssetGenImage('assets/images/haunted_house_frame2.jpg');
+  AssetGenImage get hauntedHouseFrame2 => const AssetGenImage('assets/images/haunted_house_frame2.jpg');
 
   /// File path: assets/images/moon.png
   AssetGenImage get moon => const AssetGenImage('assets/images/moon.png');
@@ -35,19 +37,17 @@ class $AssetsImagesGen {
   AssetGenImage get owl => const AssetGenImage('assets/images/owl.png');
 
   /// File path: assets/images/splash_bg blurs.png
-  AssetGenImage get splashBgBlurs =>
-      const AssetGenImage('assets/images/splash_bg blurs.png');
+  AssetGenImage get splashBgBlurs => const AssetGenImage('assets/images/splash_bg blurs.png');
 
   /// File path: assets/images/splash_title.png
-  AssetGenImage get splashTitle =>
-      const AssetGenImage('assets/images/splash_title.png');
+  AssetGenImage get splashTitle => const AssetGenImage('assets/images/splash_title.png');
 
   /// File path: assets/images/top_left_bg_blur.png
-  AssetGenImage get topLeftBgBlur =>
-      const AssetGenImage('assets/images/top_left_bg_blur.png');
+  AssetGenImage get topLeftBgBlur => const AssetGenImage('assets/images/top_left_bg_blur.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
+  List<dynamic> get values => [
+        charmSearch,
         cloudInverted,
         cloudOriginal,
         hauntedHouseFrame1,
@@ -139,6 +139,82 @@ class AssetGenImage {
       _assetName,
       bundle: bundle,
       package: package,
+    );
+  }
+
+  String get path => _assetName;
+
+  String get keyName => _assetName;
+}
+
+class SvgGenImage {
+  const SvgGenImage(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = false;
+
+  const SvgGenImage.vec(
+    this._assetName, {
+    this.size,
+    this.flavors = const {},
+  }) : _isVecFormat = true;
+
+  final String _assetName;
+  final Size? size;
+  final Set<String> flavors;
+  final bool _isVecFormat;
+
+  SvgPicture svg({
+    Key? key,
+    bool matchTextDirection = false,
+    AssetBundle? bundle,
+    String? package,
+    double? width,
+    double? height,
+    BoxFit fit = BoxFit.contain,
+    AlignmentGeometry alignment = Alignment.center,
+    bool allowDrawingOutsideViewBox = false,
+    WidgetBuilder? placeholderBuilder,
+    String? semanticsLabel,
+    bool excludeFromSemantics = false,
+    SvgTheme? theme,
+    ColorFilter? colorFilter,
+    Clip clipBehavior = Clip.hardEdge,
+    @deprecated Color? color,
+    @deprecated BlendMode colorBlendMode = BlendMode.srcIn,
+    @deprecated bool cacheColorFilter = false,
+  }) {
+    final BytesLoader loader;
+    if (_isVecFormat) {
+      loader = AssetBytesLoader(
+        _assetName,
+        assetBundle: bundle,
+        packageName: package,
+      );
+    } else {
+      loader = SvgAssetLoader(
+        _assetName,
+        assetBundle: bundle,
+        packageName: package,
+        theme: theme,
+      );
+    }
+    return SvgPicture(
+      loader,
+      key: key,
+      matchTextDirection: matchTextDirection,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      allowDrawingOutsideViewBox: allowDrawingOutsideViewBox,
+      placeholderBuilder: placeholderBuilder,
+      semanticsLabel: semanticsLabel,
+      excludeFromSemantics: excludeFromSemantics,
+      colorFilter: colorFilter ?? (color == null ? null : ColorFilter.mode(color, colorBlendMode)),
+      clipBehavior: clipBehavior,
+      cacheColorFilter: cacheColorFilter,
     );
   }
 

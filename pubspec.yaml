@@ -16,6 +16,7 @@ dependencies:
   flutter_bloc: ^8.1.4
   flutter_localizations:
     sdk: flutter
+  flutter_svg: ^2.0.10+1
   freezed: ^2.5.2
   gradient_borders: ^1.0.1
   intl: ^0.19.0
@@ -38,3 +39,14 @@ flutter:
 
   assets:
     - assets/images/
+
+flutter_gen:
+  output: lib/gen/ # Optional (default: lib/gen/)
+  line_length: 110 # Optional (default: 80)
+
+  # Optional
+  integrations:
+    flutter_svg: true
+    # flare_flutter: true
+    # rive: true
+    # lottie: true
