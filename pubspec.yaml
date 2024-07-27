@@ -49,7 +49,7 @@ flutter:
     - assets/images/
 
 flutter_gen:
-  output: lib/gen/ # Optional (default: lib/gen/)
+  output: lib/src/gen/ # Optional (default: lib/gen/)
   line_length: 110 # Optional (default: 80)
 
   # Optional

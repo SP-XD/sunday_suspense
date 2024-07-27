@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gradient_borders/gradient_borders.dart';
-import 'package:midnight_suspense/gen/assets.gen.dart';
+import 'package:midnight_suspense/src/gen/assets.gen.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({super.key});
