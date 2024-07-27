@@ -3,9 +3,30 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:midnight_suspense/gen/assets.gen.dart';
+import 'package:page_transition/page_transition.dart';
 
-class SplashView extends StatelessWidget {
-  const SplashView({super.key});
+class SplashView extends StatefulWidget {
+  SplashView({super.key, required this.nextPage});
+  final Widget nextPage;
+
+  @override
+  State<SplashView> createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView> {
+  @override
+  void initState() {
+    super.initState();
+    FocusManager.instance.primaryFocus?.unfocus();
+    Future.delayed(const Duration(seconds: 5), () {
+      Navigator.pushReplacement(
+          context,
+          PageTransition<void>(
+            type: PageTransitionType.fade,
+            child: widget.nextPage,
+          ));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

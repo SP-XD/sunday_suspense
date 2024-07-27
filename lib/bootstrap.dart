@@ -4,7 +4,10 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
+import 'package:midnight_suspense/src/services/audio_service.dart';
+
+GetIt getIt = GetIt.instance;
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -36,6 +39,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
+
+  getIt.registerLazySingleton(() => AudioService());
 
   runApp(await builder());
 }
