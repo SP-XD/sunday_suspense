@@ -7,6 +7,7 @@ import 'package:midnight_suspense/src/features/home/view/home_view.dart';
 import 'package:midnight_suspense/src/features/navigation_tab/navigation_tab.dart';
 import 'package:midnight_suspense/src/features/splash/splash.dart';
 import 'package:midnight_suspense/src/l10n/l10n.dart';
+import 'package:midnight_suspense/src/utils/custom_slider_shapes.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -33,6 +34,8 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        primaryColor: Colors.red.shade700,
+        primarySwatch: Colors.red,
         appBarTheme: AppBarTheme(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),
@@ -40,6 +43,26 @@ class _AppState extends State<App> {
               bodyColor: Colors.white,
               displayColor: Colors.white,
             ),
+        scaffoldBackgroundColor: Colors.black,
+        sliderTheme: SliderThemeData(
+          trackHeight: 0.5,
+          trackShape: CustomSliderTrackShape(),
+          activeTrackColor: Colors.red.shade800,
+          inactiveTrackColor: Colors.grey.shade800,
+          thumbShape: CustomSliderThumbShape(enabledThumbRadius: 1.0),
+          thumbColor: Colors.red.shade800,
+          overlayColor: Colors.pink.withOpacity(0.2),
+          overlayShape: CustomSliderOverlayShape(),
+          tickMarkShape: RoundSliderTickMarkShape(),
+          activeTickMarkColor: Colors.red.shade800,
+          inactiveTickMarkColor: Colors.white,
+          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+          valueIndicatorColor: Colors.black,
+          valueIndicatorTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20.0,
+          ),
+        ),
         useMaterial3: true,
       ),
       themeMode: ThemeMode.dark,

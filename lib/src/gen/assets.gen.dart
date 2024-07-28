@@ -12,11 +12,39 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
+class $AssetsIconsGen {
+  const $AssetsIconsGen();
+
+  /// File path: assets/icons/home.svg
+  SvgGenImage get home => const SvgGenImage('assets/icons/home.svg');
+
+  /// File path: assets/icons/next.svg
+  SvgGenImage get next => const SvgGenImage('assets/icons/next.svg');
+
+  /// File path: assets/icons/pause.svg
+  SvgGenImage get pause => const SvgGenImage('assets/icons/pause.svg');
+
+  /// File path: assets/icons/play.svg
+  SvgGenImage get play => const SvgGenImage('assets/icons/play.svg');
+
+  /// File path: assets/icons/playlist.svg
+  SvgGenImage get playlist => const SvgGenImage('assets/icons/playlist.svg');
+
+  /// File path: assets/icons/previous.svg
+  SvgGenImage get previous => const SvgGenImage('assets/icons/previous.svg');
+
+  /// File path: assets/icons/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
+
+  /// File path: assets/icons/settings.svg
+  SvgGenImage get settings => const SvgGenImage('assets/icons/settings.svg');
+
+  /// List of all assets
+  List<SvgGenImage> get values => [home, next, pause, play, playlist, previous, search, settings];
+}
+
 class $AssetsImagesGen {
   const $AssetsImagesGen();
-
-  /// File path: assets/images/charm_search.svg
-  SvgGenImage get charmSearch => const SvgGenImage('assets/images/charm_search.svg');
 
   /// File path: assets/images/cloud_inverted.png
   AssetGenImage get cloudInverted => const AssetGenImage('assets/images/cloud_inverted.png');
@@ -46,8 +74,7 @@ class $AssetsImagesGen {
   AssetGenImage get topLeftBgBlur => const AssetGenImage('assets/images/top_left_bg_blur.png');
 
   /// List of all assets
-  List<dynamic> get values => [
-        charmSearch,
+  List<AssetGenImage> get values => [
         cloudInverted,
         cloudOriginal,
         hauntedHouseFrame1,
@@ -63,6 +90,7 @@ class $AssetsImagesGen {
 class Assets {
   Assets._();
 
+  static const $AssetsIconsGen icons = $AssetsIconsGen();
   static const $AssetsImagesGen images = $AssetsImagesGen();
 }
 
