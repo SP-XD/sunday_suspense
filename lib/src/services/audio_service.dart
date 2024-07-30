@@ -1,36 +1,60 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+
 import 'package:just_audio/just_audio.dart';
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class AudioService extends ChangeNotifier {
+class AudioService {
   AudioService() {
     _player = AudioPlayer();
     ytProvider = YtExplodeProvider();
+
+    _player.playbackEventStream.listen((event) {
+      log('AudioService: playing ${event.currentIndex}');
+      _currentThumbnail = videoPlaylist[event.currentIndex!].thumbnails.mediumResUrl;
+      currentlyPlaying = videoPlaylist[event.currentIndex!];
+    });
   }
 
   late final AudioPlayer _player;
   late final YtExplodeProvider ytProvider;
 
-  bool get isPlaying => _player.playing;
-  String currentThumbnail = '';
+  String _currentThumbnail = '';
+  String get currentThumbnail => _currentThumbnail;
 
   AudioPlayer get player => _player;
+  Video? currentlyPlaying;
+  bool get isPlaying => _player.playing;
 
+  ConcatenatingAudioSource audioPlaylist = ConcatenatingAudioSource(
+    children: [],
+    useLazyPreparation: true,
+  );
+  List<Video> videoPlaylist = [];
+
+  /// Plays the audio from the given video.
   Future<void> playAudio({required Video video}) async {
-    currentThumbnail = video.thumbnails.mediumResUrl;
     var streamManifest = await ytProvider.yt!.videos.streamsClient.getManifest(video.id);
+    audioPlaylist.clear();
+    videoPlaylist.clear();
+    audioPlaylist.add(AudioSource.uri(streamManifest.audioOnly.withHighestBitrate().url));
+    videoPlaylist.add(video);
     // set three streams for quality selection (low, medium, high)
     // var streamInfo = streamManifest.audioOnly.withHighestBitrate();
     // var stream = await ytProvider!.yt!.videos.streamsClient.get(streamInfo);
     // var file = File('audio.mp3');
     // await stream.pipe(file.openWrite());
-    await _player.setAudioSource(AudioSource.uri(streamManifest.audioOnly.withHighestBitrate().url));
+    await _player.setAudioSource(audioPlaylist);
     _player.play();
-
-    notifyListeners();
   }
 
+  // Todo: implement this
+  /// Plays the audio from the queue at the given index.
+  Future<void> playAudioFromQueue({required int playIndex}) async {
+    await _player.setAudioSource(audioPlaylist, initialIndex: playIndex, initialPosition: Duration.zero);
+  }
+
+  /// use isPlaying to determine if the audio is playing or not
   Future<void> playPauseToggle() async {
     if (_player.playing) {
       await _player.pause();
@@ -39,11 +63,13 @@ class AudioService extends ChangeNotifier {
     }
   }
 
+  /// Stops the audio.
   Future<void> stop() async {
     _player.stop();
   }
 
-  Future<void> seek({required Duration position}) async {
+  /// Seeks to a specific position in the audio.
+  Future<void> seekTo({required Duration position}) async {
     _player.seek(position);
   }
 
@@ -56,6 +82,34 @@ class AudioService extends ChangeNotifier {
   Future<void> setSpeed({required double speed}) async {
     _player.setSpeed(speed);
   }
+
+  Future<void> addPlaylist({required List<Video> videos}) async {
+    for (var video in videos) {
+      var streamManifest = await ytProvider.yt!.videos.streamsClient.getManifest(video.id);
+      await audioPlaylist.add(AudioSource.uri(streamManifest.audioOnly.withHighestBitrate().url));
+    }
+  }
+
+  // TODO: #2 implement bitrate selection for audio quality
+  Future<void> changeBitrate({required BitrateEnum bitrate}) async {
+    switch (bitrate) {
+      case BitrateEnum.low:
+        // audioPlaylist.add(CustomAudioStreamSource(lowBitrate));
+        break;
+      case BitrateEnum.medium:
+        // audioPlaylist.add(CustomAudioStreamSource(mediumBitrate));
+        break;
+      case BitrateEnum.high:
+        // audioPlaylist.add(CustomAudioStreamSource(highBitrate));
+        break;
+    }
+  }
+}
+
+enum BitrateEnum {
+  low,
+  medium,
+  high,
 }
 
 // class CustomAudioStreamSource extends StreamAudioSource {
