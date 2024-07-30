@@ -1,9 +1,16 @@
+import 'dart:developer';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midnight_suspense/src/bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/features/blank/blank.dart';
 import 'package:midnight_suspense/src/features/home/home.dart';
 import 'package:midnight_suspense/src/features/player/player.dart';
+import 'package:midnight_suspense/src/gen/assets.gen.dart';
 import 'package:scroll_to_hide/scroll_to_hide.dart';
 
 class NavigationTabView extends StatefulWidget {
@@ -13,7 +20,8 @@ class NavigationTabView extends StatefulWidget {
   State<NavigationTabView> createState() => _NavigationTabViewState();
 }
 
-class _NavigationTabViewState extends State<NavigationTabView> {
+class _NavigationTabViewState extends State<NavigationTabView> with TickerProviderStateMixin {
+  AnimationController? navTabAnimationController;
   int selectedIndex = 0;
 
   List<Widget> pages = [
@@ -23,36 +31,124 @@ class _NavigationTabViewState extends State<NavigationTabView> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    navTabAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    navTabAnimationController!.forward();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[selectedIndex],
+      resizeToAvoidBottomInset: false,
+      body: pages[selectedIndex]
+          .animate(
+            controller: navTabAnimationController,
+          )
+          .fadeIn(
+            duration: Duration(milliseconds: 500),
+          ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: ScrollToHide(
-        scrollController: context.watch<NavScrollControllerCubit>().state,
-        hideDirection: Axis.vertical,
-        height: 150,
-        child: Container(
-          height: 150,
-          width: double.maxFinite,
-          child: Column(
-            children: [
-              MiniPlayer(),
-              BottomNavigationBar(
-                onTap: (value) => setState(() => selectedIndex = value),
-                backgroundColor: Colors.black54,
-                showSelectedLabels: false,
-                showUnselectedLabels: false,
-                enableFeedback: true,
-                items: [
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                  BottomNavigationBarItem(icon: Icon(Icons.playlist_play), label: 'Queue'),
-                  BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-                ],
-              ),
+      floatingActionButton: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.transparent,
+              Color.fromARGB(235, 60, 4, 0),
             ],
+            stops: [0.4, 0.9],
+          ),
+        ),
+        child: ScrollToHide(
+          scrollController: context.watch<NavScrollControllerCubit>().state,
+          hideDirection: Axis.vertical,
+          height: 160,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50, tileMode: TileMode.decal),
+                child: AnimatedContainer(
+                  duration: Duration(milliseconds: 300),
+                  height: 145,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                    // border: Border.all(color: Colors.grey.withOpacity(0.1), width: 0.5),
+                    // boxShadow: [
+                    //   BoxShadow(
+                    //     color: Colors.red.shade700.withOpacity(0.1),
+                    //     spreadRadius: 1,
+                    //     blurRadius: 5,
+                    //     offset: Offset(1, 1),
+                    //   ),
+                    // ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      MiniPlayer(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                        child: NavigationBar(
+                          selectedIndex: selectedIndex,
+                          onDestinationSelected: (value) {
+                            log('value: $value');
+                            HapticFeedback.lightImpact();
+                            navTabAnimationController!.reset();
+                            navTabAnimationController!.forward();
+                            setState(() => selectedIndex = value);
+                          },
+                          height: 65,
+                          backgroundColor: Colors.transparent,
+                          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                          indicatorColor: Colors.transparent,
+                          overlayColor: WidgetStateProperty.all(Colors.black54),
+                          destinations: [
+                            NavigationDestination(
+                              icon: iconUnselected(Assets.icons.home.path),
+                              label: 'Home',
+                              selectedIcon: iconSelected(Assets.icons.home.path),
+                            ),
+                            NavigationDestination(
+                              icon: iconUnselected(Assets.icons.playlist.path),
+                              label: 'Queue',
+                              selectedIcon: iconSelected(Assets.icons.playlist.path),
+                            ),
+                            NavigationDestination(
+                              icon: iconUnselected(Assets.icons.settings.path),
+                              label: 'Settings',
+                              selectedIcon: iconSelected(Assets.icons.settings.path),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
       ),
     );
   }
+
+  SvgPicture iconUnselected(String path) => SvgPicture.asset(
+        path,
+        height: 28,
+        width: 28,
+        colorFilter: ColorFilter.mode(Colors.grey.shade600, BlendMode.srcIn),
+      );
+
+  SvgPicture iconSelected(String path) => SvgPicture.asset(
+        path,
+        height: 28,
+        width: 28,
+        colorFilter: ColorFilter.mode(Colors.red.shade700, BlendMode.srcIn),
+      );
 }
