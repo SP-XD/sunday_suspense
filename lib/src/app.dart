@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midnight_suspense/src/bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
+import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
 import 'package:midnight_suspense/src/features/home/bloc/home_bloc.dart';
-import 'package:midnight_suspense/src/features/home/view/home_view.dart';
 import 'package:midnight_suspense/src/features/navigation_tab/navigation_tab.dart';
 import 'package:midnight_suspense/src/features/splash/splash.dart';
 import 'package:midnight_suspense/src/l10n/l10n.dart';
 import 'package:midnight_suspense/src/utils/custom_slider_shapes.dart';
+
+import 'features/player/bloc/player_bloc.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -43,7 +44,7 @@ class _AppState extends State<App> {
               bodyColor: Colors.white,
               displayColor: Colors.white,
             ),
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor: Color.fromARGB(255, 15, 15, 15),
         sliderTheme: SliderThemeData(
           trackHeight: 0.5,
           trackShape: CustomSliderTrackShape(),
@@ -74,7 +75,8 @@ class _AppState extends State<App> {
           child: MultiBlocProvider(
             providers: [
               BlocProvider<HomeBloc>(create: (context) => HomeBloc(_videosRepository)),
-              BlocProvider(create: (context) => NavScrollControllerCubit())
+              BlocProvider(create: (context) => NavScrollControllerCubit()),
+              BlocProvider(create: (context) => PlayerBloc()),
             ],
             child: NavigationTabView(),
           ),
