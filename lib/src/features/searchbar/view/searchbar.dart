@@ -52,7 +52,7 @@ class _SearchBarState extends State<SearchBar> {
                     decoration: InputDecoration(
                       hintText: "Search...",
                       hintStyle: TextStyle(color: Colors.grey.shade700, fontWeight: FontWeight.w100),
-                      suffixIcon: Assets.images.charmSearch.svg(
+                      suffixIcon: Assets.icons.search.svg(
                         width: 20,
                         height: 20,
                         colorFilter: ColorFilter.mode(Colors.grey.shade700, BlendMode.srcATop),
