@@ -18,7 +18,7 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     super.initState();
     FocusManager.instance.primaryFocus?.unfocus();
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(milliseconds: 4500), () {
       Navigator.pushReplacement(
           context,
           PageTransition<void>(
@@ -145,6 +145,13 @@ class _SplashViewState extends State<SplashView> {
                     duration: 2000.ms,
                   )
                   .animate()
+                  .blur(
+                    delay: 700.ms,
+                    duration: 2000.ms,
+                    begin: Offset(40, 40),
+                    end: Offset.zero,
+                    curve: Curves.decelerate,
+                  )
                   .slideY(
                     duration: 2000.ms,
                     begin: 0,
