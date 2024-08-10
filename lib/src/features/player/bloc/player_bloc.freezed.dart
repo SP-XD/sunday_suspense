@@ -803,7 +803,7 @@ mixin _$PlayerState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(Video? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
     required TResult Function(AudioService audioService) stopped,
@@ -813,7 +813,7 @@ mixin _$PlayerState {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(Video? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
     TResult? Function(AudioService audioService)? stopped,
@@ -823,7 +823,7 @@ mixin _$PlayerState {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(Video? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
     TResult Function(AudioService audioService)? stopped,
@@ -921,7 +921,7 @@ class _$PlayerInitialImpl implements _PlayerInitial {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(Video? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
     required TResult Function(AudioService audioService) stopped,
@@ -934,7 +934,7 @@ class _$PlayerInitialImpl implements _PlayerInitial {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(Video? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
     TResult? Function(AudioService audioService)? stopped,
@@ -947,7 +947,7 @@ class _$PlayerInitialImpl implements _PlayerInitial {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(Video? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
     TResult Function(AudioService audioService)? stopped,
@@ -1013,6 +1013,10 @@ abstract class _$$PlayerLoadingImplCopyWith<$Res> {
   factory _$$PlayerLoadingImplCopyWith(
           _$PlayerLoadingImpl value, $Res Function(_$PlayerLoadingImpl) then) =
       __$$PlayerLoadingImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({Video? video});
+
+  $VideoCopyWith<$Res>? get video;
 }
 
 /// @nodoc
@@ -1022,58 +1026,94 @@ class __$$PlayerLoadingImplCopyWithImpl<$Res>
   __$$PlayerLoadingImplCopyWithImpl(
       _$PlayerLoadingImpl _value, $Res Function(_$PlayerLoadingImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? video = freezed,
+  }) {
+    return _then(_$PlayerLoadingImpl(
+      video: freezed == video
+          ? _value.video
+          : video // ignore: cast_nullable_to_non_nullable
+              as Video?,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $VideoCopyWith<$Res>? get video {
+    if (_value.video == null) {
+      return null;
+    }
+
+    return $VideoCopyWith<$Res>(_value.video!, (value) {
+      return _then(_value.copyWith(video: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$PlayerLoadingImpl implements _PlayerLoading {
-  const _$PlayerLoadingImpl();
+  const _$PlayerLoadingImpl({this.video});
+
+  @override
+  final Video? video;
 
   @override
   String toString() {
-    return 'PlayerState.loading()';
+    return 'PlayerState.loading(video: $video)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$PlayerLoadingImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$PlayerLoadingImpl &&
+            (identical(other.video, video) || other.video == video));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, video);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$PlayerLoadingImplCopyWith<_$PlayerLoadingImpl> get copyWith =>
+      __$$PlayerLoadingImplCopyWithImpl<_$PlayerLoadingImpl>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(Video? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
     required TResult Function(AudioService audioService) stopped,
     required TResult Function() error,
   }) {
-    return loading();
+    return loading(video);
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(Video? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
     TResult? Function(AudioService audioService)? stopped,
     TResult? Function()? error,
   }) {
-    return loading?.call();
+    return loading?.call(video);
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(Video? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
     TResult Function(AudioService audioService)? stopped,
@@ -1081,7 +1121,7 @@ class _$PlayerLoadingImpl implements _PlayerLoading {
     required TResult orElse(),
   }) {
     if (loading != null) {
-      return loading();
+      return loading(video);
     }
     return orElse();
   }
@@ -1131,7 +1171,12 @@ class _$PlayerLoadingImpl implements _PlayerLoading {
 }
 
 abstract class _PlayerLoading implements PlayerState {
-  const factory _PlayerLoading() = _$PlayerLoadingImpl;
+  const factory _PlayerLoading({final Video? video}) = _$PlayerLoadingImpl;
+
+  Video? get video;
+  @JsonKey(ignore: true)
+  _$$PlayerLoadingImplCopyWith<_$PlayerLoadingImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -1200,7 +1245,7 @@ class _$PlayerPlayingImpl implements _PlayerPlaying {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(Video? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
     required TResult Function(AudioService audioService) stopped,
@@ -1213,7 +1258,7 @@ class _$PlayerPlayingImpl implements _PlayerPlaying {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(Video? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
     TResult? Function(AudioService audioService)? stopped,
@@ -1226,7 +1271,7 @@ class _$PlayerPlayingImpl implements _PlayerPlaying {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(Video? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
     TResult Function(AudioService audioService)? stopped,
@@ -1359,7 +1404,7 @@ class _$PlayerPausedImpl implements _PlayerPaused {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(Video? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
     required TResult Function(AudioService audioService) stopped,
@@ -1372,7 +1417,7 @@ class _$PlayerPausedImpl implements _PlayerPaused {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(Video? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
     TResult? Function(AudioService audioService)? stopped,
@@ -1385,7 +1430,7 @@ class _$PlayerPausedImpl implements _PlayerPaused {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(Video? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
     TResult Function(AudioService audioService)? stopped,
@@ -1518,7 +1563,7 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(Video? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
     required TResult Function(AudioService audioService) stopped,
@@ -1531,7 +1576,7 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(Video? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
     TResult? Function(AudioService audioService)? stopped,
@@ -1544,7 +1589,7 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(Video? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
     TResult Function(AudioService audioService)? stopped,
@@ -1650,7 +1695,7 @@ class _$PlayerErrorImpl implements _PlayerError {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
-    required TResult Function() loading,
+    required TResult Function(Video? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
     required TResult Function(AudioService audioService) stopped,
@@ -1663,7 +1708,7 @@ class _$PlayerErrorImpl implements _PlayerError {
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
-    TResult? Function()? loading,
+    TResult? Function(Video? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
     TResult? Function(AudioService audioService)? stopped,
@@ -1676,7 +1721,7 @@ class _$PlayerErrorImpl implements _PlayerError {
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
-    TResult Function()? loading,
+    TResult Function(Video? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
     TResult Function(AudioService audioService)? stopped,

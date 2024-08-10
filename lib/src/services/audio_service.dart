@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:just_audio/just_audio.dart';
@@ -11,6 +12,9 @@ class AudioService {
 
     _player.playbackEventStream.listen((event) {
       log('AudioService: playing ${event.currentIndex}');
+      if (event.currentIndex == null) return;
+      if (event.currentIndex! >= videoPlaylist.length) return;
+      if (videoPlaylist[event.currentIndex!] == currentlyPlaying) return;
       _currentThumbnail = videoPlaylist[event.currentIndex!].thumbnails.mediumResUrl;
       currentlyPlaying = videoPlaylist[event.currentIndex!];
     });
@@ -23,8 +27,13 @@ class AudioService {
   String get currentThumbnail => _currentThumbnail;
 
   AudioPlayer get player => _player;
+
   Video? currentlyPlaying;
   bool get isPlaying => _player.playing;
+
+  Stream<Duration> get currentPosition => _player.positionStream;
+  Stream<Duration?> get duration => _player.durationStream;
+  Stream<Duration> get bufferedPosition => _player.bufferedPositionStream;
 
   ConcatenatingAudioSource audioPlaylist = ConcatenatingAudioSource(
     children: [],

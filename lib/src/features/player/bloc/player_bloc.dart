@@ -9,7 +9,7 @@ part 'player_event.dart';
 part 'player_state.dart';
 part "player_bloc.freezed.dart";
 
-final AudioService audioService = getIt<AudioService>();
+final AudioService _audioService = getIt<AudioService>();
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   PlayerBloc() : super(PlayerState.initial()) {
@@ -25,36 +25,36 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   }
 
   Future<void> _playFromChannel(_PlayFromChannel event, Emitter<PlayerState> emit) async {
-    emit(PlayerState.loading());
-    await audioService.playAudio(video: event.video);
+    emit(PlayerState.loading(video: event.video));
+    await _audioService.playAudio(video: event.video);
     // create new queue from channel
-    emit(PlayerState.playing(audioService));
+    emit(PlayerState.playing(_audioService));
   }
 
   Future<void> _playFromQueue(_PlayFromQueue event, Emitter<PlayerState> emit) async {
-    emit(PlayerState.loading());
-    await audioService.playAudioFromQueue(playIndex: event.playIndex);
-    emit(PlayerState.playing(audioService));
+    emit(PlayerState.loading(video: _audioService.videoPlaylist[event.playIndex]));
+    await _audioService.playAudioFromQueue(playIndex: event.playIndex);
+    emit(PlayerState.playing(_audioService));
   }
 
   Future<void> _pausePlayToggle(_PausePlayToggle event, Emitter<PlayerState> emit) async {
-    if (audioService.isPlaying) {
-      await audioService.player.pause();
-      emit(PlayerState.paused(audioService));
+    if (_audioService.isPlaying) {
+      _audioService.player.pause();
+      emit(PlayerState.paused(_audioService));
     } else {
-      await audioService.player.play();
-      emit(PlayerState.playing(audioService));
+      _audioService.player.play();
+      emit(PlayerState.playing(_audioService));
     }
   }
 
   Future<void> _stop(_Stop event, Emitter<PlayerState> emit) async {
-    await audioService.player.stop();
-    emit(PlayerState.stopped(audioService));
+    await _audioService.player.stop();
+    emit(PlayerState.stopped(_audioService));
   }
 
   Future<void> _seek(_Seek event, Emitter<PlayerState> emit) async {
-    emit(PlayerState.loading());
-    await audioService.player.seek(event.position);
-    emit(PlayerState.playing(audioService));
+    // emit(PlayerState.loading(video: audioService.currentlyPlaying));
+    _audioService.player.seek(event.position);
+    emit(PlayerState.playing(_audioService));
   }
 }

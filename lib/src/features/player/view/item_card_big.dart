@@ -2,12 +2,13 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:intl/intl.dart';
-import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
-import 'package:midnight_suspense/src/services/audio_service.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+
+import '../bloc/player_bloc.dart';
 
 class ItemCardBig extends StatelessWidget {
   ItemCardBig({
@@ -15,13 +16,12 @@ class ItemCardBig extends StatelessWidget {
     required this.video,
   });
   final Video video;
-  final AudioService audioService = getIt<AudioService>();
+  final DateFormat dateFormat = DateFormat('d MMM yyyy');
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final DateFormat dateFormat = DateFormat('d MMM yyyy');
     final String formattedDate = dateFormat.format(video.uploadDate!);
+    final textTheme = Theme.of(context).textTheme;
     final String formattedDuration = formatDuration(video.duration ?? Duration.zero);
 
     return DecoratedBox(
@@ -61,6 +61,8 @@ class ItemCardBig extends StatelessWidget {
                                 : video.thumbnails.lowResUrl,
                     fit: BoxFit.fitWidth,
                     alignment: Alignment.topCenter,
+                    memCacheHeight: 683,
+                    memCacheWidth: 1094,
                   ),
                 ),
                 Positioned.fill(
@@ -121,7 +123,9 @@ class ItemCardBig extends StatelessWidget {
                       ),
                       const SizedBox(width: 20),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.read<PlayerBloc>().add(PlayerEvent.playFromChannel(video: video));
+                        },
                         style: ButtonStyle(
                           fixedSize: WidgetStateProperty.all(Size(40, 40)),
                           backgroundColor: WidgetStateProperty.all(Colors.black),
@@ -136,18 +140,16 @@ class ItemCardBig extends StatelessWidget {
                     ],
                   ),
                 ),
-                Positioned.fill(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      splashColor: Theme.of(context).primaryColorDark,
-                      overlayColor: WidgetStateProperty.all(Colors.black45),
-                      onTap: () {
-                        audioService.playAudio(video: video);
-                      },
-                    ),
-                  ),
-                ),
+                // Positioned.fill(
+                //   child: Material(
+                //     color: Colors.transparent,
+                //     child: InkWell(
+                //       splashColor: Theme.of(context).primaryColorDark,
+                //       overlayColor: WidgetStateProperty.all(Colors.black45),
+                //       onTap: () {},
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

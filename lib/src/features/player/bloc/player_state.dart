@@ -3,7 +3,7 @@ part of 'player_bloc.dart';
 @freezed
 class PlayerState with _$PlayerState {
   const factory PlayerState.initial() = _PlayerInitial;
-  const factory PlayerState.loading() = _PlayerLoading;
+  const factory PlayerState.loading({Video? video}) = _PlayerLoading;
   const factory PlayerState.playing(AudioService audioService) = _PlayerPlaying;
   const factory PlayerState.paused(AudioService audioService) = _PlayerPaused;
   const factory PlayerState.stopped(AudioService audioService) = _PlayerStopped;

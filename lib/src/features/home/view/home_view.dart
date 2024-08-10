@@ -32,18 +32,20 @@ class HomeView extends StatelessWidget {
         ),
         child: BlocConsumer<HomeBloc, HomeState>(
           listener: (context, state) {
-            state.whenOrNull(initial: () {
-              log("fired loadded event @builder");
-
-              context.read<HomeBloc>().add(HomeScreenLoadedEvent());
-            });
+            // log("state: $state @listener");
           },
           builder: (context, state) {
-            state.mapOrNull(
+            // log("state: $state @builder");
+            return state.map(
+              initial: (_) {
+                context.read<HomeBloc>().add(HomeScreenLoadedEvent());
+
+                return loadingWidget();
+              },
               loading: (_) {
                 return loadingWidget();
               },
-              videosLoaded: (state) {
+              videosLoaded: (states) {
                 return Column(
                   children: [
                     OpenContainer(
@@ -57,12 +59,12 @@ class HomeView extends StatelessWidget {
                       child: ListView.builder(
                         controller: context.watch<NavScrollControllerCubit>().state,
                         shrinkWrap: true,
-                        itemCount: 10, //(state).videos?.length ?? 0,
+                        itemCount: states.videos?.length ?? 10, //(state).videos?.length ?? 0,
                         itemBuilder: (context, index) => Padding(
                           padding: const EdgeInsets.only(bottom: 15.0, left: 20, right: 20),
                           child: ItemCardBig(
                             key: Key(index.toString()),
-                            video: (state).videos![index],
+                            video: states.videos![index],
                           ),
                         ),
                       ),
@@ -74,8 +76,6 @@ class HomeView extends StatelessWidget {
                 return Center(child: Text("Something went wrong"));
               },
             );
-
-            return Text("Something went wrong");
           },
         ),
       ),

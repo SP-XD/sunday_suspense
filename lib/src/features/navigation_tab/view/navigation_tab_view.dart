@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gradient_borders/gradient_borders.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/features/blank/blank.dart';
 import 'package:midnight_suspense/src/features/home/home.dart';
@@ -67,67 +68,91 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
           height: 160,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50, tileMode: TileMode.decal),
-                child: AnimatedContainer(
-                  duration: Duration(milliseconds: 300),
-                  height: 145,
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    color: Colors.black54,
-                    borderRadius: BorderRadius.all(Radius.circular(25)),
-                    // border: Border.all(color: Colors.grey.withOpacity(0.1), width: 0.5),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: Colors.red.shade700.withOpacity(0.1),
-                    //     spreadRadius: 1,
-                    //     blurRadius: 5,
-                    //     offset: Offset(1, 1),
-                    //   ),
-                    // ],
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      MiniPlayer(),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                        child: NavigationBar(
-                          selectedIndex: selectedIndex,
-                          onDestinationSelected: (value) {
-                            log('value: $value');
-                            HapticFeedback.lightImpact();
-                            navTabAnimationController!.reset();
-                            navTabAnimationController!.forward();
-                            setState(() => selectedIndex = value);
-                          },
-                          height: 65,
-                          backgroundColor: Colors.transparent,
-                          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                          indicatorColor: Colors.transparent,
-                          overlayColor: WidgetStateProperty.all(Colors.black54),
-                          destinations: [
-                            NavigationDestination(
-                              icon: iconUnselected(Assets.icons.home.path),
-                              label: 'Home',
-                              selectedIcon: iconSelected(Assets.icons.home.path),
-                            ),
-                            NavigationDestination(
-                              icon: iconUnselected(Assets.icons.playlist.path),
-                              label: 'Queue',
-                              selectedIcon: iconSelected(Assets.icons.playlist.path),
-                            ),
-                            NavigationDestination(
-                              icon: iconUnselected(Assets.icons.settings.path),
-                              label: 'Settings',
-                              selectedIcon: iconSelected(Assets.icons.settings.path),
-                            ),
-                          ],
-                        ),
-                      ),
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                border: GradientBoxBorder(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.grey.shade900,
+                      Colors.transparent,
                     ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                  width: 1,
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(1),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(25),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20, tileMode: TileMode.decal),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      height: 145,
+                      constraints: BoxConstraints(maxHeight: 145, minHeight: 75),
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: Colors.black54,
+                        borderRadius: BorderRadius.all(Radius.circular(25)),
+                        //   border: Border.all(
+                        //     color: Colors.grey.withOpacity(0.1),
+                        //     width: 1,
+                        //     strokeAlign: BorderSide.strokeAlignInside,
+                        //   ),
+                        // boxShadow: [
+                        //   BoxShadow(
+                        //     color: Colors.red.shade700.withOpacity(0.1),
+                        //     spreadRadius: 1,
+                        //     blurRadius: 5,
+                        //     offset: Offset(1, 1),
+                        //   ),
+                        // ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          MiniPlayer(),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                            child: NavigationBar(
+                              selectedIndex: selectedIndex,
+                              onDestinationSelected: (value) {
+                                log('value: $value');
+                                HapticFeedback.lightImpact();
+                                navTabAnimationController!.reset();
+                                navTabAnimationController!.forward();
+                                setState(() => selectedIndex = value);
+                              },
+                              height: 65,
+                              backgroundColor: Colors.transparent,
+                              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                              indicatorColor: Colors.transparent,
+                              overlayColor: WidgetStateProperty.all(Colors.black54),
+                              destinations: [
+                                NavigationDestination(
+                                  icon: iconUnselected(Assets.icons.home.path),
+                                  label: 'Home',
+                                  selectedIcon: iconSelected(Assets.icons.home.path),
+                                ),
+                                NavigationDestination(
+                                  icon: iconUnselected(Assets.icons.playlist.path),
+                                  label: 'Queue',
+                                  selectedIcon: iconSelected(Assets.icons.playlist.path),
+                                ),
+                                NavigationDestination(
+                                  icon: iconUnselected(Assets.icons.settings.path),
+                                  label: 'Settings',
+                                  selectedIcon: iconSelected(Assets.icons.settings.path),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),
