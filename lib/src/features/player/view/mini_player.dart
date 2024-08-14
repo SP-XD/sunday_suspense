@@ -24,7 +24,6 @@ class MiniPlayer extends StatefulWidget {
 class _MiniPlayerState extends State<MiniPlayer> {
   Stream<Duration> currentPositionStream = Stream.value(Duration.zero);
   Stream<Duration?> durationStream = Stream.value(null);
-  Stream<Duration> bufferedPositionStream = Stream.value(Duration.zero);
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +32,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
     return BlocBuilder<PlayerBloc, PlayerState>(
       builder: (context, state) {
         log("state: $state @builder");
-        if (state == PlayerState.initial()) {
-          return SizedBox.shrink();
-        }
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -43,8 +39,13 @@ class _MiniPlayerState extends State<MiniPlayer> {
             OpenContainer(
               middleColor: Colors.black,
               openColor: Colors.black,
-              openBuilder: (context, _) {
-                return PlayerView();
+              tappable: state.mapOrNull(initial: (_) => false) ?? true,
+              openBuilder: (context, closedAction) {
+                return state != PlayerState.initial
+                    ? PlayerView(
+                        onBackPressed: closedAction,
+                      )
+                    : SizedBox.shrink();
               },
               closedShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -55,7 +56,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
               closedColor: Colors.black,
               transitionDuration: Duration(milliseconds: 500),
               closedBuilder: (context, openContainerAction) {
-                return miniPlayer(openContainerAction, state, textTheme);
+                return miniPlayerControls(openContainerAction, state, textTheme);
               },
             ),
             state.whenOrNull(
@@ -70,9 +71,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
     );
   }
 
-  Container miniPlayer(VoidCallback openContainerAction, PlayerState state, TextTheme textTheme) {
+  Container miniPlayerControls(VoidCallback openContainerAction, PlayerState state, TextTheme textTheme) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       height: 70,
       // decoration: BoxDecoration(
       //   color: Colors.grey.shade200,
@@ -81,30 +82,35 @@ class _MiniPlayerState extends State<MiniPlayer> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          const SizedBox(width: 5),
           GestureDetector(
             onTap: () {
+              if (state.mapOrNull(initial: (_) => true) ?? false) return;
               openContainerAction();
             },
             child: state.mapOrNull(
+              initial: (value) => thumbnailAndTitle(
+                textTheme,
+              ),
               loading: (state) => thumbnailAndTitle(
                 textTheme,
                 thumbnailUrl: state.video?.thumbnails.mediumResUrl ?? "",
                 title: state.video?.title ?? "",
               ),
-              playing: (state) => thumbnailAndTitle(
+              playing: (playingState) => thumbnailAndTitle(
                 textTheme,
-                thumbnailUrl: state.audioService.currentThumbnail,
-                title: state.audioService.currentlyPlaying?.title ?? '',
+                thumbnailUrl: playingState.audioService.currentThumbnail,
+                title: playingState.audioService.currentlyPlaying?.title ?? '',
               ),
-              paused: (state) => thumbnailAndTitle(
+              paused: (pausedState) => thumbnailAndTitle(
                 textTheme,
-                thumbnailUrl: state.audioService.currentThumbnail,
-                title: state.audioService.currentlyPlaying?.title ?? '',
+                thumbnailUrl: pausedState.audioService.currentThumbnail,
+                title: pausedState.audioService.currentlyPlaying?.title ?? '',
               ),
-              stopped: (state) => thumbnailAndTitle(
+              stopped: (stoppedState) => thumbnailAndTitle(
                 textTheme,
-                thumbnailUrl: state.audioService.currentThumbnail,
-                title: state.audioService.currentlyPlaying?.title ?? '',
+                thumbnailUrl: stoppedState.audioService.currentThumbnail,
+                title: stoppedState.audioService.currentlyPlaying?.title ?? '',
               ),
             ),
           ),
@@ -126,8 +132,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
   Row thumbnailAndTitle(
     TextTheme textTheme, {
-    required String thumbnailUrl,
-    required String title,
+    String thumbnailUrl = '',
+    String title = 'Nothing is playing',
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -157,13 +163,13 @@ class _MiniPlayerState extends State<MiniPlayer> {
             ),
           )
         else
-          SizedBox(width: 70, height: 50).animate().shimmer(),
+          SizedBox(width: 70, height: 50),
         const SizedBox(width: 10),
         SizedBox(
           width: 120,
           child: TickerText(
             child: Text(
-              '${title.isNotEmpty ? title : ''}',
+              '${title}',
               style: textTheme.labelMedium,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -196,17 +202,15 @@ class _MiniPlayerState extends State<MiniPlayer> {
   SizedBox playerSlider(AudioService audioService) {
     currentPositionStream = audioService.currentPosition;
     durationStream = audioService.duration;
-    bufferedPositionStream = audioService.bufferedPosition;
 
     return SizedBox(
       height: 2,
       width: double.maxFinite,
-      child: StreamBuilder<(Duration, Duration?, Duration)>(
-        stream: Rx.combineLatest3(
+      child: StreamBuilder<(Duration, Duration?)>(
+        stream: Rx.combineLatest2(
           currentPositionStream,
           durationStream,
-          bufferedPositionStream,
-          (c, d, e) => (c, d, e),
+          (c, d) => (c, d),
         ),
         builder: (
           context,
@@ -215,21 +219,26 @@ class _MiniPlayerState extends State<MiniPlayer> {
           return SliderTheme(
             data: SliderTheme.of(context).copyWith(
               trackHeight: 0.5,
+              thumbShape: RoundSliderThumbShape(
+                enabledThumbRadius: 0,
+                disabledThumbRadius: 0,
+                elevation: 0,
+                pressedElevation: 0,
+              ),
+              overlayShape: SliderComponentShape.noOverlay,
             ),
             child: Slider(
               value: snapshot.data?.$1.inSeconds.toDouble() ?? 0,
               min: 0,
               max: snapshot.data?.$2?.inSeconds.toDouble() ?? 0,
-              secondaryTrackValue: snapshot.data?.$3.inSeconds.toDouble() ?? 0,
-              secondaryActiveColor: Colors.grey.shade400,
               onChanged: (value) {
-                context.read<PlayerBloc>().add(
-                      PlayerEvent.seek(
-                        position: Duration(
-                          seconds: value.toInt(),
-                        ),
-                      ),
-                    );
+                // context.read<PlayerBloc>().add(
+                //       PlayerEvent.seek(
+                //         position: Duration(
+                //           seconds: value.toInt(),
+                //         ),
+                //       ),
+                //     );
               },
             ),
           );
