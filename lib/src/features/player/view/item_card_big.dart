@@ -77,6 +77,16 @@ class ItemCardBig extends StatelessWidget {
                     ),
                   ),
                 ),
+                Positioned.fill(
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      splashColor: Theme.of(context).primaryColorDark,
+                      overlayColor: WidgetStateProperty.all(Colors.red.shade800.withOpacity(0.2)),
+                      onTap: () {},
+                    ),
+                  ),
+                ),
                 Positioned(
                   bottom: 10,
                   left: 15,
@@ -140,16 +150,6 @@ class ItemCardBig extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Positioned.fill(
-                //   child: Material(
-                //     color: Colors.transparent,
-                //     child: InkWell(
-                //       splashColor: Theme.of(context).primaryColorDark,
-                //       overlayColor: WidgetStateProperty.all(Colors.black45),
-                //       onTap: () {},
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),
