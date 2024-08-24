@@ -139,7 +139,7 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
                                 ),
                                 NavigationDestination(
                                   icon: iconUnselected(Assets.icons.playlist.path),
-                                  label: 'Queue',
+                                  label: 'Category',
                                   selectedIcon: iconSelected(Assets.icons.playlist.path),
                                 ),
                                 NavigationDestination(

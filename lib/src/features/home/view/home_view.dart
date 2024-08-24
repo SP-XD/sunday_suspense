@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/features/home/bloc/home_bloc.dart';
@@ -10,8 +11,21 @@ import 'package:midnight_suspense/src/features/player/player.dart';
 import 'package:midnight_suspense/src/features/player/view/item_card_big.dart';
 import 'package:midnight_suspense/src/features/searchbar/searchbar.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   HomeView({super.key});
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 5, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +69,32 @@ class HomeView extends StatelessWidget {
                       closedBuilder: (context, action) => SearchBar(),
                       openBuilder: (context, action) => SearchBarView(),
                     ),
+                    TabBar(
+                      controller: _tabController,
+                      labelColor: Colors.red.shade700,
+                      indicator: BoxDecoration(
+                        gradient: RadialGradient(
+                          colors: [Colors.red.withOpacity(0.2), Colors.transparent],
+                          radius: 1,
+                          stops: [0.1, 1],
+                          center: Alignment.bottomCenter,
+                        ),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      unselectedLabelColor: Colors.grey.shade700,
+                      labelStyle: GoogleFonts.creepster(),
+                      dividerColor: Colors.transparent,
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      tabs: [
+                        Tab(text: "Sunday Suspense"),
+                        Tab(text: "Midnight Station"),
+                        Tab(text: "Horror SP XD"),
+                        Tab(text: "Horror SP XD"),
+                        Tab(text: "Horror SP XD"),
+                      ],
+                    ),
+                    // TabBarView(children: []),
                     Expanded(
                       child: ListView.builder(
                         controller: context.watch<NavScrollControllerCubit>().state,

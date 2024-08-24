@@ -24,6 +24,24 @@ class _SearchBarState extends State<SearchBar> {
     });
   }
 
+  var searchBarGradientBorder = GradientOutlineInputBorder(
+    borderRadius: BorderRadius.circular(20),
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: [
+        Colors.red,
+        Colors.grey.shade900,
+        Colors.grey.shade900,
+        Colors.grey.shade800,
+        Colors.grey.shade900,
+      ],
+      stops: [0.1, 0.35, 0.4, 0.6, 0.7],
+      transform: GradientRotation(0.9),
+    ),
+    width: 1.5,
+  );
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
@@ -65,57 +83,9 @@ class _SearchBarState extends State<SearchBar> {
                       ),
                       filled: true,
                       fillColor: Colors.white.withAlpha(10),
-                      border: GradientOutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.red,
-                            Colors.grey.shade800.withOpacity(0.5),
-                            Colors.grey.shade800.withOpacity(0.5),
-                            Colors.grey.shade800,
-                            Colors.grey.shade800.withOpacity(0.5),
-                          ],
-                          stops: [0.1, 0.35, 0.4, 0.6, 0.7],
-                          transform: GradientRotation(0.9),
-                        ),
-                        width: 1.5,
-                      ),
-                      enabledBorder: GradientOutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.red,
-                            Colors.grey.shade800.withOpacity(0.5),
-                            Colors.grey.shade800.withOpacity(0.5),
-                            Colors.grey.shade800,
-                            Colors.grey.shade800.withOpacity(0.5),
-                          ],
-                          stops: [0.1, 0.35, 0.4, 0.6, 0.7],
-                          transform: GradientRotation(0.9),
-                        ),
-                        width: 1.5,
-                      ),
-                      focusedBorder: GradientOutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.red,
-                            Colors.grey.shade800.withOpacity(0.5),
-                            Colors.grey.shade800.withOpacity(0.5),
-                            Colors.grey.shade800,
-                            Colors.grey.shade800.withOpacity(0.5),
-                          ],
-                          stops: [0.1, 0.35, 0.4, 0.6, 0.7],
-                          transform: GradientRotation(0.9),
-                        ),
-                        width: 1.5,
-                      ),
+                      border: searchBarGradientBorder,
+                      enabledBorder: searchBarGradientBorder,
+                      focusedBorder: searchBarGradientBorder,
                     ),
                   ),
                 ),

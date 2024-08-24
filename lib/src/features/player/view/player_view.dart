@@ -84,16 +84,29 @@ class _PlayerViewState extends State<PlayerView> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        DecoratedBox(
+        Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: Colors.grey,
-              width: 0.5,
+            borderRadius: BorderRadius.circular(150),
+            // border: Border.all(
+            //   color: Colors.red.shade800,
+            //   width: 0.5,
+            // ),
+            image: DecorationImage(
+              image: CachedNetworkImageProvider(
+                audioService.currentThumbnail.isNotEmpty
+                    ? audioService.currentThumbnail
+                    : 'https://via.placeholder.com/150',
+              ),
+              colorFilter: ColorFilter.mode(
+                Colors.black54,
+                BlendMode.darken,
+              ),
+              fit: BoxFit.cover,
             ),
           ),
+          padding: EdgeInsets.all(2),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(150),
             child: CachedNetworkImage(
               imageUrl: audioService.currentThumbnail.isNotEmpty
                   ? audioService.currentThumbnail
@@ -104,13 +117,19 @@ class _PlayerViewState extends State<PlayerView> {
                 angle: 0.5,
               ),
               errorWidget: (context, url, error) => Icon(Icons.error),
-              fit: BoxFit.cover,
-              width: 350,
-              height: 200,
+              fit: BoxFit.contain,
+              width: 300,
+              height: 300,
               // color: Colors.black,
             ),
           ),
-        ),
+        )
+            .animate(
+              onPlay: (controller) => controller.repeat(),
+            )
+            .rotate(
+              duration: Duration(seconds: 30),
+            ),
         Column(
           children: [
             Padding(

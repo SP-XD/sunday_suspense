@@ -33,52 +33,53 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.red.shade700,
-        primarySwatch: Colors.red,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        ),
-        textTheme: Theme.of(context).textTheme.apply(
-              bodyColor: Colors.white,
-              displayColor: Colors.white,
+    return RepositoryProvider(
+      create: (context) => _videosRepository,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider<HomeBloc>(create: (context) => HomeBloc(_videosRepository)),
+          BlocProvider(create: (context) => NavScrollControllerCubit()),
+          BlocProvider(create: (context) => PlayerBloc()),
+        ],
+        child: MaterialApp(
+          theme: ThemeData(
+            primaryColor: Colors.red.shade700,
+            primarySwatch: Colors.red,
+            appBarTheme: AppBarTheme(
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             ),
-        scaffoldBackgroundColor: Color.fromARGB(255, 15, 15, 15),
-        sliderTheme: SliderThemeData(
-          trackHeight: 0.5,
-          trackShape: CustomSliderTrackShape(),
-          activeTrackColor: Colors.red.shade800,
-          inactiveTrackColor: Colors.grey.shade800,
-          thumbShape: CustomSliderThumbShape(enabledThumbRadius: 1.0),
-          thumbColor: Colors.red.shade800,
-          overlayColor: Colors.pink.withOpacity(0.2),
-          overlayShape: CustomSliderOverlayShape(),
-          tickMarkShape: RoundSliderTickMarkShape(),
-          activeTickMarkColor: Colors.red.shade800,
-          inactiveTickMarkColor: Colors.white,
-          valueIndicatorShape: PaddleSliderValueIndicatorShape(),
-          valueIndicatorColor: Colors.black,
-          valueIndicatorTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20.0,
+            textTheme: Theme.of(context).textTheme.apply(
+                  bodyColor: Colors.white,
+                  displayColor: Colors.white,
+                ),
+            scaffoldBackgroundColor: Color.fromARGB(255, 15, 15, 15),
+            sliderTheme: SliderThemeData(
+              trackHeight: 0.5,
+              trackShape: CustomSliderTrackShape(),
+              activeTrackColor: Colors.red.shade800,
+              inactiveTrackColor: Colors.grey.shade800,
+              thumbShape: CustomSliderThumbShape(enabledThumbRadius: 5.0),
+              thumbColor: Colors.red.shade800,
+              overlayColor: Colors.pink.withOpacity(0.2),
+              overlayShape: CustomSliderOverlayShape(),
+              tickMarkShape: RoundSliderTickMarkShape(),
+              activeTickMarkColor: Colors.red.shade800,
+              inactiveTickMarkColor: Colors.white,
+              valueIndicatorShape: PaddleSliderValueIndicatorShape(),
+              valueIndicatorColor: Colors.black,
+              valueIndicatorTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+              ),
+            ),
+            useMaterial3: true,
           ),
-        ),
-        useMaterial3: true,
-      ),
-      themeMode: ThemeMode.dark,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      home: SplashView(
-        nextPage: RepositoryProvider(
-          create: (context) => _videosRepository,
-          child: MultiBlocProvider(
-            providers: [
-              BlocProvider<HomeBloc>(create: (context) => HomeBloc(_videosRepository)),
-              BlocProvider(create: (context) => NavScrollControllerCubit()),
-              BlocProvider(create: (context) => PlayerBloc()),
-            ],
-            child: NavigationTabView(),
+          themeMode: ThemeMode.dark,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          debugShowCheckedModeBanner: false,
+          home: SplashView(
+            nextPage: NavigationTabView(),
           ),
         ),
       ),
