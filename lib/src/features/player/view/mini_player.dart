@@ -31,7 +31,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
     return BlocBuilder<PlayerBloc, PlayerState>(
       builder: (context, state) {
-        log("state: $state @builder");
+        // log("state: $state @builder");
+
+        if (state == PlayerState.initial()) {
+          return SizedBox.shrink();
+        }
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -60,6 +64,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
               },
             ),
             state.whenOrNull(
+                  loading: (state) => Divider(color: Colors.grey.shade800, height: 0.5, thickness: 0.5),
                   playing: (audioService) => playerSlider(audioService),
                   paused: (audioService) => playerSlider(audioService),
                   stopped: (audioService) => playerSlider(audioService),
@@ -74,7 +79,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
   Container miniPlayerControls(VoidCallback openContainerAction, PlayerState state, TextTheme textTheme) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      height: 70,
+      height: 75,
       // decoration: BoxDecoration(
       //   color: Colors.grey.shade200,
       //   borderRadius: BorderRadius.circular(20),

@@ -24,6 +24,8 @@ class NavigationTabView extends StatefulWidget {
 class _NavigationTabViewState extends State<NavigationTabView> with TickerProviderStateMixin {
   AnimationController? navTabAnimationController;
   int selectedIndex = 0;
+  double _miniPlayerHeight = 0;
+  GlobalKey _sizedChangedLayoutKey = GlobalKey();
 
   List<Widget> pages = [
     HomeView(),
@@ -36,6 +38,20 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
     super.initState();
     navTabAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
     navTabAnimationController!.forward();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _updateContainerHeight();
+    });
+  }
+
+  void _updateContainerHeight() {
+    log('updateContainerHeight called');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      log('sizedChangedLayoutKey: ${_sizedChangedLayoutKey.currentContext?.size?.height}');
+      RenderBox? renderBox = _sizedChangedLayoutKey.currentContext?.findRenderObject() as RenderBox?;
+      setState(() {
+        _miniPlayerHeight = renderBox?.size.height ?? 0;
+      });
+    });
   }
 
   @override
@@ -65,7 +81,7 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
         child: ScrollToHide(
           scrollController: context.watch<NavScrollControllerCubit>().state,
           hideDirection: Axis.vertical,
-          height: 160,
+          height: 85 + _miniPlayerHeight,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: DecoratedBox(
@@ -91,8 +107,8 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
                     filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20, tileMode: TileMode.decal),
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 300),
-                      height: 145,
-                      constraints: BoxConstraints(maxHeight: 145, minHeight: 75),
+                      height: 70 + _miniPlayerHeight,
+                      constraints: BoxConstraints(maxHeight: 145, minHeight: 70),
                       width: double.maxFinite,
                       decoration: BoxDecoration(
                         color: Colors.black54,
@@ -111,46 +127,67 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
                         //   ),
                         // ],
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          MiniPlayer(),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                            child: NavigationBar(
-                              selectedIndex: selectedIndex,
-                              onDestinationSelected: (value) {
-                                log('value: $value');
-                                HapticFeedback.lightImpact();
-                                navTabAnimationController!.reset();
-                                navTabAnimationController!.forward();
-                                setState(() => selectedIndex = value);
-                              },
-                              height: 65,
-                              backgroundColor: Colors.transparent,
-                              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                              indicatorColor: Colors.transparent,
-                              overlayColor: WidgetStateProperty.all(Colors.black54),
-                              destinations: [
-                                NavigationDestination(
-                                  icon: iconUnselected(Assets.icons.home.path),
-                                  label: 'Home',
-                                  selectedIcon: iconSelected(Assets.icons.home.path),
-                                ),
-                                NavigationDestination(
-                                  icon: iconUnselected(Assets.icons.playlist.path),
-                                  label: 'Category',
-                                  selectedIcon: iconSelected(Assets.icons.playlist.path),
-                                ),
-                                NavigationDestination(
-                                  icon: iconUnselected(Assets.icons.settings.path),
-                                  label: 'Settings',
-                                  selectedIcon: iconSelected(Assets.icons.settings.path),
-                                ),
-                              ],
+                      child: NotificationListener<SizeChangedLayoutNotification>(
+                        onNotification: (notification) {
+                          _updateContainerHeight();
+                          return true;
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            SizeChangedLayoutNotifier(
+                              key: _sizedChangedLayoutKey,
+                              child: MiniPlayer(),
                             ),
-                          ),
-                        ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                              child: NavigationBar(
+                                selectedIndex: selectedIndex,
+                                onDestinationSelected: (value) {
+                                  log('value: $value');
+                                  HapticFeedback.lightImpact();
+                                  navTabAnimationController!.reset();
+                                  navTabAnimationController!.forward();
+                                  setState(() => selectedIndex = value);
+                                },
+                                height: 65,
+                                backgroundColor: Colors.transparent,
+                                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                                indicatorColor: Colors.transparent,
+                                overlayColor: WidgetStateProperty.all(Colors.black54),
+                                destinations: [
+                                  NavigationDestination(
+                                    icon: iconUnselected(Assets.icons.home.path),
+                                    label: 'Home',
+                                    selectedIcon: iconSelected(Assets.icons.home.path),
+                                  ),
+                                  NavigationDestination(
+                                    icon: iconUnselected(Assets.icons.playlist.path),
+                                    label: 'Category',
+                                    selectedIcon: iconSelected(Assets.icons.playlist.path),
+                                  ),
+                                  NavigationDestination(
+                                    icon: iconUnselected(Assets.icons.settings.path),
+                                    label: 'Settings',
+                                    selectedIcon: iconSelected(Assets.icons.settings.path),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // Measure the height of the Column
+                            //   LayoutBuilder(
+                            //     builder: (context, innerConstraints) {
+                            //       WidgetsBinding.instance.addPostFrameCallback((_) {
+                            //         setState(() {
+                            //           log('innerConstraints: ${_columnKey.currentContext?.size?.height}');
+                            //           _containerHeight = innerConstraints.minHeight;
+                            //         });
+                            //       });
+                            //       return SizedBox.shrink();
+                            //     },
+                            //   ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
