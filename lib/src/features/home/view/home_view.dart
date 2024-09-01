@@ -30,16 +30,18 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
-        // height: MediaQuery.of(context).size.height,
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
               Colors.black,
+              Colors.black,
               // hex code color
-              Color.fromRGBO(59, 0, 0, 0.898),
+              //   Color.fromRGBO(59, 0, 0, 0.898),
             ],
             stops: [0.8, 0.99],
           ),
@@ -62,13 +64,14 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
               videosLoaded: (states) {
                 return Column(
                   children: [
-                    OpenContainer(
-                      middleColor: Colors.black,
-                      openColor: Colors.black,
-                      closedColor: Colors.black,
-                      closedBuilder: (context, action) => SearchBar(),
-                      openBuilder: (context, action) => SearchBarView(),
-                    ),
+                    SearchBar(),
+                    // OpenContainer(
+                    //   middleColor: Colors.black,
+                    //   openColor: Colors.black,
+                    //   closedColor: Colors.black,
+                    //   closedBuilder: (context, action) => SearchBar(),
+                    //   openBuilder: (context, action) => SearchBarView(),
+                    // ),
                     TabBar(
                       controller: _tabController,
                       labelColor: Colors.red.shade700,

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -9,7 +11,7 @@ class AudioService {
   AudioService() {
     _player = AudioPlayer();
     ytProvider = YtExplodeProvider();
-
+    _init();
     _player.playbackEventStream.listen((event) {
       log('AudioService: playing ${event.currentIndex}');
       if (event.currentIndex == null) return;
@@ -18,6 +20,11 @@ class AudioService {
       _currentThumbnail = videoPlaylist[event.currentIndex!].thumbnails.mediumResUrl;
       currentlyPlaying = videoPlaylist[event.currentIndex!];
     });
+  }
+
+  void _init() async {
+    final session = await AudioSession.instance;
+    await session.configure(AudioSessionConfiguration.music());
   }
 
   late final AudioPlayer _player;
@@ -43,10 +50,21 @@ class AudioService {
 
   /// Plays the audio from the given video.
   Future<void> playAudio({required Video video}) async {
-    var streamManifest = await ytProvider.yt!.videos.streamsClient.getManifest(video.id);
+    var streamManifest = await ytProvider.ytExplodeInstance!.videos.streamsClient.getManifest(video.id);
     audioPlaylist.clear();
     videoPlaylist.clear();
-    audioPlaylist.add(AudioSource.uri(streamManifest.audioOnly.withHighestBitrate().url));
+    audioPlaylist.add(
+      AudioSource.uri(
+        streamManifest.audioOnly.withHighestBitrate().url,
+        tag: MediaItem(
+          id: video.id.toString(),
+          title: video.title,
+          artUri: Uri.parse(
+            video.thumbnails.lowResUrl,
+          ),
+        ),
+      ),
+    );
     videoPlaylist.add(video);
     // set three streams for quality selection (low, medium, high)
     // var streamInfo = streamManifest.audioOnly.withHighestBitrate();
@@ -94,7 +112,7 @@ class AudioService {
 
   Future<void> addPlaylist({required List<Video> videos}) async {
     for (var video in videos) {
-      var streamManifest = await ytProvider.yt!.videos.streamsClient.getManifest(video.id);
+      var streamManifest = await ytProvider.ytExplodeInstance!.videos.streamsClient.getManifest(video.id);
       await audioPlaylist.add(AudioSource.uri(streamManifest.audioOnly.withHighestBitrate().url));
     }
   }
