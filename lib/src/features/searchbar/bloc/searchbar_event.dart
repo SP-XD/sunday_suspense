@@ -1,4 +1,6 @@
 part of 'searchbar_bloc.dart';
 
-@immutable
-sealed class SearchbarEvent {}
+@freezed
+class SearchbarEvent with _$SearchbarEvent {
+  const factory SearchbarEvent.search({required String query}) = _Search;
+}

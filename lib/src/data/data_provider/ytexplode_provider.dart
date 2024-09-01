@@ -6,10 +6,10 @@ class YtExplodeProvider {
   }
 
   YtExplodeProvider._() {
-    yt = YoutubeExplode();
+    ytExplodeInstance = YoutubeExplode();
   }
 
-  YoutubeExplode? yt;
+  YoutubeExplode? ytExplodeInstance;
 
   static final YtExplodeProvider _instance = YtExplodeProvider._();
 }

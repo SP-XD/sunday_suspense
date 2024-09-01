@@ -9,14 +9,19 @@ class VideosRepository {
   late final YtExplodeProvider ytProvider;
 
   Future<List<Video>> getHomeVideos(String channelHandle) async {
-    final channelId = await ytProvider.yt!.channels.getByHandle(channelHandle);
+    final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle(channelHandle);
     // final response = await ytProvider!.yt!.channels.getUploadsFromPage(channelId.id);
     // response.nextPage();
     return [];
   }
 
   Future<List<Video>> getPlaylistVideos(String playlistId) async {
-    final response = await ytProvider.yt!.playlists.getVideos(playlistId);
+    final response = await ytProvider.ytExplodeInstance!.playlists.getVideos(playlistId);
     return response.toList();
+  }
+
+  Future<List<Video>> fetchSearchResults(String query) async {
+    final List<Video> searchResults = await ytProvider.ytExplodeInstance!.search.search(query);
+    return searchResults;
   }
 }

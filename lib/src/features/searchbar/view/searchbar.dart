@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
+import 'package:midnight_suspense/src/features/searchbar/bloc/searchbar_bloc.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 
 class SearchBar extends StatefulWidget {
@@ -15,12 +20,7 @@ class _SearchBarState extends State<SearchBar> {
 
   void _search() {
     setState(() {
-      _searchResultsBoxHeight = 200;
-      Future.delayed(Duration(seconds: 5), () {
-        setState(() {
-          _searchResultsBoxHeight = 0;
-        });
-      });
+      _searchResultsBoxHeight = 250;
     });
   }
 
@@ -49,7 +49,7 @@ class _SearchBarState extends State<SearchBar> {
       children: [
         Container(
           width: mediaQuery.width,
-          height: 250,
+          height: 235,
           child: Stack(
             clipBehavior: Clip.none,
             children: [
@@ -66,6 +66,9 @@ class _SearchBarState extends State<SearchBar> {
                     style: TextStyle(color: Colors.grey),
                     onTap: () {
                       _search();
+                    },
+                    onSubmitted: (value) {
+                      context.read<SearchbarBloc>().add(SearchbarEvent.search(query: value));
                     },
                     decoration: InputDecoration(
                       hintText: "Search...",
@@ -104,6 +107,7 @@ class _SearchBarState extends State<SearchBar> {
           curve: Curves.easeInOut,
           height: _searchResultsBoxHeight,
           width: mediaQuery.width * 0.9,
+          margin: EdgeInsets.only(bottom: _searchResultsBoxHeight != 0 ? 20 : 0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(color: Colors.grey.shade800.withOpacity(0.5), width: 1.5),
@@ -124,11 +128,72 @@ class _SearchBarState extends State<SearchBar> {
             //   width: 1.5,
             // ),
           ),
-          child: Center(
-            child: Text(
-              "Search for your favorite music",
-              style: TextStyle(color: Colors.white),
-            ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: BlocConsumer<SearchbarBloc, SearchbarState>(
+                  listener: (context, state) {
+                    log("state: $state @listener SearchBar");
+                  },
+                  builder: (context, state) {
+                    return state.map(
+                      initial: (_) {
+                        return Center(
+                          child: Text(
+                            "Search for your favorite music",
+                            style: TextStyle(color: Colors.grey.shade800),
+                          ),
+                        );
+                      },
+                      loading: (_) {
+                        return Center(
+                          child: loadingWidget(),
+                        );
+                      },
+                      loaded: (list) {
+                        return ListView.builder(
+                          itemCount: list.searchResults.length,
+                          shrinkWrap: true,
+                          physics: BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: Image.network(list.searchResults[index].thumbnails.lowResUrl),
+                              title: Text(
+                                list.searchResults[index].title,
+                                style: TextStyle(fontSize: 12, color: Colors.white),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      error: (error) => Center(
+                        child: Text(
+                          "Error: ${error.message}",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Positioned(
+                right: 0,
+                top: 0,
+                child: IconButton(
+                  iconSize: 20,
+                  onPressed: () {
+                    setState(() {
+                      _searchResultsBoxHeight = 0;
+                    });
+                  },
+                  icon: Icon(Icons.close_rounded),
+                ),
+              ),
+            ],
           ),
         ),
       ],

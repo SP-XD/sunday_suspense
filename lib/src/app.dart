@@ -9,6 +9,7 @@ import 'package:midnight_suspense/src/l10n/l10n.dart';
 import 'package:midnight_suspense/src/utils/custom_slider_shapes.dart';
 
 import 'features/player/bloc/player_bloc.dart';
+import 'features/searchbar/bloc/searchbar_bloc.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -40,6 +41,7 @@ class _AppState extends State<App> {
           BlocProvider<HomeBloc>(create: (context) => HomeBloc(_videosRepository)),
           BlocProvider(create: (context) => NavScrollControllerCubit()),
           BlocProvider(create: (context) => PlayerBloc()),
+          BlocProvider(create: (context) => SearchbarBloc(_videosRepository)),
         ],
         child: MaterialApp(
           theme: ThemeData(

@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
 
 GetIt getIt = GetIt.instance;
@@ -33,6 +34,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   };
 
   Bloc.observer = const AppBlocObserver();
+
+  await JustAudioBackground.init(
+    androidNotificationChannelId: 'com.spxd.midnight_suspense.channel.audio',
+    androidNotificationChannelName: 'Audio playback',
+    androidNotificationOngoing: true,
+  );
 
   // Add cross-flavor configuration here
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);
