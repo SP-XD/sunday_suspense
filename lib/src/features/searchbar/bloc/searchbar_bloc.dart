@@ -23,7 +23,8 @@ class SearchbarBloc extends Bloc<SearchbarEvent, SearchbarState> {
     // search for videos
     // emit(SearchbarState.loaded(searchResults: []));
     try {
-      final List<Video> searchResults = await _videosRepository.fetchSearchResults(event.query);
+      final List<Video> searchResults =
+          await _videosRepository.fetchSearchResults(event.query + " audio stories");
       emit(SearchbarState.loaded(searchResults: searchResults));
     } catch (e) {
       emit(SearchbarState.error(message: e.toString()));

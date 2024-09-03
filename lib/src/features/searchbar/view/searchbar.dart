@@ -144,7 +144,7 @@ class _SearchBarState extends State<SearchBar> {
                       initial: (_) {
                         return Center(
                           child: Text(
-                            "Search for your favorite music",
+                            "Search for your audio stories...",
                             style: TextStyle(color: Colors.grey.shade800),
                           ),
                         );
