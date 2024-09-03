@@ -28,7 +28,7 @@ dependencies:
   hive_flutter: ^1.1.0
   http: ^1.2.2
   intl: ^0.19.0
-  just_audio: ^0.9.39
+  just_audio: ^0.9.40
   just_audio_background: ^0.0.1-beta.13
   loading_animation_widget: ^1.2.1
   page_transition: ^2.1.0
