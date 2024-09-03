@@ -21,8 +21,7 @@ class YtExplodeProvider {
       httpClient = CronetClient.fromCronetEngine(engine, closeEngine: true);
     } else if (Platform.isIOS || Platform.isMacOS) {
       final config = URLSessionConfiguration.ephemeralSessionConfiguration()
-        ..cache = URLCache.withCapacity(memoryCapacity: 2 * 1024 * 1024)
-        ..httpAdditionalHeaders = {'User-Agent': 'Book Agent'};
+        ..cache = URLCache.withCapacity(memoryCapacity: 2 * 1024 * 1024);
       httpClient = CupertinoClient.fromSessionConfiguration(config);
     } else {
       httpClient = IOClient(HttpClient());
