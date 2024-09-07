@@ -41,8 +41,8 @@ class VideoModel with _$VideoModel {
     /// Video author Id.
     ChannelId? channelId,
 
-    /// Video publish date.
-    DateTime? publishDate,
+    /// Video uploadDate date.
+    DateTime? uploadDate,
 
     /// Video description.
     String? description,
@@ -77,7 +77,7 @@ class VideoModel with _$VideoModel {
       channelId: channelId,
 
       /// Video publish date.
-      publishDate: publishDate,
+      uploadDate: uploadDate,
       description: description,
       watchedDuration: watchedDuration,
       duration: duration,
@@ -101,8 +101,8 @@ class VideoModel with _$VideoModel {
     /// Video author Id.
     ChannelId? channelId,
 
-    /// Video publish date.
-    DateTime? publishDate,
+    /// Video uploadDate date.
+    DateTime? uploadDate,
 
     /// Video description.
     String? description,

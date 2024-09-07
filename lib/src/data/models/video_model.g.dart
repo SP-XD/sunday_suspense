@@ -51,21 +51,21 @@ const VideoModelSchema = Schema(
       name: r'isLive',
       type: IsarType.bool,
     ),
-    r'publishDate': PropertySchema(
-      id: 7,
-      name: r'publishDate',
-      type: IsarType.dateTime,
-    ),
     r'thumbnails': PropertySchema(
-      id: 8,
+      id: 7,
       name: r'thumbnails',
       type: IsarType.object,
       target: r'ThumbnailSet',
     ),
     r'title': PropertySchema(
-      id: 9,
+      id: 8,
       name: r'title',
       type: IsarType.string,
+    ),
+    r'uploadDate': PropertySchema(
+      id: 9,
+      name: r'uploadDate',
+      type: IsarType.dateTime,
     ),
     r'watchedDuration': PropertySchema(
       id: 10,
@@ -165,14 +165,14 @@ void _videoModelSerialize(
     object.id,
   );
   writer.writeBool(offsets[6], object.isLive);
-  writer.writeDateTime(offsets[7], object.publishDate);
   writer.writeObject<ThumbnailSet>(
-    offsets[8],
+    offsets[7],
     allOffsets,
     ThumbnailSetSchema.serialize,
     object.thumbnails,
   );
-  writer.writeString(offsets[9], object.title);
+  writer.writeString(offsets[8], object.title);
+  writer.writeDateTime(offsets[9], object.uploadDate);
   writer.writeLong(offsets[10], object.watchedDuration);
 }
 
@@ -202,13 +202,13 @@ VideoModel _videoModelDeserialize(
       allOffsets,
     ),
     isLive: reader.readBoolOrNull(offsets[6]),
-    publishDate: reader.readDateTimeOrNull(offsets[7]),
     thumbnails: reader.readObjectOrNull<ThumbnailSet>(
-      offsets[8],
+      offsets[7],
       ThumbnailSetSchema.deserialize,
       allOffsets,
     ),
-    title: reader.readStringOrNull(offsets[9]),
+    title: reader.readStringOrNull(offsets[8]),
+    uploadDate: reader.readDateTimeOrNull(offsets[9]),
     watchedDuration: reader.readLongOrNull(offsets[10]),
   );
   return object;
@@ -248,15 +248,15 @@ P _videoModelDeserializeProp<P>(
     case 6:
       return (reader.readBoolOrNull(offset)) as P;
     case 7:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 8:
       return (reader.readObjectOrNull<ThumbnailSet>(
         offset,
         ThumbnailSetSchema.deserialize,
         allOffsets,
       )) as P;
-    case 9:
+    case 8:
       return (reader.readStringOrNull(offset)) as P;
+    case 9:
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 10:
       return (reader.readLongOrNull(offset)) as P;
     default:
@@ -719,80 +719,6 @@ extension VideoModelQueryFilter
   }
 
   QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
-      publishDateIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'publishDate',
-      ));
-    });
-  }
-
-  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
-      publishDateIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'publishDate',
-      ));
-    });
-  }
-
-  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
-      publishDateEqualTo(DateTime? value) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'publishDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
-      publishDateGreaterThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'publishDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
-      publishDateLessThan(
-    DateTime? value, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'publishDate',
-        value: value,
-      ));
-    });
-  }
-
-  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
-      publishDateBetween(
-    DateTime? lower,
-    DateTime? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'publishDate',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-      ));
-    });
-  }
-
-  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
       thumbnailsIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -958,6 +884,79 @@ extension VideoModelQueryFilter
   }
 
   QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
+      uploadDateIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'uploadDate',
+      ));
+    });
+  }
+
+  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
+      uploadDateIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'uploadDate',
+      ));
+    });
+  }
+
+  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition> uploadDateEqualTo(
+      DateTime? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'uploadDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
+      uploadDateGreaterThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'uploadDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
+      uploadDateLessThan(
+    DateTime? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'uploadDate',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition> uploadDateBetween(
+    DateTime? lower,
+    DateTime? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'uploadDate',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<VideoModel, VideoModel, QAfterFilterCondition>
       watchedDurationIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1076,9 +1075,9 @@ _$VideoImpl _$$VideoImplFromJson(Map<String, dynamic> json) => _$VideoImpl(
       channelId: json['channelId'] == null
           ? null
           : ChannelId.fromJson(json['channelId'] as Map<String, dynamic>),
-      publishDate: json['publishDate'] == null
+      uploadDate: json['uploadDate'] == null
           ? null
-          : DateTime.parse(json['publishDate'] as String),
+          : DateTime.parse(json['uploadDate'] as String),
       description: json['description'] as String?,
       watchedDuration: (json['watchedDuration'] as num?)?.toInt(),
       duration: (json['duration'] as num?)?.toInt(),
@@ -1097,7 +1096,7 @@ Map<String, dynamic> _$$VideoImplToJson(_$VideoImpl instance) =>
       'title': instance.title,
       'author': instance.author,
       'channelId': instance.channelId,
-      'publishDate': instance.publishDate?.toIso8601String(),
+      'uploadDate': instance.uploadDate?.toIso8601String(),
       'description': instance.description,
       'watchedDuration': instance.watchedDuration,
       'duration': instance.duration,

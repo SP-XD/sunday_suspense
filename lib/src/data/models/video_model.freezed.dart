@@ -32,8 +32,8 @@ mixin _$VideoModel {
   /// Video author Id.
   ChannelId? get channelId => throw _privateConstructorUsedError;
 
-  /// Video publish date.
-  DateTime? get publishDate => throw _privateConstructorUsedError;
+  /// Video uploadDate date.
+  DateTime? get uploadDate => throw _privateConstructorUsedError;
 
   /// Video description.
   String? get description => throw _privateConstructorUsedError;
@@ -71,7 +71,7 @@ abstract class $VideoModelCopyWith<$Res> {
       String? title,
       String? author,
       ChannelId? channelId,
-      DateTime? publishDate,
+      DateTime? uploadDate,
       String? description,
       int? watchedDuration,
       int? duration,
@@ -102,7 +102,7 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
     Object? title = freezed,
     Object? author = freezed,
     Object? channelId = freezed,
-    Object? publishDate = freezed,
+    Object? uploadDate = freezed,
     Object? description = freezed,
     Object? watchedDuration = freezed,
     Object? duration = freezed,
@@ -127,9 +127,9 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as ChannelId?,
-      publishDate: freezed == publishDate
-          ? _value.publishDate
-          : publishDate // ignore: cast_nullable_to_non_nullable
+      uploadDate: freezed == uploadDate
+          ? _value.uploadDate
+          : uploadDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       description: freezed == description
           ? _value.description
@@ -219,7 +219,7 @@ abstract class _$$VideoImplCopyWith<$Res> implements $VideoModelCopyWith<$Res> {
       String? title,
       String? author,
       ChannelId? channelId,
-      DateTime? publishDate,
+      DateTime? uploadDate,
       String? description,
       int? watchedDuration,
       int? duration,
@@ -252,7 +252,7 @@ class __$$VideoImplCopyWithImpl<$Res>
     Object? title = freezed,
     Object? author = freezed,
     Object? channelId = freezed,
-    Object? publishDate = freezed,
+    Object? uploadDate = freezed,
     Object? description = freezed,
     Object? watchedDuration = freezed,
     Object? duration = freezed,
@@ -277,9 +277,9 @@ class __$$VideoImplCopyWithImpl<$Res>
           ? _value.channelId
           : channelId // ignore: cast_nullable_to_non_nullable
               as ChannelId?,
-      publishDate: freezed == publishDate
-          ? _value.publishDate
-          : publishDate // ignore: cast_nullable_to_non_nullable
+      uploadDate: freezed == uploadDate
+          ? _value.uploadDate
+          : uploadDate // ignore: cast_nullable_to_non_nullable
               as DateTime?,
       description: freezed == description
           ? _value.description
@@ -317,7 +317,7 @@ class _$VideoImpl extends _Video {
       this.title,
       this.author,
       this.channelId,
-      this.publishDate,
+      this.uploadDate,
       this.description,
       this.watchedDuration,
       this.duration,
@@ -345,9 +345,9 @@ class _$VideoImpl extends _Video {
   @override
   final ChannelId? channelId;
 
-  /// Video publish date.
+  /// Video uploadDate date.
   @override
-  final DateTime? publishDate;
+  final DateTime? uploadDate;
 
   /// Video description.
   @override
@@ -376,7 +376,7 @@ class _$VideoImpl extends _Video {
 
   @override
   String toString() {
-    return 'VideoModel._internal(id: $id, title: $title, author: $author, channelId: $channelId, publishDate: $publishDate, description: $description, watchedDuration: $watchedDuration, duration: $duration, thumbnails: $thumbnails, engagement: $engagement, isLive: $isLive)';
+    return 'VideoModel._internal(id: $id, title: $title, author: $author, channelId: $channelId, uploadDate: $uploadDate, description: $description, watchedDuration: $watchedDuration, duration: $duration, thumbnails: $thumbnails, engagement: $engagement, isLive: $isLive)';
   }
 
   @override
@@ -389,8 +389,8 @@ class _$VideoImpl extends _Video {
             (identical(other.author, author) || other.author == author) &&
             (identical(other.channelId, channelId) ||
                 other.channelId == channelId) &&
-            (identical(other.publishDate, publishDate) ||
-                other.publishDate == publishDate) &&
+            (identical(other.uploadDate, uploadDate) ||
+                other.uploadDate == uploadDate) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.watchedDuration, watchedDuration) ||
@@ -412,7 +412,7 @@ class _$VideoImpl extends _Video {
       title,
       author,
       channelId,
-      publishDate,
+      uploadDate,
       description,
       watchedDuration,
       duration,
@@ -440,7 +440,7 @@ abstract class _Video extends VideoModel {
       final String? title,
       final String? author,
       final ChannelId? channelId,
-      final DateTime? publishDate,
+      final DateTime? uploadDate,
       final String? description,
       final int? watchedDuration,
       final int? duration,
@@ -469,8 +469,8 @@ abstract class _Video extends VideoModel {
   ChannelId? get channelId;
   @override
 
-  /// Video publish date.
-  DateTime? get publishDate;
+  /// Video uploadDate date.
+  DateTime? get uploadDate;
   @override
 
   /// Video description.
