@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
 
 import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
@@ -13,11 +15,21 @@ final AudioService _audioService = getIt<AudioService>();
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   PlayerBloc() : super(PlayerState.initial()) {
+    _audioService.player.playingStream.listen((isPlaying) {
+      log("playingStream: $isPlaying");
+      if (isPlaying) {
+        add(PlayerEvent.play());
+      } else {
+        add(PlayerEvent.pause());
+      }
+    });
+
     on<PlayerEvent>((event, emit) async {
       await event.map(
         playFromChannel: (event) => _playFromChannel(event, emit),
         playFromQueue: (event) => _playFromQueue(event, emit),
-        pausePlayToggle: (event) => _pausePlayToggle(event, emit),
+        pause: (event) => _pause(event, emit),
+        play: (event) => _play(event, emit),
         stop: (event) => _stop(event, emit),
         seek: (event) => _seek(event, emit),
       );
@@ -37,11 +49,15 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     emit(PlayerState.playing(_audioService));
   }
 
-  Future<void> _pausePlayToggle(_PausePlayToggle event, Emitter<PlayerState> emit) async {
+  Future<void> _pause(_Pause event, Emitter<PlayerState> emit) async {
     if (_audioService.isPlaying) {
       _audioService.player.pause();
       emit(PlayerState.paused(_audioService));
-    } else {
+    }
+  }
+
+  Future<void> _play(_Play event, Emitter<PlayerState> emit) async {
+    if (!_audioService.isPlaying) {
       _audioService.player.play();
       emit(PlayerState.playing(_audioService));
     }

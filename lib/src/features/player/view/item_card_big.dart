@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:intl/intl.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
+import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 import '../bloc/player_bloc.dart';
 
@@ -15,14 +16,14 @@ class ItemCardBig extends StatelessWidget {
     super.key,
     required this.video,
   });
-  final Video video;
+  final VideoModel video;
   final DateFormat dateFormat = DateFormat('d MMM yyyy');
 
   @override
   Widget build(BuildContext context) {
-    final String formattedDate = dateFormat.format(video.uploadDate!);
+    final String formattedDate = video.uploadDate != null ? dateFormat.format(video.uploadDate!) : '--';
     final textTheme = Theme.of(context).textTheme;
-    final String formattedDuration = formatDuration(video.duration ?? Duration.zero);
+    final String formattedDuration = formatDuration(video.totalDurationConverted);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -47,18 +48,18 @@ class ItemCardBig extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(25),
           child: AspectRatio(
-            aspectRatio: 16 / 10,
+            aspectRatio: 16 / 12,
             child: Stack(
               children: [
                 Positioned.fill(
                   child: CachedNetworkImage(
-                    imageUrl: video.thumbnails.maxResUrl.isNotEmpty
-                        ? video.thumbnails.maxResUrl
-                        : video.thumbnails.highResUrl.isNotEmpty
-                            ? video.thumbnails.highResUrl
-                            : video.thumbnails.mediumResUrl.isNotEmpty
-                                ? video.thumbnails.mediumResUrl
-                                : video.thumbnails.lowResUrl,
+                    imageUrl: video.thumbnails!.maxResUrl.isNotEmpty
+                        ? video.thumbnails!.maxResUrl
+                        : video.thumbnails!.highResUrl.isNotEmpty
+                            ? video.thumbnails!.highResUrl
+                            : video.thumbnails!.mediumResUrl.isNotEmpty
+                                ? video.thumbnails!.mediumResUrl
+                                : video.thumbnails!.lowResUrl,
                     fit: BoxFit.fitWidth,
                     alignment: Alignment.topCenter,
                     memCacheHeight: 683,
@@ -72,7 +73,7 @@ class ItemCardBig extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [Colors.black12, Colors.black],
-                        stops: [0.2, 0.9],
+                        stops: [0.2, 0.8],
                       ),
                     ),
                   ),
@@ -90,7 +91,7 @@ class ItemCardBig extends StatelessWidget {
                 Positioned(
                   bottom: 10,
                   left: 15,
-                  right: 15,
+                  right: 10,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -99,6 +100,20 @@ class ItemCardBig extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              formattedDate + ' // ' + formattedDuration,
+                              style: textTheme.labelMedium?.copyWith(
+                                fontWeight: FontWeight.normal,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors.black,
+                                    offset: Offset(1, 1),
+                                    blurRadius: 5,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 5),
                             Text(
                               video.title.toString(),
                               softWrap: true,
@@ -115,38 +130,11 @@ class ItemCardBig extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 5),
-                            Text(
-                              formattedDate + ' // ' + formattedDuration,
-                              style: textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.normal,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(1, 1),
-                                    blurRadius: 5,
-                                  ),
-                                ],
-                              ),
-                            ),
                           ],
                         ),
                       ),
-                      const SizedBox(width: 20),
-                      IconButton(
-                        onPressed: () {
-                          context.read<PlayerBloc>().add(PlayerEvent.playFromChannel(video: video));
-                        },
-                        style: ButtonStyle(
-                          fixedSize: WidgetStateProperty.all(Size(40, 40)),
-                          backgroundColor: WidgetStateProperty.all(Colors.black),
-                          shape: WidgetStateProperty.all(
-                            CircleBorder(
-                              side: BorderSide(color: Colors.grey, width: 0.5),
-                            ),
-                          ),
-                        ),
-                        icon: Assets.icons.play.svg(height: 40, width: 40),
-                      )
+                      const SizedBox(width: 2),
+                      iconButtonWidget(video)
                     ],
                   ),
                 ),
@@ -155,6 +143,56 @@ class ItemCardBig extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  BlocBuilder<PlayerBloc, PlayerState> iconButtonWidget(VideoModel video) {
+    return BlocBuilder<PlayerBloc, PlayerState>(
+      builder: (context, state) {
+        return IconButton(
+          onPressed: () {
+            bool isPlaying = state.maybeMap(
+              playing: (_) => true,
+              paused: (_) => false,
+              orElse: () => false,
+            );
+
+            VideoModel? currentVideo = state.maybeMap(
+              playing: (playingState) => playingState.audioService.currentlyPlaying,
+              paused: (pausedState) => pausedState.audioService.currentlyPlaying,
+              loading: (loadingState) => loadingState.video,
+              orElse: () => null,
+            );
+
+            if (isPlaying && currentVideo != null && currentVideo.id?.value == video.id?.value) {
+              context.read<PlayerBloc>().add(PlayerEvent.pause());
+            } else {
+              if (currentVideo?.id?.value != video.id?.value) {
+                context.read<PlayerBloc>().add(PlayerEvent.playFromChannel(video: video));
+              } else
+                context.read<PlayerBloc>().add(PlayerEvent.play());
+            }
+          },
+          style: ButtonStyle(
+            fixedSize: WidgetStateProperty.all(Size(40, 40)),
+            backgroundColor: WidgetStateProperty.all(Colors.black),
+            shape: WidgetStateProperty.all(
+              CircleBorder(
+                side: BorderSide(color: Colors.grey, width: 0.5),
+              ),
+            ),
+          ),
+          icon: state.maybeMap(
+            playing: (playState) => playState.audioService.currentlyPlaying?.id?.value == video.id?.value
+                ? Assets.icons.pause.svg(height: 40, width: 40)
+                : Assets.icons.play.svg(height: 40, width: 40),
+            loading: (loadingState) => loadingState.video?.id?.value == video.id?.value
+                ? loadingWidget(size: 10)
+                : Assets.icons.play.svg(height: 40, width: 40),
+            orElse: () => Assets.icons.play.svg(height: 40, width: 40),
+          ),
+        );
+      },
     );
   }
 

@@ -56,7 +56,7 @@ class _PlayerViewState extends State<PlayerView> {
                   ),
                   child: state.mapOrNull(
                     loading: (initialState) =>
-                        blurArt(imageUrl: initialState.video?.thumbnails.lowResUrl ?? ''),
+                        blurArt(imageUrl: initialState.video?.thumbnails?.lowResUrl ?? ''),
                     playing: (playingState) => blurArt(imageUrl: playingState.audioService.currentThumbnail),
                     paused: (pausedState) => blurArt(imageUrl: pausedState.audioService.currentThumbnail),
                     stopped: (stoppedState) => blurArt(imageUrl: stoppedState.audioService.currentThumbnail),
@@ -104,7 +104,7 @@ class _PlayerViewState extends State<PlayerView> {
               fit: BoxFit.cover,
             ),
           ),
-          padding: EdgeInsets.all(2),
+          padding: EdgeInsets.all(0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(150),
             child: CachedNetworkImage(
@@ -192,7 +192,9 @@ class _PlayerViewState extends State<PlayerView> {
                     : Assets.icons.play.svg(key: Key("play"), height: 50, width: 50),
               ),
               onPressed: () {
-                context.read<PlayerBloc>().add(PlayerEvent.pausePlayToggle());
+                audioService.isPlaying
+                    ? context.read<PlayerBloc>().add(PlayerEvent.pause())
+                    : context.read<PlayerBloc>().add(PlayerEvent.play());
               },
             ),
             IconButton(

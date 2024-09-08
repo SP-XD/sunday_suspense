@@ -99,7 +99,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
               ),
               loading: (state) => thumbnailAndTitle(
                 textTheme,
-                thumbnailUrl: state.video?.thumbnails.mediumResUrl ?? "",
+                thumbnailUrl: state.video?.thumbnails?.mediumResUrl ?? "",
                 title: state.video?.title ?? "",
               ),
               playing: (playingState) => thumbnailAndTitle(
@@ -194,7 +194,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
       IconButton(
         icon: isPlaying ? Assets.icons.pause.svg() : Assets.icons.play.svg(),
         onPressed: () {
-          context.read<PlayerBloc>().add(PlayerEvent.pausePlayToggle());
+          if (isPlaying) {
+            context.read<PlayerBloc>().add(PlayerEvent.pause());
+          } else {
+            context.read<PlayerBloc>().add(PlayerEvent.play());
+          }
         },
       ),
       IconButton(
