@@ -22,19 +22,25 @@ const CategoryModelSchema = CollectionSchema(
       name: r'category_id',
       type: IsarType.string,
     ),
-    r'title': PropertySchema(
+    r'sourceType': PropertySchema(
       id: 1,
+      name: r'sourceType',
+      type: IsarType.string,
+      enumMap: _CategoryModelsourceTypeEnumValueMap,
+    ),
+    r'title': PropertySchema(
+      id: 2,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'type',
       type: IsarType.string,
       enumMap: _CategoryModeltypeEnumValueMap,
     ),
     r'videos': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'videos',
       type: IsarType.objectList,
       target: r'VideoModel',
@@ -67,6 +73,7 @@ int _categoryModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.category_id.length * 3;
+  bytesCount += 3 + object.sourceType.name.length * 3;
   bytesCount += 3 + object.title.length * 3;
   bytesCount += 3 + object.type.name.length * 3;
   {
@@ -93,10 +100,11 @@ void _categoryModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.category_id);
-  writer.writeString(offsets[1], object.title);
-  writer.writeString(offsets[2], object.type.name);
+  writer.writeString(offsets[1], object.sourceType.name);
+  writer.writeString(offsets[2], object.title);
+  writer.writeString(offsets[3], object.type.name);
   writer.writeObjectList<VideoModel>(
-    offsets[3],
+    offsets[4],
     allOffsets,
     VideoModelSchema.serialize,
     object.videos,
@@ -111,11 +119,14 @@ CategoryModel _categoryModelDeserialize(
 ) {
   final object = CategoryModel(
     category_id: reader.readString(offsets[0]),
-    title: reader.readString(offsets[1]),
-    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[2])] ??
+    sourceType: _CategoryModelsourceTypeValueEnumMap[
+            reader.readStringOrNull(offsets[1])] ??
+        CategorySourceType.builtInCategory,
+    title: reader.readString(offsets[2]),
+    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[3])] ??
         CategoryType.channel,
     videos: reader.readObjectList<VideoModel>(
-      offsets[3],
+      offsets[4],
       VideoModelSchema.deserialize,
       allOffsets,
       VideoModel(),
@@ -134,11 +145,15 @@ P _categoryModelDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readString(offset)) as P;
+      return (_CategoryModelsourceTypeValueEnumMap[
+              reader.readStringOrNull(offset)] ??
+          CategorySourceType.builtInCategory) as P;
     case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
       return (_CategoryModeltypeValueEnumMap[reader.readStringOrNull(offset)] ??
           CategoryType.channel) as P;
-    case 3:
+    case 4:
       return (reader.readObjectList<VideoModel>(
         offset,
         VideoModelSchema.deserialize,
@@ -150,6 +165,14 @@ P _categoryModelDeserializeProp<P>(
   }
 }
 
+const _CategoryModelsourceTypeEnumValueMap = {
+  r'builtInCategory': r'builtInCategory',
+  r'userCategory': r'userCategory',
+};
+const _CategoryModelsourceTypeValueEnumMap = {
+  r'builtInCategory': CategorySourceType.builtInCategory,
+  r'userCategory': CategorySourceType.userCategory,
+};
 const _CategoryModeltypeEnumValueMap = {
   r'channel': r'channel',
   r'playlist': r'playlist',
@@ -441,6 +464,142 @@ extension CategoryModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeEqualTo(
+    CategorySourceType value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sourceType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeGreaterThan(
+    CategorySourceType value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'sourceType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeLessThan(
+    CategorySourceType value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'sourceType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeBetween(
+    CategorySourceType lower,
+    CategorySourceType upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'sourceType',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'sourceType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'sourceType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'sourceType',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'sourceType',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'sourceType',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      sourceTypeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'sourceType',
+        value: '',
       ));
     });
   }
@@ -852,6 +1011,19 @@ extension CategoryModelQuerySortBy
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortBySourceType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sourceType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy>
+      sortBySourceTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sourceType', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -904,6 +1076,19 @@ extension CategoryModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenBySourceType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sourceType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy>
+      thenBySourceTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'sourceType', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
@@ -938,6 +1123,13 @@ extension CategoryModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctBySourceType(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'sourceType', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -964,6 +1156,13 @@ extension CategoryModelQueryProperty
   QueryBuilder<CategoryModel, String, QQueryOperations> category_idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'category_id');
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategorySourceType, QQueryOperations>
+      sourceTypeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'sourceType');
     });
   }
 
@@ -999,6 +1198,7 @@ _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
       videos: (json['videos'] as List<dynamic>?)
           ?.map((e) => VideoModel.fromJson(e as Map<String, dynamic>))
           .toList(),
+      sourceType: $enumDecode(_$CategorySourceTypeEnumMap, json['sourceType']),
     );
 
 Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
@@ -1007,10 +1207,16 @@ Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
       'type': _$CategoryTypeEnumMap[instance.type]!,
       'title': instance.title,
       'videos': instance.videos,
+      'sourceType': _$CategorySourceTypeEnumMap[instance.sourceType]!,
     };
 
 const _$CategoryTypeEnumMap = {
   CategoryType.channel: 'channel',
   CategoryType.playlist: 'playlist',
   CategoryType.history: 'history',
+};
+
+const _$CategorySourceTypeEnumMap = {
+  CategorySourceType.builtInCategory: 'builtInCategory',
+  CategorySourceType.userCategory: 'userCategory',
 };

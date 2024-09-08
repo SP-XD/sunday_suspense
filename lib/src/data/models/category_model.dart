@@ -21,6 +21,8 @@ class CategoryModel with _$CategoryModel {
     @Enumerated(EnumType.name) required CategoryType type,
     required String title,
     List<VideoModel>? videos,
+    // ignore: invalid_annotation_target
+    @Enumerated(EnumType.name) required CategorySourceType sourceType,
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);
@@ -33,4 +35,9 @@ enum CategoryType {
   channel,
   playlist,
   history,
+}
+
+enum CategorySourceType {
+  builtInCategory,
+  userCategory,
 }

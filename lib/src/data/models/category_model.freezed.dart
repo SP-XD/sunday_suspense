@@ -25,7 +25,10 @@ mixin _$CategoryModel {
   @Enumerated(EnumType.name)
   CategoryType get type => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  List<VideoModel>? get videos => throw _privateConstructorUsedError;
+  List<VideoModel>? get videos =>
+      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @Enumerated(EnumType.name)
+  CategorySourceType get sourceType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +46,8 @@ abstract class $CategoryModelCopyWith<$Res> {
       {String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
-      List<VideoModel>? videos});
+      List<VideoModel>? videos,
+      @Enumerated(EnumType.name) CategorySourceType sourceType});
 }
 
 /// @nodoc
@@ -63,6 +67,7 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
     Object? type = null,
     Object? title = null,
     Object? videos = freezed,
+    Object? sourceType = null,
   }) {
     return _then(_value.copyWith(
       category_id: null == category_id
@@ -81,6 +86,10 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
           ? _value.videos
           : videos // ignore: cast_nullable_to_non_nullable
               as List<VideoModel>?,
+      sourceType: null == sourceType
+          ? _value.sourceType
+          : sourceType // ignore: cast_nullable_to_non_nullable
+              as CategorySourceType,
     ) as $Val);
   }
 }
@@ -97,7 +106,8 @@ abstract class _$$CategoryModelImplCopyWith<$Res>
       {String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
-      List<VideoModel>? videos});
+      List<VideoModel>? videos,
+      @Enumerated(EnumType.name) CategorySourceType sourceType});
 }
 
 /// @nodoc
@@ -115,6 +125,7 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
     Object? type = null,
     Object? title = null,
     Object? videos = freezed,
+    Object? sourceType = null,
   }) {
     return _then(_$CategoryModelImpl(
       category_id: null == category_id
@@ -133,6 +144,10 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
           ? _value._videos
           : videos // ignore: cast_nullable_to_non_nullable
               as List<VideoModel>?,
+      sourceType: null == sourceType
+          ? _value.sourceType
+          : sourceType // ignore: cast_nullable_to_non_nullable
+              as CategorySourceType,
     ));
   }
 }
@@ -144,7 +159,8 @@ class _$CategoryModelImpl extends _CategoryModel {
       {required this.category_id,
       @Enumerated(EnumType.name) required this.type,
       required this.title,
-      final List<VideoModel>? videos})
+      final List<VideoModel>? videos,
+      @Enumerated(EnumType.name) required this.sourceType})
       : _videos = videos,
         super._();
 
@@ -169,9 +185,14 @@ class _$CategoryModelImpl extends _CategoryModel {
     return EqualUnmodifiableListView(value);
   }
 
+// ignore: invalid_annotation_target
+  @override
+  @Enumerated(EnumType.name)
+  final CategorySourceType sourceType;
+
   @override
   String toString() {
-    return 'CategoryModel(category_id: $category_id, type: $type, title: $title, videos: $videos)';
+    return 'CategoryModel(category_id: $category_id, type: $type, title: $title, videos: $videos, sourceType: $sourceType)';
   }
 
   @override
@@ -183,13 +204,15 @@ class _$CategoryModelImpl extends _CategoryModel {
                 other.category_id == category_id) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.title, title) || other.title == title) &&
-            const DeepCollectionEquality().equals(other._videos, _videos));
+            const DeepCollectionEquality().equals(other._videos, _videos) &&
+            (identical(other.sourceType, sourceType) ||
+                other.sourceType == sourceType));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, category_id, type, title,
-      const DeepCollectionEquality().hash(_videos));
+      const DeepCollectionEquality().hash(_videos), sourceType);
 
   @JsonKey(ignore: true)
   @override
@@ -210,7 +233,9 @@ abstract class _CategoryModel extends CategoryModel {
       {required final String category_id,
       @Enumerated(EnumType.name) required final CategoryType type,
       required final String title,
-      final List<VideoModel>? videos}) = _$CategoryModelImpl;
+      final List<VideoModel>? videos,
+      @Enumerated(EnumType.name)
+      required final CategorySourceType sourceType}) = _$CategoryModelImpl;
   _CategoryModel._() : super._();
 
   factory _CategoryModel.fromJson(Map<String, dynamic> json) =
@@ -225,6 +250,9 @@ abstract class _CategoryModel extends CategoryModel {
   String get title;
   @override
   List<VideoModel>? get videos;
+  @override // ignore: invalid_annotation_target
+  @Enumerated(EnumType.name)
+  CategorySourceType get sourceType;
   @override
   @JsonKey(ignore: true)
   _$$CategoryModelImplCopyWith<_$CategoryModelImpl> get copyWith =>
