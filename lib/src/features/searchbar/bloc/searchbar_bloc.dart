@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'searchbar_event.dart';
 part 'searchbar_state.dart';
@@ -23,7 +23,7 @@ class SearchbarBloc extends Bloc<SearchbarEvent, SearchbarState> {
     // search for videos
     // emit(SearchbarState.loaded(searchResults: []));
     try {
-      final List<Video> searchResults =
+      final List<VideoModel> searchResults =
           await _videosRepository.fetchSearchResults(event.query + " audio stories");
       emit(SearchbarState.loaded(searchResults: searchResults));
     } catch (e) {

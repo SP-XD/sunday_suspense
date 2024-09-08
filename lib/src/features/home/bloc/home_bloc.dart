@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 part 'home_event.dart';
 part 'home_state.dart';

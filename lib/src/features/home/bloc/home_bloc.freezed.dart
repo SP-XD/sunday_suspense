@@ -65,9 +65,6 @@ class _$HomeEventCopyWithImpl<$Res, $Val extends HomeEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of HomeEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -85,9 +82,6 @@ class __$$HomeScreenLoadedEventImplCopyWithImpl<$Res>
   __$$HomeScreenLoadedEventImplCopyWithImpl(_$HomeScreenLoadedEventImpl _value,
       $Res Function(_$HomeScreenLoadedEventImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of HomeEvent
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -177,7 +171,7 @@ mixin _$HomeState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video>? videos) videosLoaded,
+    required TResult Function(List<VideoModel>? videos) videosLoaded,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
@@ -185,7 +179,7 @@ mixin _$HomeState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video>? videos)? videosLoaded,
+    TResult? Function(List<VideoModel>? videos)? videosLoaded,
     TResult? Function()? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -193,7 +187,7 @@ mixin _$HomeState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video>? videos)? videosLoaded,
+    TResult Function(List<VideoModel>? videos)? videosLoaded,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -240,9 +234,6 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -259,9 +250,6 @@ class __$$HomeInitialImplCopyWithImpl<$Res>
   __$$HomeInitialImplCopyWithImpl(
       _$HomeInitialImpl _value, $Res Function(_$HomeInitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -288,7 +276,7 @@ class _$HomeInitialImpl implements _HomeInitial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video>? videos) videosLoaded,
+    required TResult Function(List<VideoModel>? videos) videosLoaded,
     required TResult Function() error,
   }) {
     return initial();
@@ -299,7 +287,7 @@ class _$HomeInitialImpl implements _HomeInitial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video>? videos)? videosLoaded,
+    TResult? Function(List<VideoModel>? videos)? videosLoaded,
     TResult? Function()? error,
   }) {
     return initial?.call();
@@ -310,7 +298,7 @@ class _$HomeInitialImpl implements _HomeInitial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video>? videos)? videosLoaded,
+    TResult Function(List<VideoModel>? videos)? videosLoaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -376,9 +364,6 @@ class __$$HomeVideosLoadingImplCopyWithImpl<$Res>
   __$$HomeVideosLoadingImplCopyWithImpl(_$HomeVideosLoadingImpl _value,
       $Res Function(_$HomeVideosLoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -405,7 +390,7 @@ class _$HomeVideosLoadingImpl implements _HomeVideosLoading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video>? videos) videosLoaded,
+    required TResult Function(List<VideoModel>? videos) videosLoaded,
     required TResult Function() error,
   }) {
     return loading();
@@ -416,7 +401,7 @@ class _$HomeVideosLoadingImpl implements _HomeVideosLoading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video>? videos)? videosLoaded,
+    TResult? Function(List<VideoModel>? videos)? videosLoaded,
     TResult? Function()? error,
   }) {
     return loading?.call();
@@ -427,7 +412,7 @@ class _$HomeVideosLoadingImpl implements _HomeVideosLoading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video>? videos)? videosLoaded,
+    TResult Function(List<VideoModel>? videos)? videosLoaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -485,7 +470,7 @@ abstract class _$$HomeVideosLoadedImplCopyWith<$Res> {
           $Res Function(_$HomeVideosLoadedImpl) then) =
       __$$HomeVideosLoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Video>? videos});
+  $Res call({List<VideoModel>? videos});
 }
 
 /// @nodoc
@@ -496,8 +481,6 @@ class __$$HomeVideosLoadedImplCopyWithImpl<$Res>
       $Res Function(_$HomeVideosLoadedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -507,7 +490,7 @@ class __$$HomeVideosLoadedImplCopyWithImpl<$Res>
       freezed == videos
           ? _value._videos
           : videos // ignore: cast_nullable_to_non_nullable
-              as List<Video>?,
+              as List<VideoModel>?,
     ));
   }
 }
@@ -515,11 +498,12 @@ class __$$HomeVideosLoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeVideosLoadedImpl implements _HomeVideosLoaded {
-  const _$HomeVideosLoadedImpl(final List<Video>? videos) : _videos = videos;
+  const _$HomeVideosLoadedImpl(final List<VideoModel>? videos)
+      : _videos = videos;
 
-  final List<Video>? _videos;
+  final List<VideoModel>? _videos;
   @override
-  List<Video>? get videos {
+  List<VideoModel>? get videos {
     final value = _videos;
     if (value == null) return null;
     if (_videos is EqualUnmodifiableListView) return _videos;
@@ -544,9 +528,7 @@ class _$HomeVideosLoadedImpl implements _HomeVideosLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_videos));
 
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeVideosLoadedImplCopyWith<_$HomeVideosLoadedImpl> get copyWith =>
@@ -558,7 +540,7 @@ class _$HomeVideosLoadedImpl implements _HomeVideosLoaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video>? videos) videosLoaded,
+    required TResult Function(List<VideoModel>? videos) videosLoaded,
     required TResult Function() error,
   }) {
     return videosLoaded(videos);
@@ -569,7 +551,7 @@ class _$HomeVideosLoadedImpl implements _HomeVideosLoaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video>? videos)? videosLoaded,
+    TResult? Function(List<VideoModel>? videos)? videosLoaded,
     TResult? Function()? error,
   }) {
     return videosLoaded?.call(videos);
@@ -580,7 +562,7 @@ class _$HomeVideosLoadedImpl implements _HomeVideosLoaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video>? videos)? videosLoaded,
+    TResult Function(List<VideoModel>? videos)? videosLoaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -629,14 +611,11 @@ class _$HomeVideosLoadedImpl implements _HomeVideosLoaded {
 }
 
 abstract class _HomeVideosLoaded implements HomeState {
-  const factory _HomeVideosLoaded(final List<Video>? videos) =
+  const factory _HomeVideosLoaded(final List<VideoModel>? videos) =
       _$HomeVideosLoadedImpl;
 
-  List<Video>? get videos;
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<VideoModel>? get videos;
+  @JsonKey(ignore: true)
   _$$HomeVideosLoadedImplCopyWith<_$HomeVideosLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -655,9 +634,6 @@ class __$$HomeErrorImplCopyWithImpl<$Res>
   __$$HomeErrorImplCopyWithImpl(
       _$HomeErrorImpl _value, $Res Function(_$HomeErrorImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of HomeState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -684,7 +660,7 @@ class _$HomeErrorImpl implements _HomeError {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video>? videos) videosLoaded,
+    required TResult Function(List<VideoModel>? videos) videosLoaded,
     required TResult Function() error,
   }) {
     return error();
@@ -695,7 +671,7 @@ class _$HomeErrorImpl implements _HomeError {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video>? videos)? videosLoaded,
+    TResult? Function(List<VideoModel>? videos)? videosLoaded,
     TResult? Function()? error,
   }) {
     return error?.call();
@@ -706,7 +682,7 @@ class _$HomeErrorImpl implements _HomeError {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video>? videos)? videosLoaded,
+    TResult Function(List<VideoModel>? videos)? videosLoaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {

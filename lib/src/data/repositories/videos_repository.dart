@@ -1,5 +1,6 @@
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
+import 'package:midnight_suspense/src/utils/helper_functions.dart';
 
 class VideosRepository {
   VideosRepository() {
@@ -8,20 +9,21 @@ class VideosRepository {
 
   late final YtExplodeProvider ytProvider;
 
-  Future<List<Video>> getHomeVideos(String channelHandle) async {
+  Future<List<VideoModel>> getHomeVideos(String channelHandle) async {
     final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle(channelHandle);
-    // final response = await ytProvider!.yt!.channels.getUploadsFromPage(channelId.id);
+    final response = await ytProvider.ytExplodeInstance!.channels.getUploadsFromPage(channelId.id);
     // response.nextPage();
-    return [];
+    return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
   }
 
-  Future<List<Video>> getPlaylistVideos(String playlistId) async {
+  Future<List<VideoModel>> getPlaylistVideos(String playlistId) async {
     final response = await ytProvider.ytExplodeInstance!.playlists.getVideos(playlistId);
-    return response.toList();
+    return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
   }
 
-  Future<List<Video>> fetchSearchResults(String query) async {
-    final List<Video> searchResults = await ytProvider.ytExplodeInstance!.search.search(query);
-    return searchResults;
+  ///! at the moment i don't want more than 20 search results but in future this functions should return VideoSearchList object and handle nextPage() in the Feature layer and convert the search results to app models
+  Future<List<VideoModel>> fetchSearchResults(String query) async {
+    final searchResults = await ytProvider.ytExplodeInstance!.search.search(query);
+    return searchResults.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
   }
 }

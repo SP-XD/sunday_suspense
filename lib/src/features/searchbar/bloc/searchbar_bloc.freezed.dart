@@ -50,9 +50,7 @@ mixin _$SearchbarEvent {
   }) =>
       throw _privateConstructorUsedError;
 
-  /// Create a copy of SearchbarEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   $SearchbarEventCopyWith<SearchbarEvent> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -76,8 +74,6 @@ class _$SearchbarEventCopyWithImpl<$Res, $Val extends SearchbarEvent>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of SearchbarEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -111,8 +107,6 @@ class __$$SearchImplCopyWithImpl<$Res>
       _$SearchImpl _value, $Res Function(_$SearchImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SearchbarEvent
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -151,9 +145,7 @@ class _$SearchImpl implements _Search {
   @override
   int get hashCode => Object.hash(runtimeType, query);
 
-  /// Create a copy of SearchbarEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$SearchImplCopyWith<_$SearchImpl> get copyWith =>
@@ -221,11 +213,8 @@ abstract class _Search implements SearchbarEvent {
 
   @override
   String get query;
-
-  /// Create a copy of SearchbarEvent
-  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$SearchImplCopyWith<_$SearchImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -236,7 +225,7 @@ mixin _$SearchbarState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video> searchResults) loaded,
+    required TResult Function(List<VideoModel> searchResults) loaded,
     required TResult Function(String message) error,
   }) =>
       throw _privateConstructorUsedError;
@@ -244,7 +233,7 @@ mixin _$SearchbarState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video> searchResults)? loaded,
+    TResult? Function(List<VideoModel> searchResults)? loaded,
     TResult? Function(String message)? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -252,7 +241,7 @@ mixin _$SearchbarState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video> searchResults)? loaded,
+    TResult Function(List<VideoModel> searchResults)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) =>
@@ -300,9 +289,6 @@ class _$SearchbarStateCopyWithImpl<$Res, $Val extends SearchbarState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
-
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -319,9 +305,6 @@ class __$$InitialImplCopyWithImpl<$Res>
   __$$InitialImplCopyWithImpl(
       _$InitialImpl _value, $Res Function(_$InitialImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -348,7 +331,7 @@ class _$InitialImpl implements _Initial {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video> searchResults) loaded,
+    required TResult Function(List<VideoModel> searchResults) loaded,
     required TResult Function(String message) error,
   }) {
     return initial();
@@ -359,7 +342,7 @@ class _$InitialImpl implements _Initial {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video> searchResults)? loaded,
+    TResult? Function(List<VideoModel> searchResults)? loaded,
     TResult? Function(String message)? error,
   }) {
     return initial?.call();
@@ -370,7 +353,7 @@ class _$InitialImpl implements _Initial {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video> searchResults)? loaded,
+    TResult Function(List<VideoModel> searchResults)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -436,9 +419,6 @@ class __$$LoadingImplCopyWithImpl<$Res>
   __$$LoadingImplCopyWithImpl(
       _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
       : super(_value, _then);
-
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -465,7 +445,7 @@ class _$LoadingImpl implements _Loading {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video> searchResults) loaded,
+    required TResult Function(List<VideoModel> searchResults) loaded,
     required TResult Function(String message) error,
   }) {
     return loading();
@@ -476,7 +456,7 @@ class _$LoadingImpl implements _Loading {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video> searchResults)? loaded,
+    TResult? Function(List<VideoModel> searchResults)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loading?.call();
@@ -487,7 +467,7 @@ class _$LoadingImpl implements _Loading {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video> searchResults)? loaded,
+    TResult Function(List<VideoModel> searchResults)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -545,7 +525,7 @@ abstract class _$$LoadedImplCopyWith<$Res> {
           _$LoadedImpl value, $Res Function(_$LoadedImpl) then) =
       __$$LoadedImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({List<Video> searchResults});
+  $Res call({List<VideoModel> searchResults});
 }
 
 /// @nodoc
@@ -556,8 +536,6 @@ class __$$LoadedImplCopyWithImpl<$Res>
       _$LoadedImpl _value, $Res Function(_$LoadedImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -567,7 +545,7 @@ class __$$LoadedImplCopyWithImpl<$Res>
       searchResults: null == searchResults
           ? _value._searchResults
           : searchResults // ignore: cast_nullable_to_non_nullable
-              as List<Video>,
+              as List<VideoModel>,
     ));
   }
 }
@@ -575,12 +553,12 @@ class __$$LoadedImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$LoadedImpl implements _Loaded {
-  const _$LoadedImpl({required final List<Video> searchResults})
+  const _$LoadedImpl({required final List<VideoModel> searchResults})
       : _searchResults = searchResults;
 
-  final List<Video> _searchResults;
+  final List<VideoModel> _searchResults;
   @override
-  List<Video> get searchResults {
+  List<VideoModel> get searchResults {
     if (_searchResults is EqualUnmodifiableListView) return _searchResults;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_searchResults);
@@ -604,9 +582,7 @@ class _$LoadedImpl implements _Loaded {
   int get hashCode => Object.hash(
       runtimeType, const DeepCollectionEquality().hash(_searchResults));
 
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
@@ -617,7 +593,7 @@ class _$LoadedImpl implements _Loaded {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video> searchResults) loaded,
+    required TResult Function(List<VideoModel> searchResults) loaded,
     required TResult Function(String message) error,
   }) {
     return loaded(searchResults);
@@ -628,7 +604,7 @@ class _$LoadedImpl implements _Loaded {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video> searchResults)? loaded,
+    TResult? Function(List<VideoModel> searchResults)? loaded,
     TResult? Function(String message)? error,
   }) {
     return loaded?.call(searchResults);
@@ -639,7 +615,7 @@ class _$LoadedImpl implements _Loaded {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video> searchResults)? loaded,
+    TResult Function(List<VideoModel> searchResults)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -688,14 +664,11 @@ class _$LoadedImpl implements _Loaded {
 }
 
 abstract class _Loaded implements SearchbarState {
-  const factory _Loaded({required final List<Video> searchResults}) =
+  const factory _Loaded({required final List<VideoModel> searchResults}) =
       _$LoadedImpl;
 
-  List<Video> get searchResults;
-
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  List<VideoModel> get searchResults;
+  @JsonKey(ignore: true)
   _$$LoadedImplCopyWith<_$LoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -717,8 +690,6 @@ class __$$ErrorImplCopyWithImpl<$Res>
       _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
       : super(_value, _then);
 
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -757,9 +728,7 @@ class _$ErrorImpl implements _Error {
   @override
   int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
@@ -770,7 +739,7 @@ class _$ErrorImpl implements _Error {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function(List<Video> searchResults) loaded,
+    required TResult Function(List<VideoModel> searchResults) loaded,
     required TResult Function(String message) error,
   }) {
     return error(message);
@@ -781,7 +750,7 @@ class _$ErrorImpl implements _Error {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? initial,
     TResult? Function()? loading,
-    TResult? Function(List<Video> searchResults)? loaded,
+    TResult? Function(List<VideoModel> searchResults)? loaded,
     TResult? Function(String message)? error,
   }) {
     return error?.call(message);
@@ -792,7 +761,7 @@ class _$ErrorImpl implements _Error {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function(List<Video> searchResults)? loaded,
+    TResult Function(List<VideoModel> searchResults)? loaded,
     TResult Function(String message)? error,
     required TResult orElse(),
   }) {
@@ -844,10 +813,7 @@ abstract class _Error implements SearchbarState {
   const factory _Error({required final String message}) = _$ErrorImpl;
 
   String get message;
-
-  /// Create a copy of SearchbarState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
+  @JsonKey(ignore: true)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

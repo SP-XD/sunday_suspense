@@ -161,9 +161,9 @@ class _SearchBarState extends State<SearchBar> {
                           physics: BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return ListTile(
-                              leading: Image.network(list.searchResults[index].thumbnails.lowResUrl),
+                              leading: Image.network(list.searchResults[index].thumbnails?.lowResUrl ?? ""),
                               title: Text(
-                                list.searchResults[index].title,
+                                list.searchResults[index].title ?? "",
                                 style: TextStyle(fontSize: 12, color: Colors.white),
                               ),
                             );

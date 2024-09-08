@@ -7,6 +7,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+import 'package:midnight_suspense/src/features/settings/settings.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/features/blank/blank.dart';
 import 'package:midnight_suspense/src/features/home/home.dart';
@@ -30,7 +31,7 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
   List<Widget> pages = [
     HomeView(),
     BlankView(),
-    BlankView(),
+    SettingsView(),
   ];
 
   @override
@@ -73,15 +74,16 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
             end: Alignment.bottomCenter,
             colors: [
               Colors.transparent,
-              Color.fromARGB(235, 60, 4, 0),
+              //   Colors.transparent,
+              Color.fromARGB(190, 60, 4, 0),
             ],
-            stops: [0.4, 0.9],
+            stops: [0.1, 0.9],
           ),
         ),
         child: ScrollToHide(
           scrollController: context.watch<NavScrollControllerCubit>().state,
           hideDirection: Axis.vertical,
-          height: 85 + _miniPlayerHeight,
+          height: 80 + _miniPlayerHeight,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15.0),
             child: DecoratedBox(
