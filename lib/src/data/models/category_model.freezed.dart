@@ -20,6 +20,7 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$CategoryModel {
+  int get id => throw _privateConstructorUsedError;
   String get category_id =>
       throw _privateConstructorUsedError; // ignore: invalid_annotation_target
   @Enumerated(EnumType.name)
@@ -43,7 +44,8 @@ abstract class $CategoryModelCopyWith<$Res> {
       _$CategoryModelCopyWithImpl<$Res, CategoryModel>;
   @useResult
   $Res call(
-      {String category_id,
+      {int id,
+      String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
       List<VideoModel>? videos,
@@ -63,6 +65,7 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? category_id = null,
     Object? type = null,
     Object? title = null,
@@ -70,6 +73,10 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
     Object? sourceType = null,
   }) {
     return _then(_value.copyWith(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       category_id: null == category_id
           ? _value.category_id
           : category_id // ignore: cast_nullable_to_non_nullable
@@ -103,7 +110,8 @@ abstract class _$$CategoryModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String category_id,
+      {int id,
+      String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
       List<VideoModel>? videos,
@@ -121,6 +129,7 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? id = null,
     Object? category_id = null,
     Object? type = null,
     Object? title = null,
@@ -128,6 +137,10 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
     Object? sourceType = null,
   }) {
     return _then(_$CategoryModelImpl(
+      id: null == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
       category_id: null == category_id
           ? _value.category_id
           : category_id // ignore: cast_nullable_to_non_nullable
@@ -156,7 +169,8 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$CategoryModelImpl extends _CategoryModel {
   _$CategoryModelImpl(
-      {required this.category_id,
+      {this.id = Isar.autoIncrement,
+      required this.category_id,
       @Enumerated(EnumType.name) required this.type,
       required this.title,
       final List<VideoModel>? videos,
@@ -167,6 +181,9 @@ class _$CategoryModelImpl extends _CategoryModel {
   factory _$CategoryModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$CategoryModelImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final int id;
   @override
   final String category_id;
 // ignore: invalid_annotation_target
@@ -192,7 +209,7 @@ class _$CategoryModelImpl extends _CategoryModel {
 
   @override
   String toString() {
-    return 'CategoryModel(category_id: $category_id, type: $type, title: $title, videos: $videos, sourceType: $sourceType)';
+    return 'CategoryModel(id: $id, category_id: $category_id, type: $type, title: $title, videos: $videos, sourceType: $sourceType)';
   }
 
   @override
@@ -200,6 +217,7 @@ class _$CategoryModelImpl extends _CategoryModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$CategoryModelImpl &&
+            (identical(other.id, id) || other.id == id) &&
             (identical(other.category_id, category_id) ||
                 other.category_id == category_id) &&
             (identical(other.type, type) || other.type == type) &&
@@ -211,7 +229,7 @@ class _$CategoryModelImpl extends _CategoryModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, category_id, type, title,
+  int get hashCode => Object.hash(runtimeType, id, category_id, type, title,
       const DeepCollectionEquality().hash(_videos), sourceType);
 
   @JsonKey(ignore: true)
@@ -230,7 +248,8 @@ class _$CategoryModelImpl extends _CategoryModel {
 
 abstract class _CategoryModel extends CategoryModel {
   factory _CategoryModel(
-      {required final String category_id,
+      {final int id,
+      required final String category_id,
       @Enumerated(EnumType.name) required final CategoryType type,
       required final String title,
       final List<VideoModel>? videos,
@@ -241,6 +260,8 @@ abstract class _CategoryModel extends CategoryModel {
   factory _CategoryModel.fromJson(Map<String, dynamic> json) =
       _$CategoryModelImpl.fromJson;
 
+  @override
+  int get id;
   @override
   String get category_id;
   @override // ignore: invalid_annotation_target

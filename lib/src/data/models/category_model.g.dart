@@ -119,6 +119,7 @@ CategoryModel _categoryModelDeserialize(
 ) {
   final object = CategoryModel(
     category_id: reader.readString(offsets[0]),
+    id: id,
     sourceType: _CategoryModelsourceTypeValueEnumMap[
             reader.readStringOrNull(offsets[1])] ??
         CategorySourceType.builtInCategory,
@@ -1192,6 +1193,7 @@ extension CategoryModelQueryProperty
 
 _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
     _$CategoryModelImpl(
+      id: (json['id'] as num?)?.toInt() ?? Isar.autoIncrement,
       category_id: json['category_id'] as String,
       type: $enumDecode(_$CategoryTypeEnumMap, json['type']),
       title: json['title'] as String,
@@ -1203,6 +1205,7 @@ _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
     <String, dynamic>{
+      'id': instance.id,
       'category_id': instance.category_id,
       'type': _$CategoryTypeEnumMap[instance.type]!,
       'title': instance.title,

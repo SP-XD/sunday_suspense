@@ -12,10 +12,8 @@ part 'category_model.g.dart';
 @Collection(ignore: {'copyWith'})
 @Freezed(fromJson: true, toJson: true)
 class CategoryModel with _$CategoryModel {
-  /// isar id
-  Id get id => Isar.autoIncrement;
-
   factory CategoryModel({
+    @Default(Isar.autoIncrement) int id,
     required String category_id,
     // ignore: invalid_annotation_target
     @Enumerated(EnumType.name) required CategoryType type,
@@ -29,6 +27,9 @@ class CategoryModel with _$CategoryModel {
 
   // ignore: unused_element
   CategoryModel._();
+
+  @override
+  Id get id => id;
 }
 
 enum CategoryType {
