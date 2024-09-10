@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:audio_session/audio_session.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
@@ -15,14 +16,7 @@ final AudioService _audioService = getIt<AudioService>();
 
 class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   PlayerBloc() : super(PlayerState.initial()) {
-    _audioService.player.playingStream.listen((isPlaying) {
-      log("playingStream: $isPlaying");
-      if (isPlaying) {
-        add(PlayerEvent.play());
-      } else {
-        add(PlayerEvent.pause());
-      }
-    });
+    setAudioSessionAndListen();
 
     on<PlayerEvent>((event, emit) async {
       await event.map(
@@ -33,6 +27,35 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
         stop: (event) => _stop(event, emit),
         seek: (event) => _seek(event, emit),
       );
+    });
+  }
+
+  late final AudioSession _audioSession;
+
+  Future<void> setAudioSessionAndListen() async {
+    _audioSession = await AudioSession.instance;
+
+    _audioSession.interruptionEventStream.listen((event) {
+      log("audioSession interruption event @player bloc => event.begin: ${event.begin}; event.type: ${event.type}");
+      if (event.begin) {
+        switch (event.type) {
+          case AudioInterruptionType.pause:
+            add(const PlayerEvent.pause());
+          case AudioInterruptionType.duck:
+            add(const PlayerEvent.pause());
+          case AudioInterruptionType.unknown:
+            add(const PlayerEvent.pause());
+        }
+      } else {
+        switch (event.type) {
+          case AudioInterruptionType.pause:
+            add(const PlayerEvent.play());
+          case AudioInterruptionType.duck:
+            add(const PlayerEvent.play());
+          case AudioInterruptionType.unknown:
+            add(const PlayerEvent.play());
+        }
+      }
     });
   }
 
