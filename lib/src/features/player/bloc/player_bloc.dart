@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:audio_service/audio_service.dart' as aps;
 import 'package:audio_session/audio_session.dart';
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -30,10 +31,10 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
     });
   }
 
-  late final AudioSession _audioSession;
+  late AudioSession _audioSession;
 
   Future<void> setAudioSessionAndListen() async {
-    _audioSession = await AudioSession.instance;
+    _audioSession = _audioService.audioSession;
 
     _audioSession.interruptionEventStream.listen((event) {
       log("audioSession interruption event @player bloc => event.begin: ${event.begin}; event.type: ${event.type}");
@@ -53,11 +54,23 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
           case AudioInterruptionType.duck:
             add(const PlayerEvent.play());
           case AudioInterruptionType.unknown:
-            add(const PlayerEvent.play());
+          // don't do anything
         }
       }
     });
+
+    /// react to changes in state from the notification
+    _audioService.playbackState.listen((aps.PlaybackState pState) {
+      if (_getCurrentState == PlayerState.initial()) return;
+      log("@PlayerBloc playbackState: $pState playing: ${_getCurrentState}");
+      if (_getCurrentState.maybeMap(orElse: () => false, paused: (_) => true) && pState.playing)
+        add(const PlayerEvent.play());
+      else if (_getCurrentState.maybeMap(orElse: () => false, playing: (_) => true) && !pState.playing)
+        add(const PlayerEvent.pause());
+    });
   }
+
+  PlayerState get _getCurrentState => this.state;
 
   Future<void> _playFromChannel(_PlayFromChannel event, Emitter<PlayerState> emit) async {
     emit(PlayerState.loading(video: event.video));
@@ -73,27 +86,23 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
   }
 
   Future<void> _pause(_Pause event, Emitter<PlayerState> emit) async {
-    if (_audioService.isPlaying) {
-      _audioService.player.pause();
-      emit(PlayerState.paused(_audioService));
-    }
+    _audioService.pause();
+    emit(PlayerState.paused(_audioService));
   }
 
   Future<void> _play(_Play event, Emitter<PlayerState> emit) async {
-    if (!_audioService.isPlaying) {
-      _audioService.player.play();
-      emit(PlayerState.playing(_audioService));
-    }
+    _audioService.play();
+    emit(PlayerState.playing(_audioService));
   }
 
   Future<void> _stop(_Stop event, Emitter<PlayerState> emit) async {
-    await _audioService.player.stop();
+    await _audioService.stop();
     emit(PlayerState.stopped(_audioService));
   }
 
   Future<void> _seek(_Seek event, Emitter<PlayerState> emit) async {
     // emit(PlayerState.loading(video: audioService.currentlyPlaying));
-    _audioService.player.seek(event.position);
+    _audioService.seek(event.position);
     emit(PlayerState.playing(_audioService));
   }
 }

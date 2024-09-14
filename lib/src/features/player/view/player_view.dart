@@ -67,9 +67,9 @@ class _PlayerViewState extends State<PlayerView> {
                     loading: (initialState) => Center(
                       child: loadingWidget(),
                     ),
-                    playing: (playingState) => playerControls(context, playingState.audioService),
-                    paused: (pausedState) => playerControls(context, pausedState.audioService),
-                    stopped: (stoppedState) => playerControls(context, stoppedState.audioService),
+                    playing: (playingState) => playerControls(context, playingState.audioService, true),
+                    paused: (pausedState) => playerControls(context, pausedState.audioService, false),
+                    stopped: (stoppedState) => playerControls(context, stoppedState.audioService, false),
                   ) ??
                   SizedBox.shrink(),
             ],
@@ -79,7 +79,7 @@ class _PlayerViewState extends State<PlayerView> {
     );
   }
 
-  Column playerControls(BuildContext context, AudioService audioService) {
+  Column playerControls(BuildContext context, AudioService audioService, bool isPlaying) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -187,12 +187,12 @@ class _PlayerViewState extends State<PlayerView> {
                     ),
                   );
                 },
-                child: audioService.isPlaying
+                child: isPlaying
                     ? Assets.icons.pause.svg(key: Key("pause"), height: 50, width: 50)
                     : Assets.icons.play.svg(key: Key("play"), height: 50, width: 50),
               ),
               onPressed: () {
-                audioService.isPlaying
+                isPlaying
                     ? context.read<PlayerBloc>().add(PlayerEvent.pause())
                     : context.read<PlayerBloc>().add(PlayerEvent.play());
               },

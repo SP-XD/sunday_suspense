@@ -1,20 +1,24 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:audio_service/audio_service.dart' as aps;
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
-class AudioService {
+class AudioService extends aps.BaseAudioHandler with aps.SeekHandler {
   AudioService() {
+    _asyncInit();
     _player = AudioPlayer();
+    // So that our clients (the Flutter UI and the system notification) know
+    // what state to display, here we set up our audio handler to broadcast all
+    // playback state changes as they happen via playbackState...
+    _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
     ytProvider = YtExplodeProvider();
-    _init();
     _player.playbackEventStream.listen((event) {
-      log('AudioService: playing ${event.currentIndex}');
+      //   log('AudioService: playing ${event.currentIndex}');
       if (event.currentIndex == null) return;
       if (event.currentIndex! >= videoPlaylist.length) return;
       if (videoPlaylist[event.currentIndex!] == currentlyPlaying) return;
@@ -35,10 +39,12 @@ class AudioService {
     });
   }
 
-  void _init() async {
-    final session = await AudioSession.instance;
-    await session.configure(AudioSessionConfiguration.music());
+  void _asyncInit() async {
+    audioSession = await AudioSession.instance;
+    await audioSession.configure(AudioSessionConfiguration.music());
   }
+
+  late final AudioSession audioSession;
 
   late final AudioPlayer _player;
   late final YtExplodeProvider ytProvider;
@@ -47,8 +53,6 @@ class AudioService {
 
   String _currentThumbnail = '';
   String get currentThumbnail => _currentThumbnail;
-
-  AudioPlayer get player => _player;
 
   VideoModel? currentlyPlaying;
   bool get isPlaying => _player.playing;
@@ -75,19 +79,17 @@ class AudioService {
 
     videoPlaylist.clear();
     var audioUrl = getUrlBasedOnDataQuality(manifest: streamManifest);
+    var mediaItem = aps.MediaItem(
+      id: video.id.toString(),
+      title: video.title ?? '',
+      artUri: video.thumbnails != null && video.thumbnails!.lowResUrl.isNotEmpty
+          ? Uri.parse(
+              video.thumbnails!.lowResUrl,
+            )
+          : null,
+    );
     audioPlaylist.add(
-      AudioSource.uri(
-        audioUrl,
-        tag: MediaItem(
-          id: video.id.toString(),
-          title: video.title ?? '',
-          artUri: video.thumbnails != null && video.thumbnails!.lowResUrl.isNotEmpty
-              ? Uri.parse(
-                  video.thumbnails!.lowResUrl,
-                )
-              : null,
-        ),
-      ),
+      AudioSource.uri(audioUrl, tag: mediaItem),
     );
     videoPlaylist.add(video);
     // set three streams for quality selection (low, medium, high)
@@ -96,7 +98,12 @@ class AudioService {
     // var file = File('audio.mp3');
     // await stream.pipe(file.openWrite());
     await _player.setAudioSource(audioPlaylist);
-    _player.play();
+    if (await audioSession.setActive(true)) {
+      _player.play();
+      this.playMediaItem(mediaItem);
+    } else {
+      log("AudioSession not set active");
+    }
   }
 
   // Todo: implement this
@@ -106,17 +113,34 @@ class AudioService {
   }
 
   /// use isPlaying to determine if the audio is playing or not
-  Future<void> playPauseToggle() async {
+  @override
+  Future<void> play() async {
+    log("play @audioService => _player.playing: ${_player.playing}  ${DateTime.timestamp()}");
+    if (!_player.playing) {
+      if (await audioSession.setActive(true)) {
+        await _player.play();
+      } else {
+        log("AudioSession not set active");
+      }
+    }
+  }
+
+  @override
+  Future<void> pause() async {
+    log("pause @audioService => _player.playing: ${_player.playing} ${DateTime.timestamp()}");
     if (_player.playing) {
-      await _player.pause();
-    } else {
-      await _player.play();
+      if (await audioSession.setActive(false)) {
+        await _player.pause();
+      }
     }
   }
 
   /// Stops the audio.
+  @override
   Future<void> stop() async {
+    await audioSession.setActive(false);
     _player.stop();
+    this.stop();
   }
 
   /// Seeks to a specific position in the audio.
@@ -130,7 +154,8 @@ class AudioService {
   }
 
   /// Sets the playback speed where 1.0 is normal speed.
-  Future<void> setSpeed({required double speed}) async {
+  @override
+  Future<void> setSpeed(double speed) async {
     _player.setSpeed(speed);
   }
 
@@ -154,6 +179,49 @@ class AudioService {
       case DataQuality.high:
         return manifest.audioOnly.withHighestBitrate().url;
     }
+  }
+
+  /// Transform a just_audio event into an audio_service state.
+  ///
+  /// This method is used from the constructor. Every event received from the
+  /// just_audio player will be transformed into an audio_service state so that
+  /// it can be broadcast to audio_service clients.
+  aps.PlaybackState _transformEvent(PlaybackEvent event) {
+    return aps.PlaybackState(
+      controls: [
+        if (_player.playing) aps.MediaControl.pause else aps.MediaControl.play,
+        // aps.MediaControl.stop,
+        // aps.MediaControl.rewind,
+        // const aps.MediaControl(
+        //   androidIcon: 'drawable/baseline_forward_30_24',
+        //   label: 'Fast Forward',
+        //   action: aps.MediaAction.fastForward,
+        // ),
+        // TODO: Add favorite button
+        // aps.MediaControl.custom(
+        //     androidIcon: 'drawable/ic_baseline_favorite_24',
+        //     label: 'favorite',
+        //     name: 'favorite',
+        //     extras: <String, dynamic>{'level': 1}),
+      ],
+      systemActions: const {
+        aps.MediaAction.seek,
+        //   aps.MediaAction.seekForward,
+        //   aps.MediaAction.seekBackward,
+      },
+      processingState: const {
+        ProcessingState.idle: aps.AudioProcessingState.idle,
+        ProcessingState.loading: aps.AudioProcessingState.loading,
+        ProcessingState.buffering: aps.AudioProcessingState.buffering,
+        ProcessingState.ready: aps.AudioProcessingState.ready,
+        ProcessingState.completed: aps.AudioProcessingState.completed,
+      }[_player.processingState]!,
+      playing: _player.playing,
+      updatePosition: _player.position,
+      bufferedPosition: _player.bufferedPosition,
+      speed: _player.speed,
+      queueIndex: event.currentIndex,
+    );
   }
 }
 

@@ -5,8 +5,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
+import "package:audio_service/audio_service.dart" as audio_service;
 
 GetIt getIt = GetIt.instance;
 
@@ -35,19 +35,24 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
-  await JustAudioBackground.init(
-    androidNotificationChannelId: 'com.spxd.midnight_suspense.channel.audio',
-    androidNotificationChannelName: 'Audio playback',
-    androidNotificationOngoing: true,
-  );
+  getIt.registerSingletonAsync(() async {
+    final AudioService audioService = await audio_service.AudioService.init<AudioService>(
+      builder: () => AudioService(),
+      config: audio_service.AudioServiceConfig(
+        androidNotificationChannelId: 'com.spxd.midnight_suspense.channel.audio',
+        androidNotificationChannelName: 'Audio playback',
+        androidNotificationOngoing: true,
+      ),
+    );
+
+    return audioService;
+  });
 
   // Add cross-flavor configuration here
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
   ));
-
-  getIt.registerLazySingleton(() => AudioService());
 
   runApp(await builder());
 }
