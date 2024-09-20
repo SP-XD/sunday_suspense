@@ -1,0 +1,41 @@
+{
+  "categoryVersion": "1.0.0",
+  "builtInCategories": [
+    {
+      "category_id": "PLq71IJk8mCV5H0X__3DXxROWn11hXN8Zk",
+      "title": "Sunday Suspense",
+      "type": "playlist",
+      "sourceType": "builtInCategory",
+      "language": "bengali"
+    },
+    {
+      "category_id": "221BHarrisonRoad",
+      "title": "221B Harrison Road",
+      "type": "channel",
+      "sourceType": "builtInCategory",
+      "language": "hindi"
+    },
+    {
+      "category_id": "PLEwpruoePQMLzI6Bn4stj_ww9Rv1o7ktk",
+      "title": "Karaala Kathegalu",
+      "type": "playlist",
+      "sourceType": "builtInCategory",
+      "language": "kannada"
+    },
+    {
+      "category_id": "UNIT522",
+      "title": "UNIT #522",
+      "type": "channel",
+      "sourceType": "builtInCategory",
+      "language": "english"
+    },
+    {
+      "category_id": "mhstation",
+      "title": "Midnight Horror Station",
+      "type": "channel",
+      "sourceType": "builtInCategory",
+      "language": "bengali"
+    },
+    {}
+  ]
+}

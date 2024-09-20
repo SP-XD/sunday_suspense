@@ -1,9 +1,11 @@
+// ignore_for_file: invalid_annotation_target
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
-import 'channel_id_model.dart';
-import 'engagement_model.dart';
-import 'thumbnail_set_model.dart';
-import 'video_id_model.dart';
+import 'package:midnight_suspense/src/data/models/channel_id_model.dart';
+import 'package:midnight_suspense/src/data/models/engagement_model.dart';
+import 'package:midnight_suspense/src/data/models/thumbnail_set_model.dart';
+import 'package:midnight_suspense/src/data/models/video_id_model.dart';
 import 'video_model.dart';
 
 part 'category_model.freezed.dart';
@@ -14,12 +16,10 @@ part 'category_model.g.dart';
 class CategoryModel with _$CategoryModel {
   factory CategoryModel({
     @Default(Isar.autoIncrement) int id,
-    required String category_id,
-    // ignore: invalid_annotation_target
+    @Index(unique: true, replace: true) required String category_id,
     @Enumerated(EnumType.name) required CategoryType type,
     required String title,
     List<VideoModel>? videos,
-    // ignore: invalid_annotation_target
     @Enumerated(EnumType.name) required CategorySourceType sourceType,
   }) = _CategoryModel;
 
@@ -41,4 +41,13 @@ enum CategoryType {
 enum CategorySourceType {
   builtInCategory,
   userCategory,
+}
+
+enum LanguageType {
+  english,
+  bengali,
+  hindi,
+  telegu,
+  tamil,
+  kannada,
 }

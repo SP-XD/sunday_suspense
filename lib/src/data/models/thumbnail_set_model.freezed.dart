@@ -23,8 +23,12 @@ mixin _$ThumbnailSet {
   /// Video id.
   String? get videoId => throw _privateConstructorUsedError;
 
+  /// Serializes this ThumbnailSet to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of ThumbnailSet
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $ThumbnailSetCopyWith<ThumbnailSet> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -48,6 +52,8 @@ class _$ThumbnailSetCopyWithImpl<$Res, $Val extends ThumbnailSet>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of ThumbnailSet
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -81,6 +87,8 @@ class __$$ThumbnailSetImplCopyWithImpl<$Res>
       _$ThumbnailSetImpl _value, $Res Function(_$ThumbnailSetImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of ThumbnailSet
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -120,11 +128,13 @@ class _$ThumbnailSetImpl extends _ThumbnailSet {
             (identical(other.videoId, videoId) || other.videoId == videoId));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, videoId);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of ThumbnailSet
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$ThumbnailSetImplCopyWith<_$ThumbnailSetImpl> get copyWith =>
@@ -145,12 +155,14 @@ abstract class _ThumbnailSet extends ThumbnailSet {
   factory _ThumbnailSet.fromJson(Map<String, dynamic> json) =
       _$ThumbnailSetImpl.fromJson;
 
-  @override
-
   /// Video id.
-  String? get videoId;
   @override
-  @JsonKey(ignore: true)
+  String? get videoId;
+
+  /// Create a copy of ThumbnailSet
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ThumbnailSetImplCopyWith<_$ThumbnailSetImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

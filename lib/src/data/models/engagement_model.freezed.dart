@@ -29,8 +29,12 @@ mixin _$Engagement {
   /// Dislike count.
   int? get dislikeCount => throw _privateConstructorUsedError;
 
+  /// Serializes this Engagement to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of Engagement
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $EngagementCopyWith<Engagement> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -54,6 +58,8 @@ class _$EngagementCopyWithImpl<$Res, $Val extends Engagement>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Engagement
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -97,6 +103,8 @@ class __$$EngagementImplCopyWithImpl<$Res>
       _$EngagementImpl _value, $Res Function(_$EngagementImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Engagement
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -164,12 +172,14 @@ class _$EngagementImpl extends _Engagement {
                 other.dislikeCount == dislikeCount));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, viewCount, likeCount, dislikeCount);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Engagement
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$EngagementImplCopyWith<_$EngagementImpl> get copyWith =>
@@ -193,20 +203,22 @@ abstract class _Engagement extends Engagement {
   factory _Engagement.fromJson(Map<String, dynamic> json) =
       _$EngagementImpl.fromJson;
 
-  @override
-
   /// View count.
-  int? get viewCount;
   @override
+  int? get viewCount;
 
   /// Like count.
-  int? get likeCount;
   @override
+  int? get likeCount;
 
   /// Dislike count.
-  int? get dislikeCount;
   @override
-  @JsonKey(ignore: true)
+  int? get dislikeCount;
+
+  /// Create a copy of Engagement
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$EngagementImplCopyWith<_$EngagementImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

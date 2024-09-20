@@ -51,7 +51,21 @@ const CategoryModelSchema = CollectionSchema(
   deserialize: _categoryModelDeserialize,
   deserializeProp: _categoryModelDeserializeProp,
   idName: r'id',
-  indexes: {},
+  indexes: {
+    r'category_id': IndexSchema(
+      id: 9190778373896999248,
+      name: r'category_id',
+      unique: true,
+      replace: true,
+      properties: [
+        IndexPropertySchema(
+          name: r'category_id',
+          type: IndexType.hash,
+          caseSensitive: true,
+        )
+      ],
+    )
+  },
   links: {},
   embeddedSchemas: {
     r'VideoModel': VideoModelSchema,
@@ -63,7 +77,7 @@ const CategoryModelSchema = CollectionSchema(
   getId: _categoryModelGetId,
   getLinks: _categoryModelGetLinks,
   attach: _categoryModelAttach,
-  version: '3.1.0+1',
+  version: '3.1.8',
 );
 
 int _categoryModelEstimateSize(
@@ -196,6 +210,62 @@ List<IsarLinkBase<dynamic>> _categoryModelGetLinks(CategoryModel object) {
 void _categoryModelAttach(
     IsarCollection<dynamic> col, Id id, CategoryModel object) {}
 
+extension CategoryModelByIndex on IsarCollection<CategoryModel> {
+  Future<CategoryModel?> getByCategory_id(String category_id) {
+    return getByIndex(r'category_id', [category_id]);
+  }
+
+  CategoryModel? getByCategory_idSync(String category_id) {
+    return getByIndexSync(r'category_id', [category_id]);
+  }
+
+  Future<bool> deleteByCategory_id(String category_id) {
+    return deleteByIndex(r'category_id', [category_id]);
+  }
+
+  bool deleteByCategory_idSync(String category_id) {
+    return deleteByIndexSync(r'category_id', [category_id]);
+  }
+
+  Future<List<CategoryModel?>> getAllByCategory_id(
+      List<String> category_idValues) {
+    final values = category_idValues.map((e) => [e]).toList();
+    return getAllByIndex(r'category_id', values);
+  }
+
+  List<CategoryModel?> getAllByCategory_idSync(List<String> category_idValues) {
+    final values = category_idValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'category_id', values);
+  }
+
+  Future<int> deleteAllByCategory_id(List<String> category_idValues) {
+    final values = category_idValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'category_id', values);
+  }
+
+  int deleteAllByCategory_idSync(List<String> category_idValues) {
+    final values = category_idValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'category_id', values);
+  }
+
+  Future<Id> putByCategory_id(CategoryModel object) {
+    return putByIndex(r'category_id', object);
+  }
+
+  Id putByCategory_idSync(CategoryModel object, {bool saveLinks = true}) {
+    return putByIndexSync(r'category_id', object, saveLinks: saveLinks);
+  }
+
+  Future<List<Id>> putAllByCategory_id(List<CategoryModel> objects) {
+    return putAllByIndex(r'category_id', objects);
+  }
+
+  List<Id> putAllByCategory_idSync(List<CategoryModel> objects,
+      {bool saveLinks = true}) {
+    return putAllByIndexSync(r'category_id', objects, saveLinks: saveLinks);
+  }
+}
+
 extension CategoryModelQueryWhereSort
     on QueryBuilder<CategoryModel, CategoryModel, QWhere> {
   QueryBuilder<CategoryModel, CategoryModel, QAfterWhere> anyId() {
@@ -273,6 +343,51 @@ extension CategoryModelQueryWhere
         upper: upperId,
         includeUpper: includeUpper,
       ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterWhereClause>
+      category_idEqualTo(String category_id) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(IndexWhereClause.equalTo(
+        indexName: r'category_id',
+        value: [category_id],
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterWhereClause>
+      category_idNotEqualTo(String category_id) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'category_id',
+              lower: [],
+              upper: [category_id],
+              includeUpper: false,
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'category_id',
+              lower: [category_id],
+              includeLower: false,
+              upper: [],
+            ));
+      } else {
+        return query
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'category_id',
+              lower: [category_id],
+              includeLower: false,
+              upper: [],
+            ))
+            .addWhereClause(IndexWhereClause.between(
+              indexName: r'category_id',
+              lower: [],
+              upper: [category_id],
+              includeUpper: false,
+            ));
+      }
     });
   }
 }

@@ -54,8 +54,12 @@ mixin _$VideoModel {
 //ignore: avoid_positional_bool?ean_parameters
   bool? get isLive => throw _privateConstructorUsedError;
 
+  /// Serializes this VideoModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $VideoModelCopyWith<VideoModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -95,6 +99,8 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -158,6 +164,8 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
     ) as $Val);
   }
 
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VideoIdCopyWith<$Res>? get id {
@@ -170,6 +178,8 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
     });
   }
 
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ChannelIdCopyWith<$Res>? get channelId {
@@ -182,6 +192,8 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
     });
   }
 
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $ThumbnailSetCopyWith<$Res>? get thumbnails {
@@ -194,6 +206,8 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
     });
   }
 
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $EngagementCopyWith<$Res>? get engagement {
@@ -245,6 +259,8 @@ class __$$VideoImplCopyWithImpl<$Res>
       _$VideoImpl _value, $Res Function(_$VideoImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -404,7 +420,7 @@ class _$VideoImpl extends _Video {
             (identical(other.isLive, isLive) || other.isLive == isLive));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
       runtimeType,
@@ -420,7 +436,9 @@ class _$VideoImpl extends _Video {
       engagement,
       isLive);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$VideoImplCopyWith<_$VideoImpl> get copyWith =>
@@ -451,53 +469,55 @@ abstract class _Video extends VideoModel {
 
   factory _Video.fromJson(Map<String, dynamic> json) = _$VideoImpl.fromJson;
 
-  @override
-
   /// Video ID.
-  VideoId? get id;
   @override
+  VideoId? get id;
 
   /// Video title.
-  String? get title;
   @override
+  String? get title;
 
   /// Video author.
-  String? get author;
   @override
+  String? get author;
 
   /// Video author Id.
-  ChannelId? get channelId;
   @override
+  ChannelId? get channelId;
 
   /// Video uploadDate date.
-  DateTime? get uploadDate;
   @override
+  DateTime? get uploadDate;
 
   /// Video description.
-  String? get description;
   @override
+  String? get description;
 
   /// Duration of the video in seconds watched by the user.
-  int? get watchedDuration;
   @override
+  int? get watchedDuration;
 
   /// total Duration of the video in seconds.
-  int? get duration;
   @override
+  int? get duration;
 
   /// Available thumbnails for this video.
-  ThumbnailSet? get thumbnails;
   @override
+  ThumbnailSet? get thumbnails;
 
   /// Engagement? statistics for this video.
-  Engagement? get engagement;
   @override
+  Engagement? get engagement;
 
   /// Returns true if this is a live stream.
 //ignore: avoid_positional_bool?ean_parameters
-  bool? get isLive;
   @override
-  @JsonKey(ignore: true)
+  bool? get isLive;
+
+  /// Create a copy of VideoModel
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$VideoImplCopyWith<_$VideoImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

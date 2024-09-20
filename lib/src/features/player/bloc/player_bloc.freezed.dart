@@ -96,6 +96,9 @@ class _$PlayerEventCopyWithImpl<$Res, $Val extends PlayerEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -117,6 +120,8 @@ class __$$PlayFromChannelImplCopyWithImpl<$Res>
       _$PlayFromChannelImpl _value, $Res Function(_$PlayFromChannelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -130,6 +135,8 @@ class __$$PlayFromChannelImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VideoModelCopyWith<$Res> get video {
@@ -163,7 +170,9 @@ class _$PlayFromChannelImpl implements _PlayFromChannel {
   @override
   int get hashCode => Object.hash(runtimeType, video);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlayFromChannelImplCopyWith<_$PlayFromChannelImpl> get copyWith =>
@@ -262,7 +271,10 @@ abstract class _PlayFromChannel implements PlayerEvent {
       _$PlayFromChannelImpl;
 
   VideoModel get video;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlayFromChannelImplCopyWith<_$PlayFromChannelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -284,6 +296,8 @@ class __$$PlayFromQueueImplCopyWithImpl<$Res>
       _$PlayFromQueueImpl _value, $Res Function(_$PlayFromQueueImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -323,7 +337,9 @@ class _$PlayFromQueueImpl implements _PlayFromQueue {
   @override
   int get hashCode => Object.hash(runtimeType, playIndex);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlayFromQueueImplCopyWith<_$PlayFromQueueImpl> get copyWith =>
@@ -421,7 +437,10 @@ abstract class _PlayFromQueue implements PlayerEvent {
       _$PlayFromQueueImpl;
 
   int get playIndex;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlayFromQueueImplCopyWith<_$PlayFromQueueImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -440,6 +459,9 @@ class __$$PauseImplCopyWithImpl<$Res>
   __$$PauseImplCopyWithImpl(
       _$PauseImpl _value, $Res Function(_$PauseImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -565,6 +587,9 @@ class __$$PlayImplCopyWithImpl<$Res>
     implements _$$PlayImplCopyWith<$Res> {
   __$$PlayImplCopyWithImpl(_$PlayImpl _value, $Res Function(_$PlayImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -690,6 +715,9 @@ class __$$StopImplCopyWithImpl<$Res>
     implements _$$StopImplCopyWith<$Res> {
   __$$StopImplCopyWithImpl(_$StopImpl _value, $Res Function(_$StopImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -818,6 +846,8 @@ class __$$SeekImplCopyWithImpl<$Res>
   __$$SeekImplCopyWithImpl(_$SeekImpl _value, $Res Function(_$SeekImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -857,7 +887,9 @@ class _$SeekImpl implements _Seek {
   @override
   int get hashCode => Object.hash(runtimeType, position);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$SeekImplCopyWith<_$SeekImpl> get copyWith =>
@@ -954,7 +986,10 @@ abstract class _Seek implements PlayerEvent {
   const factory _Seek({required final Duration position}) = _$SeekImpl;
 
   Duration get position;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerEvent
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SeekImplCopyWith<_$SeekImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1041,6 +1076,9 @@ class _$PlayerStateCopyWithImpl<$Res, $Val extends PlayerState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1057,6 +1095,9 @@ class __$$PlayerInitialImplCopyWithImpl<$Res>
   __$$PlayerInitialImplCopyWithImpl(
       _$PlayerInitialImpl _value, $Res Function(_$PlayerInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -1188,6 +1229,8 @@ class __$$PlayerLoadingImplCopyWithImpl<$Res>
       _$PlayerLoadingImpl _value, $Res Function(_$PlayerLoadingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1201,6 +1244,8 @@ class __$$PlayerLoadingImplCopyWithImpl<$Res>
     ));
   }
 
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
   $VideoModelCopyWith<$Res>? get video {
@@ -1238,7 +1283,9 @@ class _$PlayerLoadingImpl implements _PlayerLoading {
   @override
   int get hashCode => Object.hash(runtimeType, video);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlayerLoadingImplCopyWith<_$PlayerLoadingImpl> get copyWith =>
@@ -1335,7 +1382,10 @@ abstract class _PlayerLoading implements PlayerState {
   const factory _PlayerLoading({final VideoModel? video}) = _$PlayerLoadingImpl;
 
   VideoModel? get video;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlayerLoadingImplCopyWith<_$PlayerLoadingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1357,6 +1407,8 @@ class __$$PlayerPlayingImplCopyWithImpl<$Res>
       _$PlayerPlayingImpl _value, $Res Function(_$PlayerPlayingImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1396,7 +1448,9 @@ class _$PlayerPlayingImpl implements _PlayerPlaying {
   @override
   int get hashCode => Object.hash(runtimeType, audioService);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlayerPlayingImplCopyWith<_$PlayerPlayingImpl> get copyWith =>
@@ -1494,7 +1548,10 @@ abstract class _PlayerPlaying implements PlayerState {
       _$PlayerPlayingImpl;
 
   AudioService get audioService;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlayerPlayingImplCopyWith<_$PlayerPlayingImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1516,6 +1573,8 @@ class __$$PlayerPausedImplCopyWithImpl<$Res>
       _$PlayerPausedImpl _value, $Res Function(_$PlayerPausedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1555,7 +1614,9 @@ class _$PlayerPausedImpl implements _PlayerPaused {
   @override
   int get hashCode => Object.hash(runtimeType, audioService);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlayerPausedImplCopyWith<_$PlayerPausedImpl> get copyWith =>
@@ -1653,7 +1714,10 @@ abstract class _PlayerPaused implements PlayerState {
       _$PlayerPausedImpl;
 
   AudioService get audioService;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlayerPausedImplCopyWith<_$PlayerPausedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1675,6 +1739,8 @@ class __$$PlayerStoppedImplCopyWithImpl<$Res>
       _$PlayerStoppedImpl _value, $Res Function(_$PlayerStoppedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -1714,7 +1780,9 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
   @override
   int get hashCode => Object.hash(runtimeType, audioService);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$PlayerStoppedImplCopyWith<_$PlayerStoppedImpl> get copyWith =>
@@ -1812,7 +1880,10 @@ abstract class _PlayerStopped implements PlayerState {
       _$PlayerStoppedImpl;
 
   AudioService get audioService;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$PlayerStoppedImplCopyWith<_$PlayerStoppedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -1831,6 +1902,9 @@ class __$$PlayerErrorImplCopyWithImpl<$Res>
   __$$PlayerErrorImplCopyWithImpl(
       _$PlayerErrorImpl _value, $Res Function(_$PlayerErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of PlayerState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

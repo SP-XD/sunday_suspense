@@ -21,18 +21,21 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$CategoryModel {
   int get id => throw _privateConstructorUsedError;
-  String get category_id =>
-      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  @Index(unique: true, replace: true)
+  String get category_id => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   CategoryType get type => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
-  List<VideoModel>? get videos =>
-      throw _privateConstructorUsedError; // ignore: invalid_annotation_target
+  List<VideoModel>? get videos => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   CategorySourceType get sourceType => throw _privateConstructorUsedError;
 
+  /// Serializes this CategoryModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of CategoryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $CategoryModelCopyWith<CategoryModel> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -45,7 +48,7 @@ abstract class $CategoryModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String category_id,
+      @Index(unique: true, replace: true) String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
       List<VideoModel>? videos,
@@ -62,6 +65,8 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of CategoryModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -111,7 +116,7 @@ abstract class _$$CategoryModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String category_id,
+      @Index(unique: true, replace: true) String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
       List<VideoModel>? videos,
@@ -126,6 +131,8 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
       _$CategoryModelImpl _value, $Res Function(_$CategoryModelImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of CategoryModel
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -170,7 +177,7 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
 class _$CategoryModelImpl extends _CategoryModel {
   _$CategoryModelImpl(
       {this.id = Isar.autoIncrement,
-      required this.category_id,
+      @Index(unique: true, replace: true) required this.category_id,
       @Enumerated(EnumType.name) required this.type,
       required this.title,
       final List<VideoModel>? videos,
@@ -185,8 +192,8 @@ class _$CategoryModelImpl extends _CategoryModel {
   @JsonKey()
   final int id;
   @override
+  @Index(unique: true, replace: true)
   final String category_id;
-// ignore: invalid_annotation_target
   @override
   @Enumerated(EnumType.name)
   final CategoryType type;
@@ -202,7 +209,6 @@ class _$CategoryModelImpl extends _CategoryModel {
     return EqualUnmodifiableListView(value);
   }
 
-// ignore: invalid_annotation_target
   @override
   @Enumerated(EnumType.name)
   final CategorySourceType sourceType;
@@ -227,12 +233,14 @@ class _$CategoryModelImpl extends _CategoryModel {
                 other.sourceType == sourceType));
   }
 
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, category_id, type, title,
       const DeepCollectionEquality().hash(_videos), sourceType);
 
-  @JsonKey(ignore: true)
+  /// Create a copy of CategoryModel
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$CategoryModelImplCopyWith<_$CategoryModelImpl> get copyWith =>
@@ -249,7 +257,7 @@ class _$CategoryModelImpl extends _CategoryModel {
 abstract class _CategoryModel extends CategoryModel {
   factory _CategoryModel(
       {final int id,
-      required final String category_id,
+      @Index(unique: true, replace: true) required final String category_id,
       @Enumerated(EnumType.name) required final CategoryType type,
       required final String title,
       final List<VideoModel>? videos,
@@ -263,19 +271,23 @@ abstract class _CategoryModel extends CategoryModel {
   @override
   int get id;
   @override
+  @Index(unique: true, replace: true)
   String get category_id;
-  @override // ignore: invalid_annotation_target
+  @override
   @Enumerated(EnumType.name)
   CategoryType get type;
   @override
   String get title;
   @override
   List<VideoModel>? get videos;
-  @override // ignore: invalid_annotation_target
+  @override
   @Enumerated(EnumType.name)
   CategorySourceType get sourceType;
+
+  /// Create a copy of CategoryModel
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$CategoryModelImplCopyWith<_$CategoryModelImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

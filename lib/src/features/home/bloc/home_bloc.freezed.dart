@@ -65,6 +65,9 @@ class _$HomeEventCopyWithImpl<$Res, $Val extends HomeEvent>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -82,6 +85,9 @@ class __$$HomeScreenLoadedEventImplCopyWithImpl<$Res>
   __$$HomeScreenLoadedEventImplCopyWithImpl(_$HomeScreenLoadedEventImpl _value,
       $Res Function(_$HomeScreenLoadedEventImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HomeEvent
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -234,6 +240,9 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -250,6 +259,9 @@ class __$$HomeInitialImplCopyWithImpl<$Res>
   __$$HomeInitialImplCopyWithImpl(
       _$HomeInitialImpl _value, $Res Function(_$HomeInitialImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -364,6 +376,9 @@ class __$$HomeVideosLoadingImplCopyWithImpl<$Res>
   __$$HomeVideosLoadingImplCopyWithImpl(_$HomeVideosLoadingImpl _value,
       $Res Function(_$HomeVideosLoadingImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc
@@ -481,6 +496,8 @@ class __$$HomeVideosLoadedImplCopyWithImpl<$Res>
       $Res Function(_$HomeVideosLoadedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -528,7 +545,9 @@ class _$HomeVideosLoadedImpl implements _HomeVideosLoaded {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(_videos));
 
-  @JsonKey(ignore: true)
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
   _$$HomeVideosLoadedImplCopyWith<_$HomeVideosLoadedImpl> get copyWith =>
@@ -615,7 +634,10 @@ abstract class _HomeVideosLoaded implements HomeState {
       _$HomeVideosLoadedImpl;
 
   List<VideoModel>? get videos;
-  @JsonKey(ignore: true)
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   _$$HomeVideosLoadedImplCopyWith<_$HomeVideosLoadedImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
@@ -634,6 +656,9 @@ class __$$HomeErrorImplCopyWithImpl<$Res>
   __$$HomeErrorImplCopyWithImpl(
       _$HomeErrorImpl _value, $Res Function(_$HomeErrorImpl) _then)
       : super(_value, _then);
+
+  /// Create a copy of HomeState
+  /// with the given fields replaced by the non-null parameter values.
 }
 
 /// @nodoc

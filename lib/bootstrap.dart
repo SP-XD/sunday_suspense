@@ -5,6 +5,9 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
+import 'package:midnight_suspense/src/data/models/app_data_model.dart';
+import 'package:midnight_suspense/src/data/models/category_model.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
 import "package:audio_service/audio_service.dart" as audio_service;
 
@@ -47,6 +50,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
     return audioService;
   });
+
+  getIt.registerSingleton(OfflineDbProvider(schemas: [AppDataSchema, CategoryModelSchema]));
 
   // Add cross-flavor configuration here
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);

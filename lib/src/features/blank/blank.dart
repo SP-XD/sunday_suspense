@@ -20,7 +20,7 @@ class BlankView extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          'Blank View',
+          '🦉',
           style: TextStyle(
             color: Colors.white,
             fontSize: 24,

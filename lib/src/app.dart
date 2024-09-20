@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midnight_suspense/bootstrap.dart';
+import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
 import 'package:midnight_suspense/src/features/home/bloc/home_bloc.dart';
@@ -8,6 +10,7 @@ import 'package:midnight_suspense/src/features/splash/splash.dart';
 import 'package:midnight_suspense/src/l10n/l10n.dart';
 import 'package:midnight_suspense/src/utils/custom_slider_shapes.dart';
 
+import 'data/data_provider/offline_db_provider.dart';
 import 'features/player/bloc/player_bloc.dart';
 import 'features/searchbar/bloc/searchbar_bloc.dart';
 
@@ -34,8 +37,15 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider(
-      create: (context) => _videosRepository,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(create: (context) => _videosRepository),
+        RepositoryProvider(
+          create: (context) => CategoriesRepository(
+            offlineDbProvider: getIt<OfflineDbProvider>(),
+          ),
+        ),
+      ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<HomeBloc>(create: (context) => HomeBloc(_videosRepository)),
