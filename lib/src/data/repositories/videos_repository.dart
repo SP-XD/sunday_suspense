@@ -9,7 +9,7 @@ class VideosRepository {
 
   late final YtExplodeProvider ytProvider;
 
-  Future<List<VideoModel>> getHomeVideos(String channelHandle) async {
+  Future<List<VideoModel>> getChannelVideos(String channelHandle) async {
     final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle(channelHandle);
     final response = await ytProvider.ytExplodeInstance!.channels.getUploadsFromPage(channelId.id);
     // response.nextPage();

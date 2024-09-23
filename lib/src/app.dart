@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:midnight_suspense/bootstrap.dart';
+import 'package:midnight_suspense/src/configs/env_variables.dart';
 import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
@@ -43,6 +45,7 @@ class _AppState extends State<App> {
         RepositoryProvider(
           create: (context) => CategoriesRepository(
             offlineDbProvider: getIt<OfflineDbProvider>(),
+            defaultsUrl: EnvVariables.DEFAULTS_URL.isNotEmpty ? Uri.parse(EnvVariables.DEFAULTS_URL) : null,
           ),
         ),
       ],

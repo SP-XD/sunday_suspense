@@ -26,6 +26,12 @@ const AppDataSchema = CollectionSchema(
       id: 1,
       name: r'hashCode',
       type: IsarType.long,
+    ),
+    r'selectedLanguages': PropertySchema(
+      id: 2,
+      name: r'selectedLanguages',
+      type: IsarType.stringList,
+      enumMap: _AppDataselectedLanguagesEnumValueMap,
     )
   },
   estimateSize: _appDataEstimateSize,
@@ -67,6 +73,13 @@ int _appDataEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.selectedLanguages.length * 3;
+  {
+    for (var i = 0; i < object.selectedLanguages.length; i++) {
+      final value = object.selectedLanguages[i];
+      bytesCount += value.name.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -78,6 +91,8 @@ void _appDataSerialize(
 ) {
   writer.writeString(offsets[0], object.categoryVersion);
   writer.writeLong(offsets[1], object.hashCode);
+  writer.writeStringList(
+      offsets[2], object.selectedLanguages.map((e) => e.name).toList());
 }
 
 AppData _appDataDeserialize(
@@ -90,6 +105,12 @@ AppData _appDataDeserialize(
     categoryVersion: reader.readStringOrNull(offsets[0]),
     id: id,
   );
+  object.selectedLanguages = reader
+          .readStringList(offsets[2])
+          ?.map((e) =>
+              _AppDataselectedLanguagesValueEnumMap[e] ?? LanguageType.english)
+          .toList() ??
+      [];
   return object;
 }
 
@@ -104,10 +125,35 @@ P _appDataDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readLong(offset)) as P;
+    case 2:
+      return (reader
+              .readStringList(offset)
+              ?.map((e) =>
+                  _AppDataselectedLanguagesValueEnumMap[e] ??
+                  LanguageType.english)
+              .toList() ??
+          []) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _AppDataselectedLanguagesEnumValueMap = {
+  r'english': r'english',
+  r'bengali': r'bengali',
+  r'hindi': r'hindi',
+  r'telegu': r'telegu',
+  r'tamil': r'tamil',
+  r'kannada': r'kannada',
+};
+const _AppDataselectedLanguagesValueEnumMap = {
+  r'english': LanguageType.english,
+  r'bengali': LanguageType.bengali,
+  r'hindi': LanguageType.hindi,
+  r'telegu': LanguageType.telegu,
+  r'tamil': LanguageType.tamil,
+  r'kannada': LanguageType.kannada,
+};
 
 Id _appDataGetId(AppData object) {
   return object.id ?? Isar.autoIncrement;
@@ -474,6 +520,233 @@ extension AppDataQueryFilter
       ));
     });
   }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementEqualTo(
+    LanguageType value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'selectedLanguages',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementGreaterThan(
+    LanguageType value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'selectedLanguages',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementLessThan(
+    LanguageType value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'selectedLanguages',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementBetween(
+    LanguageType lower,
+    LanguageType upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'selectedLanguages',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'selectedLanguages',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'selectedLanguages',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementContains(String value,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'selectedLanguages',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementMatches(String pattern,
+          {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'selectedLanguages',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'selectedLanguages',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesElementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'selectedLanguages',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'selectedLanguages',
+        length,
+        true,
+        length,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'selectedLanguages',
+        0,
+        true,
+        0,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'selectedLanguages',
+        0,
+        false,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'selectedLanguages',
+        0,
+        true,
+        length,
+        include,
+      );
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'selectedLanguages',
+        length,
+        include,
+        999999,
+        true,
+      );
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      selectedLanguagesLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.listLength(
+        r'selectedLanguages',
+        lower,
+        includeLower,
+        upper,
+        includeUpper,
+      );
+    });
+  }
 }
 
 extension AppDataQueryObject
@@ -685,6 +958,12 @@ extension AppDataQueryWhereDistinct
       return query.addDistinctBy(r'hashCode');
     });
   }
+
+  QueryBuilder<AppData, AppData, QDistinct> distinctBySelectedLanguages() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'selectedLanguages');
+    });
+  }
 }
 
 extension AppDataQueryProperty
@@ -706,20 +985,36 @@ extension AppDataQueryProperty
       return query.addPropertyName(r'hashCode');
     });
   }
+
+  QueryBuilder<AppData, List<LanguageType>, QQueryOperations>
+      selectedLanguagesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'selectedLanguages');
+    });
+  }
 }
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-AppData _$AppDataFromJson(Map<String, dynamic> json) => AppData(
-      id: (json['id'] as num?)?.toInt(),
-      categoryVersion: json['categoryVersion'] as String?,
-    )
-      ..builtInCategories = AppData._categoryLinksFromJson(
-          json['builtInCategories'] as List<Map<String, dynamic>>)
-      ..userCategories = AppData._categoryLinksFromJson(
-          json['userCategories'] as List<Map<String, dynamic>>);
+AppData _$AppDataFromJson(Map<String, dynamic> json) {
+  $checkKeys(
+    json,
+    requiredKeys: const ['categoryVersion', 'builtInCategories'],
+  );
+  return AppData(
+    id: (json['id'] as num?)?.toInt(),
+    categoryVersion: json['categoryVersion'] as String?,
+  )
+    ..builtInCategories = AppData._categoryLinksFromJson(
+        json['builtInCategories'] as List<Map<String, dynamic>>)
+    ..userCategories = AppData._categoryLinksFromJson(
+        json['userCategories'] as List<Map<String, dynamic>>)
+    ..selectedLanguages = (json['selectedLanguages'] as List<dynamic>)
+        .map((e) => $enumDecode(_$LanguageTypeEnumMap, e))
+        .toList();
+}
 
 Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
       'id': instance.id,
@@ -727,4 +1022,16 @@ Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
       'builtInCategories':
           AppData._categoryLinksToJson(instance.builtInCategories),
       'userCategories': AppData._categoryLinksToJson(instance.userCategories),
+      'selectedLanguages': instance.selectedLanguages
+          .map((e) => _$LanguageTypeEnumMap[e]!)
+          .toList(),
     };
+
+const _$LanguageTypeEnumMap = {
+  LanguageType.english: 'english',
+  LanguageType.bengali: 'bengali',
+  LanguageType.hindi: 'hindi',
+  LanguageType.telegu: 'telegu',
+  LanguageType.tamil: 'tamil',
+  LanguageType.kannada: 'kannada',
+};

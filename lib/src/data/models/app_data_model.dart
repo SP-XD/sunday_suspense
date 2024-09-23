@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: invalid_annotation_target
 
-import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 
@@ -15,11 +14,21 @@ part 'app_data_model.g.dart';
 @JsonSerializable()
 class AppData {
   Id? id;
+  @JsonKey(required: true)
   String? categoryVersion;
-  @JsonKey(toJson: _categoryLinksToJson, fromJson: _categoryLinksFromJson)
+  @JsonKey(toJson: _categoryLinksToJson, fromJson: _categoryLinksFromJson, required: true)
   IsarLinks<CategoryModel> builtInCategories = IsarLinks<CategoryModel>();
-  @JsonKey(toJson: _categoryLinksToJson, fromJson: _categoryLinksFromJson)
+  @JsonKey(
+    toJson: _categoryLinksToJson,
+    fromJson: _categoryLinksFromJson,
+    required: false,
+  )
   IsarLinks<CategoryModel> userCategories = IsarLinks<CategoryModel>();
+  @JsonKey(
+    required: false,
+  )
+  @Enumerated(EnumType.name)
+  List<LanguageType> selectedLanguages = [];
 
   AppData({
     this.id,

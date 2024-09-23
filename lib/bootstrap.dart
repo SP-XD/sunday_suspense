@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
 import 'package:midnight_suspense/src/data/models/app_data_model.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
@@ -12,6 +14,7 @@ import 'package:midnight_suspense/src/services/audio_service.dart';
 import "package:audio_service/audio_service.dart" as audio_service;
 
 GetIt getIt = GetIt.instance;
+Logger logger = Logger();
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -30,6 +33,8 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+  await DotEnv().load(fileName: '.env');
+
   await WidgetsFlutterBinding.ensureInitialized();
 
   FlutterError.onError = (details) {
