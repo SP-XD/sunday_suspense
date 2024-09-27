@@ -1,30 +1,80 @@
-import 'dart:ui';
-
+import 'package:auto_route/auto_route.dart';
+import 'package:delightful_toast/delight_toast.dart';
+import 'package:delightful_toast/toast/components/toast_card.dart';
+import 'package:delightful_toast/toast/utils/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:midnight_suspense/bootstrap.dart';
+import 'package:midnight_suspense/src/configs/app_router.gr.dart';
+import 'package:midnight_suspense/src/configs/env_variables.dart';
+import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
+import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 import 'package:page_transition/page_transition.dart';
 
+@RoutePage()
 class SplashView extends StatefulWidget {
-  SplashView({super.key, required this.nextPage});
-  final Widget nextPage;
+  SplashView({super.key});
 
   @override
   State<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView> {
+class _SplashViewState extends State<SplashView> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
     FocusManager.instance.primaryFocus?.unfocus();
-    Future.delayed(const Duration(milliseconds: 4500), () {
-      Navigator.pushReplacement(
-          context,
-          PageTransition<void>(
-            type: PageTransitionType.fade,
-            child: widget.nextPage,
-          ));
+
+    bootupTask();
+
+    // TODO: implement the controller with other animate effects to reduce auto creating individual controllers for the animate effects
+    _controller = AnimationController(vsync: this, duration: 2000.ms);
+  }
+
+  bootupTask() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    var categoryRepo = context.read<CategoriesRepository>();
+    try {
+      await categoryRepo.fetchAndSaveCategories(
+        fetchUrl: EnvVariables.DEFAULTS_URL.isNotEmpty ? Uri.parse(EnvVariables.DEFAULTS_URL) : null,
+      );
+
+      Future.delayed(const Duration(milliseconds: 4500), () {
+        AutoRouter.of(context).replace(NavigationTabRoute());
+      });
+    } catch (e) {
+      logger.e(e);
+      DelightToastBar(
+        position: DelightSnackbarPosition.top,
+        builder: (BuildContext context) {
+          return ToastCard(
+            color: Colors.black,
+            shadowColor: Colors.grey.shade900,
+            leading: Icon(
+              Icons.error_rounded,
+              size: 28,
+              color: Colors.red,
+            ),
+            title: Text(
+              "Something went wrong!\nTry again later.",
+              style: GoogleFonts.ptSerif(color: Colors.white),
+            ),
+          );
+        },
+      ).show(context);
+    }
+
+    setState(() {
+      isLoading = false;
     });
   }
 
@@ -129,7 +179,7 @@ class _SplashViewState extends State<SplashView> {
               ),
             ),
             Positioned(
-              bottom: -mediaQuery.height * 0.035,
+              bottom: -mediaQuery.height * 0.038,
               child: Assets.images.splashTitle
                   .image(
                     width: mediaQuery.width,
@@ -158,6 +208,10 @@ class _SplashViewState extends State<SplashView> {
                     end: -0.1,
                     curve: Curves.decelerate,
                   ),
+            ),
+            Positioned(
+              bottom: -mediaQuery.height * 0.010,
+              child: isLoading ? loadingWidget(size: 20) : SizedBox.shrink(),
             ),
             ...cloudCurtain(mediaQuery),
           ],

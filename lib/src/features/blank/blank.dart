@@ -1,7 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-class BlankView extends StatelessWidget {
-  const BlankView({super.key});
+@RoutePage()
+class MissingView extends StatelessWidget {
+  const MissingView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class BlankView extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          '🦉',
+          '🦉 404 This page doesn\'t exist',
           style: TextStyle(
             color: Colors.white,
             fontSize: 24,

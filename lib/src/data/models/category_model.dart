@@ -21,6 +21,7 @@ class CategoryModel with _$CategoryModel {
     required String title,
     List<VideoModel>? videos,
     @Enumerated(EnumType.name) required CategorySourceType sourceType,
+    @Enumerated(EnumType.name) required LanguageType language,
   }) = _CategoryModel;
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) => _$CategoryModelFromJson(json);

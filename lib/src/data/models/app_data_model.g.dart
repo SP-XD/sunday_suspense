@@ -27,8 +27,13 @@ const AppDataSchema = CollectionSchema(
       name: r'hashCode',
       type: IsarType.long,
     ),
-    r'selectedLanguages': PropertySchema(
+    r'isOnboardingDone': PropertySchema(
       id: 2,
+      name: r'isOnboardingDone',
+      type: IsarType.bool,
+    ),
+    r'selectedLanguages': PropertySchema(
+      id: 3,
       name: r'selectedLanguages',
       type: IsarType.stringList,
       enumMap: _AppDataselectedLanguagesEnumValueMap,
@@ -91,8 +96,9 @@ void _appDataSerialize(
 ) {
   writer.writeString(offsets[0], object.categoryVersion);
   writer.writeLong(offsets[1], object.hashCode);
+  writer.writeBool(offsets[2], object.isOnboardingDone);
   writer.writeStringList(
-      offsets[2], object.selectedLanguages.map((e) => e.name).toList());
+      offsets[3], object.selectedLanguages.map((e) => e.name).toList());
 }
 
 AppData _appDataDeserialize(
@@ -105,8 +111,9 @@ AppData _appDataDeserialize(
     categoryVersion: reader.readStringOrNull(offsets[0]),
     id: id,
   );
+  object.isOnboardingDone = reader.readBool(offsets[2]);
   object.selectedLanguages = reader
-          .readStringList(offsets[2])
+          .readStringList(offsets[3])
           ?.map((e) =>
               _AppDataselectedLanguagesValueEnumMap[e] ?? LanguageType.english)
           .toList() ??
@@ -126,6 +133,8 @@ P _appDataDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (reader
               .readStringList(offset)
               ?.map((e) =>
@@ -521,6 +530,16 @@ extension AppDataQueryFilter
     });
   }
 
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> isOnboardingDoneEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isOnboardingDone',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<AppData, AppData, QAfterFilterCondition>
       selectedLanguagesElementEqualTo(
     LanguageType value, {
@@ -902,6 +921,18 @@ extension AppDataQuerySortBy on QueryBuilder<AppData, AppData, QSortBy> {
       return query.addSortBy(r'hashCode', Sort.desc);
     });
   }
+
+  QueryBuilder<AppData, AppData, QAfterSortBy> sortByIsOnboardingDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isOnboardingDone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterSortBy> sortByIsOnboardingDoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isOnboardingDone', Sort.desc);
+    });
+  }
 }
 
 extension AppDataQuerySortThenBy
@@ -941,6 +972,18 @@ extension AppDataQuerySortThenBy
       return query.addSortBy(r'id', Sort.desc);
     });
   }
+
+  QueryBuilder<AppData, AppData, QAfterSortBy> thenByIsOnboardingDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isOnboardingDone', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterSortBy> thenByIsOnboardingDoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isOnboardingDone', Sort.desc);
+    });
+  }
 }
 
 extension AppDataQueryWhereDistinct
@@ -956,6 +999,12 @@ extension AppDataQueryWhereDistinct
   QueryBuilder<AppData, AppData, QDistinct> distinctByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hashCode');
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QDistinct> distinctByIsOnboardingDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isOnboardingDone');
     });
   }
 
@@ -986,6 +1035,12 @@ extension AppDataQueryProperty
     });
   }
 
+  QueryBuilder<AppData, bool, QQueryOperations> isOnboardingDoneProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isOnboardingDone');
+    });
+  }
+
   QueryBuilder<AppData, List<LanguageType>, QQueryOperations>
       selectedLanguagesProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1007,13 +1062,15 @@ AppData _$AppDataFromJson(Map<String, dynamic> json) {
     id: (json['id'] as num?)?.toInt(),
     categoryVersion: json['categoryVersion'] as String?,
   )
-    ..builtInCategories = AppData._categoryLinksFromJson(
-        json['builtInCategories'] as List<Map<String, dynamic>>)
-    ..userCategories = AppData._categoryLinksFromJson(
-        json['userCategories'] as List<Map<String, dynamic>>)
-    ..selectedLanguages = (json['selectedLanguages'] as List<dynamic>)
-        .map((e) => $enumDecode(_$LanguageTypeEnumMap, e))
-        .toList();
+    ..builtInCategories =
+        AppData._categoryLinksFromJson(json['builtInCategories'] as List?)
+    ..userCategories =
+        AppData._categoryLinksFromJson(json['userCategories'] as List?)
+    ..selectedLanguages = (json['selectedLanguages'] as List<dynamic>?)
+            ?.map((e) => $enumDecode(_$LanguageTypeEnumMap, e))
+            .toList() ??
+        []
+    ..isOnboardingDone = json['isOnboardingDone'] as bool? ?? false;
 }
 
 Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
@@ -1025,6 +1082,7 @@ Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
       'selectedLanguages': instance.selectedLanguages
           .map((e) => _$LanguageTypeEnumMap[e]!)
           .toList(),
+      'isOnboardingDone': instance.isOnboardingDone,
     };
 
 const _$LanguageTypeEnumMap = {

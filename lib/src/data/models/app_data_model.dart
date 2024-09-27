@@ -22,13 +22,22 @@ class AppData {
     toJson: _categoryLinksToJson,
     fromJson: _categoryLinksFromJson,
     required: false,
+    includeIfNull: false,
   )
   IsarLinks<CategoryModel> userCategories = IsarLinks<CategoryModel>();
+  @Enumerated(EnumType.name)
   @JsonKey(
     required: false,
+    includeIfNull: false,
+    defaultValue: [],
   )
-  @Enumerated(EnumType.name)
   List<LanguageType> selectedLanguages = [];
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+    defaultValue: false,
+  )
+  bool isOnboardingDone = false;
 
   AppData({
     this.id,
@@ -46,9 +55,15 @@ class AppData {
     return categories.toList();
   }
 
-  static IsarLinks<CategoryModel> _categoryLinksFromJson(List<Map<String, dynamic>> categories) {
+  static IsarLinks<CategoryModel> _categoryLinksFromJson(List<dynamic>? categories) {
+    if (categories == null) {
+      return IsarLinks<CategoryModel>();
+    }
+
     var dbProvider = getIt<OfflineDbProvider>();
-    dbProvider.upsertCategory(categories.map((c) => CategoryModel.fromJson(c)).toList());
+    dbProvider
+        .upsertCategory(categories.map((c) => CategoryModel.fromJson(c as Map<String, dynamic>)).toList());
+
     return dbProvider.appData?.builtInCategories ?? IsarLinks<CategoryModel>();
   }
 

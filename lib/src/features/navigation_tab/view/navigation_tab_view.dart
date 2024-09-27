@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:ui';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -15,6 +16,7 @@ import 'package:midnight_suspense/src/features/player/player.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 import 'package:scroll_to_hide/scroll_to_hide.dart';
 
+@RoutePage()
 class NavigationTabView extends StatefulWidget {
   const NavigationTabView({super.key});
 
@@ -30,7 +32,7 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
 
   List<Widget> pages = [
     HomeView(),
-    BlankView(),
+    MissingView(),
     SettingsView(),
   ];
 

@@ -22,25 +22,31 @@ const CategoryModelSchema = CollectionSchema(
       name: r'category_id',
       type: IsarType.string,
     ),
-    r'sourceType': PropertySchema(
+    r'language': PropertySchema(
       id: 1,
+      name: r'language',
+      type: IsarType.string,
+      enumMap: _CategoryModellanguageEnumValueMap,
+    ),
+    r'sourceType': PropertySchema(
+      id: 2,
       name: r'sourceType',
       type: IsarType.string,
       enumMap: _CategoryModelsourceTypeEnumValueMap,
     ),
     r'title': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'type',
       type: IsarType.string,
       enumMap: _CategoryModeltypeEnumValueMap,
     ),
     r'videos': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'videos',
       type: IsarType.objectList,
       target: r'VideoModel',
@@ -87,6 +93,7 @@ int _categoryModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.category_id.length * 3;
+  bytesCount += 3 + object.language.name.length * 3;
   bytesCount += 3 + object.sourceType.name.length * 3;
   bytesCount += 3 + object.title.length * 3;
   bytesCount += 3 + object.type.name.length * 3;
@@ -114,11 +121,12 @@ void _categoryModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.category_id);
-  writer.writeString(offsets[1], object.sourceType.name);
-  writer.writeString(offsets[2], object.title);
-  writer.writeString(offsets[3], object.type.name);
+  writer.writeString(offsets[1], object.language.name);
+  writer.writeString(offsets[2], object.sourceType.name);
+  writer.writeString(offsets[3], object.title);
+  writer.writeString(offsets[4], object.type.name);
   writer.writeObjectList<VideoModel>(
-    offsets[4],
+    offsets[5],
     allOffsets,
     VideoModelSchema.serialize,
     object.videos,
@@ -134,14 +142,17 @@ CategoryModel _categoryModelDeserialize(
   final object = CategoryModel(
     category_id: reader.readString(offsets[0]),
     id: id,
-    sourceType: _CategoryModelsourceTypeValueEnumMap[
+    language: _CategoryModellanguageValueEnumMap[
             reader.readStringOrNull(offsets[1])] ??
+        LanguageType.english,
+    sourceType: _CategoryModelsourceTypeValueEnumMap[
+            reader.readStringOrNull(offsets[2])] ??
         CategorySourceType.builtInCategory,
-    title: reader.readString(offsets[2]),
-    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[3])] ??
+    title: reader.readString(offsets[3]),
+    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[4])] ??
         CategoryType.channel,
     videos: reader.readObjectList<VideoModel>(
-      offsets[4],
+      offsets[5],
       VideoModelSchema.deserialize,
       allOffsets,
       VideoModel(),
@@ -160,15 +171,19 @@ P _categoryModelDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
+      return (_CategoryModellanguageValueEnumMap[
+              reader.readStringOrNull(offset)] ??
+          LanguageType.english) as P;
+    case 2:
       return (_CategoryModelsourceTypeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           CategorySourceType.builtInCategory) as P;
-    case 2:
-      return (reader.readString(offset)) as P;
     case 3:
+      return (reader.readString(offset)) as P;
+    case 4:
       return (_CategoryModeltypeValueEnumMap[reader.readStringOrNull(offset)] ??
           CategoryType.channel) as P;
-    case 4:
+    case 5:
       return (reader.readObjectList<VideoModel>(
         offset,
         VideoModelSchema.deserialize,
@@ -180,6 +195,22 @@ P _categoryModelDeserializeProp<P>(
   }
 }
 
+const _CategoryModellanguageEnumValueMap = {
+  r'english': r'english',
+  r'bengali': r'bengali',
+  r'hindi': r'hindi',
+  r'telegu': r'telegu',
+  r'tamil': r'tamil',
+  r'kannada': r'kannada',
+};
+const _CategoryModellanguageValueEnumMap = {
+  r'english': LanguageType.english,
+  r'bengali': LanguageType.bengali,
+  r'hindi': LanguageType.hindi,
+  r'telegu': LanguageType.telegu,
+  r'tamil': LanguageType.tamil,
+  r'kannada': LanguageType.kannada,
+};
 const _CategoryModelsourceTypeEnumValueMap = {
   r'builtInCategory': r'builtInCategory',
   r'userCategory': r'userCategory',
@@ -580,6 +611,142 @@ extension CategoryModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageEqualTo(
+    LanguageType value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageGreaterThan(
+    LanguageType value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageLessThan(
+    LanguageType value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageBetween(
+    LanguageType lower,
+    LanguageType upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'language',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'language',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'language',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'language',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      languageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'language',
+        value: '',
       ));
     });
   }
@@ -1127,6 +1294,19 @@ extension CategoryModelQuerySortBy
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortByLanguage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy>
+      sortByLanguageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortBySourceType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sourceType', Sort.asc);
@@ -1192,6 +1372,19 @@ extension CategoryModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenByLanguage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy>
+      thenByLanguageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'language', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenBySourceType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'sourceType', Sort.asc);
@@ -1239,6 +1432,13 @@ extension CategoryModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByLanguage(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'language', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctBySourceType(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1272,6 +1472,13 @@ extension CategoryModelQueryProperty
   QueryBuilder<CategoryModel, String, QQueryOperations> category_idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'category_id');
+    });
+  }
+
+  QueryBuilder<CategoryModel, LanguageType, QQueryOperations>
+      languageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'language');
     });
   }
 
@@ -1316,6 +1523,7 @@ _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
           ?.map((e) => VideoModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       sourceType: $enumDecode(_$CategorySourceTypeEnumMap, json['sourceType']),
+      language: $enumDecode(_$LanguageTypeEnumMap, json['language']),
     );
 
 Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
@@ -1326,6 +1534,7 @@ Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
       'title': instance.title,
       'videos': instance.videos,
       'sourceType': _$CategorySourceTypeEnumMap[instance.sourceType]!,
+      'language': _$LanguageTypeEnumMap[instance.language]!,
     };
 
 const _$CategoryTypeEnumMap = {
@@ -1337,4 +1546,13 @@ const _$CategoryTypeEnumMap = {
 const _$CategorySourceTypeEnumMap = {
   CategorySourceType.builtInCategory: 'builtInCategory',
   CategorySourceType.userCategory: 'userCategory',
+};
+
+const _$LanguageTypeEnumMap = {
+  LanguageType.english: 'english',
+  LanguageType.bengali: 'bengali',
+  LanguageType.hindi: 'hindi',
+  LanguageType.telegu: 'telegu',
+  LanguageType.tamil: 'tamil',
+  LanguageType.kannada: 'kannada',
 };

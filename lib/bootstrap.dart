@@ -10,6 +10,7 @@ import 'package:logger/logger.dart';
 import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
 import 'package:midnight_suspense/src/data/models/app_data_model.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
+import 'package:midnight_suspense/src/data/repositories/app_data_repository.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
 import "package:audio_service/audio_service.dart" as audio_service;
 
@@ -33,7 +34,7 @@ class AppBlocObserver extends BlocObserver {
 }
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
-  await DotEnv().load(fileName: '.env');
+  await dotenv.load(fileName: '.env');
 
   await WidgetsFlutterBinding.ensureInitialized();
 
@@ -56,7 +57,9 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     return audioService;
   });
 
-  getIt.registerSingleton(OfflineDbProvider(schemas: [AppDataSchema, CategoryModelSchema]));
+  var offlineDbProvider =
+      getIt.registerSingleton(OfflineDbProvider(schemas: [AppDataSchema, CategoryModelSchema]));
+  getIt.registerLazySingleton(() => AppDataRepository(offlineDbProvider: offlineDbProvider));
 
   // Add cross-flavor configuration here
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);

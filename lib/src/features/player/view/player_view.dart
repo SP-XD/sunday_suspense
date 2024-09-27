@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -10,6 +11,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../bloc/player_bloc.dart';
 
+@RoutePage()
 class PlayerView extends StatefulWidget {
   const PlayerView({super.key, required this.onBackPressed});
   final void Function() onBackPressed;

@@ -1,6 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
+@RoutePage()
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
 
