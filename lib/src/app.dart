@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/configs/app_router.dart';
-import 'package:midnight_suspense/src/configs/env_variables.dart';
+import 'package:midnight_suspense/src/constants/env_variables.dart';
 import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
 import 'package:midnight_suspense/src/features/preferred_languages/bloc/bloc/preferred_languages_bloc.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
