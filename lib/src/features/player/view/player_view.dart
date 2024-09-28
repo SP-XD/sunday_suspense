@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:midnight_suspense/src/features/common_widgets/blur_art.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
@@ -27,56 +28,63 @@ class _PlayerViewState extends State<PlayerView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_downward_rounded,
-            color: Colors.grey,
+    return GestureDetector(
+      onVerticalDragEnd: (details) {
+        if (details.velocity.pixelsPerSecond.dy > 20) widget.onBackPressed();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: IconButton(
+            icon: Icon(
+              FontAwesome.chevron_down_solid,
+              color: Colors.grey,
+            ),
+            onPressed: widget.onBackPressed,
           ),
-          onPressed: widget.onBackPressed,
         ),
-      ),
-      body: BlocBuilder<PlayerBloc, PlayerState>(
-        builder: (context, state) {
-          return Stack(
-            children: [
-              Positioned.fill(
-                child: DecoratedBox(
-                  position: DecorationPosition.foreground,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black,
-                      ],
-                      stops: [0.5, 0.99],
+        body: BlocBuilder<PlayerBloc, PlayerState>(
+          builder: (context, state) {
+            return Stack(
+              children: [
+                Positioned.fill(
+                  child: DecoratedBox(
+                    position: DecorationPosition.foreground,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black,
+                        ],
+                        stops: [0.5, 0.99],
+                      ),
                     ),
-                  ),
-                  child: state.mapOrNull(
-                    loading: (initialState) =>
-                        blurArt(imageUrl: initialState.video?.thumbnails?.lowResUrl ?? ''),
-                    playing: (playingState) => blurArt(imageUrl: playingState.audioService.currentThumbnail),
-                    paused: (pausedState) => blurArt(imageUrl: pausedState.audioService.currentThumbnail),
-                    stopped: (stoppedState) => blurArt(imageUrl: stoppedState.audioService.currentThumbnail),
+                    child: state.mapOrNull(
+                      loading: (initialState) =>
+                          blurArt(imageUrl: initialState.video?.thumbnails?.lowResUrl ?? ''),
+                      playing: (playingState) =>
+                          blurArt(imageUrl: playingState.audioService.currentThumbnail),
+                      paused: (pausedState) => blurArt(imageUrl: pausedState.audioService.currentThumbnail),
+                      stopped: (stoppedState) =>
+                          blurArt(imageUrl: stoppedState.audioService.currentThumbnail),
+                    ),
                   ),
                 ),
-              ),
-              state.mapOrNull(
-                    loading: (initialState) => Center(
-                      child: loadingWidget(),
-                    ),
-                    playing: (playingState) => playerControls(context, playingState.audioService, true),
-                    paused: (pausedState) => playerControls(context, pausedState.audioService, false),
-                    stopped: (stoppedState) => playerControls(context, stoppedState.audioService, false),
-                  ) ??
-                  SizedBox.shrink(),
-            ],
-          );
-        },
+                state.mapOrNull(
+                      loading: (initialState) => Center(
+                        child: loadingWidget(),
+                      ),
+                      playing: (playingState) => playerControls(context, playingState.audioService, true),
+                      paused: (pausedState) => playerControls(context, pausedState.audioService, false),
+                      stopped: (stoppedState) => playerControls(context, stoppedState.audioService, false),
+                    ) ??
+                    SizedBox.shrink(),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

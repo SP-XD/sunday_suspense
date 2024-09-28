@@ -93,6 +93,10 @@ class _MiniPlayerState extends State<MiniPlayer> {
               if (state.mapOrNull(initial: (_) => true) ?? false) return;
               openContainerAction();
             },
+            onVerticalDragEnd: (details) {
+              if (state.mapOrNull(initial: (_) => true) ?? false) return;
+              if (details.velocity.pixelsPerSecond.dy < 20) openContainerAction();
+            },
             child: state.mapOrNull(
               initial: (value) => thumbnailAndTitle(
                 textTheme,
