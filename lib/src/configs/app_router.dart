@@ -18,8 +18,9 @@ class AppRouter extends RootStackRouter {
             //   resolver.next(true);
             // } else {
             appDataRepo.watchOnboardingStatus().listen((status) {
+              logger.d('watch onboarding status: ${status}');
               if (!status.isNullOrFalse) {
-                resolver.next(true);
+                resolver.next();
               } else {
                 resolver.redirect(PreferredLanguagesRoute());
               }
@@ -27,6 +28,7 @@ class AppRouter extends RootStackRouter {
             // }
           },
           page: NavigationTabRoute.page,
+          type: RouteType.custom(transitionsBuilder: TransitionsBuilders.fadeIn),
           children: [
             AutoRoute(page: HomeRoute.page),
             AutoRoute(page: CategoryRoute.page),

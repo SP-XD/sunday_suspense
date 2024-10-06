@@ -52,3 +52,56 @@ enum LanguageType {
   tamil,
   kannada,
 }
+
+extension LanguageTypeExtension on LanguageType {
+  String get symbol {
+    switch (this) {
+      case LanguageType.english:
+        return 'E';
+      case LanguageType.bengali:
+        return 'অ';
+      case LanguageType.hindi:
+        return 'अ';
+      case LanguageType.telegu:
+        return 'అ';
+      case LanguageType.tamil:
+        return 'அ';
+      case LanguageType.kannada:
+        return 'ಅ';
+    }
+  }
+
+  String get displayName {
+    switch (this) {
+      case LanguageType.english:
+        return 'English';
+      case LanguageType.bengali:
+        return 'Bengali';
+      case LanguageType.hindi:
+        return 'Hindi';
+      case LanguageType.telegu:
+        return 'Telegu';
+      case LanguageType.tamil:
+        return 'Tamil';
+      case LanguageType.kannada:
+        return 'Kannada';
+    }
+  }
+
+  String get displayNameForUseWithSymbol {
+    switch (this) {
+      case LanguageType.english:
+        return 'nglish'; // as E is already the symbol
+      case LanguageType.bengali:
+        return 'Bengali';
+      case LanguageType.hindi:
+        return 'Hindi';
+      case LanguageType.telegu:
+        return 'Telegu';
+      case LanguageType.tamil:
+        return 'Tamil';
+      case LanguageType.kannada:
+        return 'Kannada';
+    }
+  }
+}
