@@ -138,7 +138,8 @@ class OfflineDbProvider {
   Stream<bool?> watchOnboardingStatus() {
     return db.appDatas
         .watchObject(_defaultAppDataId, fireImmediately: true)
-        .map((appData) => appData?.isOnboardingDone);
+        .asyncMap((appData) => appData?.isOnboardingDone)
+        .distinct();
   }
 
   Future<void> updateSelectedLanguages(List<LanguageType> languages) async {
