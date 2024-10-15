@@ -22,18 +22,30 @@ const AppDataSchema = CollectionSchema(
       name: r'categoryVersion',
       type: IsarType.string,
     ),
-    r'hashCode': PropertySchema(
+    r'dataQuality': PropertySchema(
       id: 1,
+      name: r'dataQuality',
+      type: IsarType.string,
+      enumMap: _AppDatadataQualityEnumValueMap,
+    ),
+    r'hashCode': PropertySchema(
+      id: 2,
       name: r'hashCode',
       type: IsarType.long,
     ),
     r'isOnboardingDone': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'isOnboardingDone',
       type: IsarType.bool,
     ),
+    r'newReleases': PropertySchema(
+      id: 4,
+      name: r'newReleases',
+      type: IsarType.object,
+      target: r'NewReleasesModel',
+    ),
     r'selectedLanguages': PropertySchema(
-      id: 3,
+      id: 5,
       name: r'selectedLanguages',
       type: IsarType.stringList,
       enumMap: _AppDataselectedLanguagesEnumValueMap,
@@ -59,7 +71,14 @@ const AppDataSchema = CollectionSchema(
       single: false,
     )
   },
-  embeddedSchemas: {},
+  embeddedSchemas: {
+    r'NewReleasesModel': NewReleasesModelSchema,
+    r'VideoModel': VideoModelSchema,
+    r'VideoId': VideoIdSchema,
+    r'ChannelId': ChannelIdSchema,
+    r'ThumbnailSet': ThumbnailSetSchema,
+    r'Engagement': EngagementSchema
+  },
   getId: _appDataGetId,
   getLinks: _appDataGetLinks,
   attach: _appDataAttach,
@@ -76,6 +95,15 @@ int _appDataEstimateSize(
     final value = object.categoryVersion;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
+    }
+  }
+  bytesCount += 3 + object.dataQuality.name.length * 3;
+  {
+    final value = object.newReleases;
+    if (value != null) {
+      bytesCount += 3 +
+          NewReleasesModelSchema.estimateSize(
+              value, allOffsets[NewReleasesModel]!, allOffsets);
     }
   }
   bytesCount += 3 + object.selectedLanguages.length * 3;
@@ -95,10 +123,17 @@ void _appDataSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.categoryVersion);
-  writer.writeLong(offsets[1], object.hashCode);
-  writer.writeBool(offsets[2], object.isOnboardingDone);
+  writer.writeString(offsets[1], object.dataQuality.name);
+  writer.writeLong(offsets[2], object.hashCode);
+  writer.writeBool(offsets[3], object.isOnboardingDone);
+  writer.writeObject<NewReleasesModel>(
+    offsets[4],
+    allOffsets,
+    NewReleasesModelSchema.serialize,
+    object.newReleases,
+  );
   writer.writeStringList(
-      offsets[3], object.selectedLanguages.map((e) => e.name).toList());
+      offsets[5], object.selectedLanguages.map((e) => e.name).toList());
 }
 
 AppData _appDataDeserialize(
@@ -111,9 +146,17 @@ AppData _appDataDeserialize(
     categoryVersion: reader.readStringOrNull(offsets[0]),
     id: id,
   );
-  object.isOnboardingDone = reader.readBool(offsets[2]);
+  object.dataQuality =
+      _AppDatadataQualityValueEnumMap[reader.readStringOrNull(offsets[1])] ??
+          DataQuality.low;
+  object.isOnboardingDone = reader.readBool(offsets[3]);
+  object.newReleases = reader.readObjectOrNull<NewReleasesModel>(
+    offsets[4],
+    NewReleasesModelSchema.deserialize,
+    allOffsets,
+  );
   object.selectedLanguages = reader
-          .readStringList(offsets[3])
+          .readStringList(offsets[5])
           ?.map((e) =>
               _AppDataselectedLanguagesValueEnumMap[e] ?? LanguageType.english)
           .toList() ??
@@ -131,10 +174,20 @@ P _appDataDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (_AppDatadataQualityValueEnumMap[
+              reader.readStringOrNull(offset)] ??
+          DataQuality.low) as P;
     case 2:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 3:
+      return (reader.readBool(offset)) as P;
+    case 4:
+      return (reader.readObjectOrNull<NewReleasesModel>(
+        offset,
+        NewReleasesModelSchema.deserialize,
+        allOffsets,
+      )) as P;
+    case 5:
       return (reader
               .readStringList(offset)
               ?.map((e) =>
@@ -147,6 +200,16 @@ P _appDataDeserializeProp<P>(
   }
 }
 
+const _AppDatadataQualityEnumValueMap = {
+  r'low': r'low',
+  r'medium': r'medium',
+  r'high': r'high',
+};
+const _AppDatadataQualityValueEnumMap = {
+  r'low': DataQuality.low,
+  r'medium': DataQuality.medium,
+  r'high': DataQuality.high,
+};
 const _AppDataselectedLanguagesEnumValueMap = {
   r'english': r'english',
   r'bengali': r'bengali',
@@ -409,6 +472,137 @@ extension AppDataQueryFilter
     });
   }
 
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityEqualTo(
+    DataQuality value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dataQuality',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityGreaterThan(
+    DataQuality value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'dataQuality',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityLessThan(
+    DataQuality value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'dataQuality',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityBetween(
+    DataQuality lower,
+    DataQuality upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'dataQuality',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'dataQuality',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'dataQuality',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'dataQuality',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'dataQuality',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> dataQualityIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'dataQuality',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition>
+      dataQualityIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'dataQuality',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<AppData, AppData, QAfterFilterCondition> hashCodeEqualTo(
       int value) {
     return QueryBuilder.apply(this, (query) {
@@ -536,6 +730,22 @@ extension AppDataQueryFilter
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isOnboardingDone',
         value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> newReleasesIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'newReleases',
+      ));
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> newReleasesIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'newReleases',
       ));
     });
   }
@@ -769,7 +979,14 @@ extension AppDataQueryFilter
 }
 
 extension AppDataQueryObject
-    on QueryBuilder<AppData, AppData, QFilterCondition> {}
+    on QueryBuilder<AppData, AppData, QFilterCondition> {
+  QueryBuilder<AppData, AppData, QAfterFilterCondition> newReleases(
+      FilterQuery<NewReleasesModel> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'newReleases');
+    });
+  }
+}
 
 extension AppDataQueryLinks
     on QueryBuilder<AppData, AppData, QFilterCondition> {
@@ -910,6 +1127,18 @@ extension AppDataQuerySortBy on QueryBuilder<AppData, AppData, QSortBy> {
     });
   }
 
+  QueryBuilder<AppData, AppData, QAfterSortBy> sortByDataQuality() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dataQuality', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterSortBy> sortByDataQualityDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dataQuality', Sort.desc);
+    });
+  }
+
   QueryBuilder<AppData, AppData, QAfterSortBy> sortByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'hashCode', Sort.asc);
@@ -946,6 +1175,18 @@ extension AppDataQuerySortThenBy
   QueryBuilder<AppData, AppData, QAfterSortBy> thenByCategoryVersionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'categoryVersion', Sort.desc);
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterSortBy> thenByDataQuality() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dataQuality', Sort.asc);
+    });
+  }
+
+  QueryBuilder<AppData, AppData, QAfterSortBy> thenByDataQualityDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'dataQuality', Sort.desc);
     });
   }
 
@@ -996,6 +1237,13 @@ extension AppDataQueryWhereDistinct
     });
   }
 
+  QueryBuilder<AppData, AppData, QDistinct> distinctByDataQuality(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'dataQuality', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<AppData, AppData, QDistinct> distinctByHashCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'hashCode');
@@ -1029,6 +1277,12 @@ extension AppDataQueryProperty
     });
   }
 
+  QueryBuilder<AppData, DataQuality, QQueryOperations> dataQualityProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'dataQuality');
+    });
+  }
+
   QueryBuilder<AppData, int, QQueryOperations> hashCodeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'hashCode');
@@ -1038,6 +1292,13 @@ extension AppDataQueryProperty
   QueryBuilder<AppData, bool, QQueryOperations> isOnboardingDoneProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isOnboardingDone');
+    });
+  }
+
+  QueryBuilder<AppData, NewReleasesModel?, QQueryOperations>
+      newReleasesProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'newReleases');
     });
   }
 
@@ -1070,7 +1331,10 @@ AppData _$AppDataFromJson(Map<String, dynamic> json) {
             ?.map((e) => $enumDecode(_$LanguageTypeEnumMap, e))
             .toList() ??
         []
-    ..isOnboardingDone = json['isOnboardingDone'] as bool? ?? false;
+    ..isOnboardingDone = json['isOnboardingDone'] as bool? ?? false
+    ..dataQuality =
+        $enumDecodeNullable(_$DataQualityEnumMap, json['dataQuality']) ??
+            DataQuality.high;
 }
 
 Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
@@ -1083,6 +1347,7 @@ Map<String, dynamic> _$AppDataToJson(AppData instance) => <String, dynamic>{
           .map((e) => _$LanguageTypeEnumMap[e]!)
           .toList(),
       'isOnboardingDone': instance.isOnboardingDone,
+      'dataQuality': _$DataQualityEnumMap[instance.dataQuality]!,
     };
 
 const _$LanguageTypeEnumMap = {
@@ -1092,4 +1357,10 @@ const _$LanguageTypeEnumMap = {
   LanguageType.telegu: 'telegu',
   LanguageType.tamil: 'tamil',
   LanguageType.kannada: 'kannada',
+};
+
+const _$DataQualityEnumMap = {
+  DataQuality.low: 'low',
+  DataQuality.medium: 'medium',
+  DataQuality.high: 'high',
 };

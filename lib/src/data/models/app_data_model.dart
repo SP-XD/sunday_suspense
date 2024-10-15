@@ -7,6 +7,12 @@ import 'package:isar/isar.dart';
 import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
+import 'package:midnight_suspense/src/data/models/channel_id_model.dart';
+import 'package:midnight_suspense/src/data/models/engagement_model.dart';
+import 'package:midnight_suspense/src/data/models/new_releases_model.dart';
+import 'package:midnight_suspense/src/data/models/thumbnail_set_model.dart';
+import 'package:midnight_suspense/src/data/models/video_id_model.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
 
 part 'app_data_model.g.dart';
 
@@ -38,6 +44,21 @@ class AppData {
     defaultValue: false,
   )
   bool isOnboardingDone = false;
+  @Enumerated(EnumType.name)
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+    defaultValue: DataQuality.high,
+  )
+  DataQuality dataQuality = DataQuality.high;
+  @JsonKey(
+    required: false,
+    includeIfNull: false,
+    includeFromJson: false,
+    includeToJson: false,
+  )
+  // TODO: implement this with notifying of new releases in the future
+  NewReleasesModel? newReleases;
 
   AppData({
     this.id,
@@ -79,4 +100,10 @@ class AppData {
 
   @override
   int get hashCode => id.hashCode ^ categoryVersion.hashCode;
+}
+
+enum DataQuality {
+  low,
+  medium,
+  high,
 }

@@ -5,6 +5,7 @@ import 'package:audio_service/audio_service.dart' as aps;
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
+import 'package:midnight_suspense/src/data/models/app_data_model.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -223,12 +224,6 @@ class AudioService extends aps.BaseAudioHandler with aps.SeekHandler {
       queueIndex: event.currentIndex,
     );
   }
-}
-
-enum DataQuality {
-  low,
-  medium,
-  high,
 }
 
 // class CustomAudioStreamSource extends StreamAudioSource {

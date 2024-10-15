@@ -5,6 +5,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide SearchBar;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:midnight_suspense/src/features/category/view/category_tab_widget.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/features/home/bloc/home_bloc.dart';
@@ -35,6 +36,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
       resizeToAvoidBottomInset: false,
       body: Container(
         height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -58,77 +60,10 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             //   closedBuilder: (context, action) => SearchBar(),
             //   openBuilder: (context, action) => SearchBarView(),
             // ),
-            BlocConsumer<HomeBloc, HomeState>(
-              listener: (context, state) {
-                // log("state: $state @listener");
-              },
-              builder: (context, state) {
-                // log("state: $state @builder");
-                return state.map(
-                  initial: (_) {
-                    context.read<HomeBloc>().add(HomeScreenLoadedEvent());
-
-                    return Expanded(child: loadingWidget());
-                  },
-                  loading: (_) {
-                    return Expanded(child: loadingWidget());
-                  },
-                  videosLoaded: (states) {
-                    return Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TabBar(
-                            controller: _tabController,
-                            labelColor: Colors.red.shade700,
-                            indicator: BoxDecoration(
-                              gradient: RadialGradient(
-                                colors: [Colors.red.withOpacity(0.2), Colors.transparent],
-                                radius: 1,
-                                stops: [0.1, 1],
-                                center: Alignment.bottomCenter,
-                              ),
-                              borderRadius: BorderRadius.circular(0),
-                            ),
-                            unselectedLabelColor: Colors.grey.shade700,
-                            labelStyle: GoogleFonts.creepster(),
-                            dividerColor: Colors.transparent,
-                            isScrollable: true,
-                            tabAlignment: TabAlignment.start,
-                            tabs: [
-                              Tab(text: "Sunday Suspense"),
-                              Tab(text: "Midnight Station"),
-                              Tab(text: "Horror SP XD"),
-                              Tab(text: "Horror SP XD"),
-                              Tab(text: "Horror SP XD"),
-                            ],
-                          ),
-                          // TabBarView(children: []),
-                          Expanded(
-                            child: ListView.builder(
-                              controller: context.watch<NavScrollControllerCubit>().state,
-                              shrinkWrap: true,
-                              itemCount: states.videos?.length ?? 10, //(state).videos?.length ?? 0,
-                              physics: BouncingScrollPhysics(),
-                              itemBuilder: (context, index) => Padding(
-                                padding: const EdgeInsets.only(bottom: 15.0, left: 20, right: 20),
-                                child: ItemCardBig(
-                                  key: Key(index.toString()),
-                                  video: states.videos![index],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  error: (_) {
-                    return Center(child: Text("Something went wrong"));
-                  },
-                );
-              },
-            ),
+            Expanded(
+              flex: 1,
+              child: CategoryTabWidget(),
+            )
           ],
         ),
       ),

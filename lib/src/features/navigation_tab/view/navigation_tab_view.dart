@@ -8,6 +8,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gradient_borders/gradient_borders.dart';
+import 'package:midnight_suspense/src/features/category/category.dart';
 import 'package:midnight_suspense/src/features/settings/settings.dart';
 import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/features/blank/blank.dart';
@@ -32,7 +33,7 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
 
   List<Widget> pages = [
     HomeView(),
-    MissingView(),
+    CategoryView(),
     SettingsView(),
   ];
 

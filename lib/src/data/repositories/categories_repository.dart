@@ -15,6 +15,7 @@ class CategoriesRepository {
     // fetchAndSaveCategories(fetchUrl: defaultsUrl);
   }
 
+  /// use the [getHistoryList] method for history list
   Future<List<CategoryModel>> getCategories() async {
     // Fetch categories from API
     return await offlineDbProvider.getCategories();

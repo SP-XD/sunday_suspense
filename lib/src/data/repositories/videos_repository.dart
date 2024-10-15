@@ -10,14 +10,16 @@ class VideosRepository {
   late final YtExplodeProvider ytProvider;
 
   Future<List<VideoModel>> getChannelVideos(String channelHandle) async {
-    final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle(channelHandle);
+    final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle("@$channelHandle");
     final response = await ytProvider.ytExplodeInstance!.channels.getUploadsFromPage(channelId.id);
     // response.nextPage();
+
     return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
   }
 
   Future<List<VideoModel>> getPlaylistVideos(String playlistId) async {
     final response = await ytProvider.ytExplodeInstance!.playlists.getVideos(playlistId);
+
     return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
   }
 

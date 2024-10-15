@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 
+// TODO: replace with palette_generator package instead of blurring image
 class blurArt extends StatelessWidget {
   const blurArt({
     super.key,
