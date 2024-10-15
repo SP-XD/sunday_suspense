@@ -112,9 +112,9 @@ class _SplashViewState extends State<SplashView> {
                   delay: 500.ms,
                 )
                 .scale(
-                  begin: Offset(1.2, 1.2),
+                  begin: Offset(1.15, 1.15),
                   end: Offset(1, 1),
-                  duration: 5000.ms,
+                  duration: 8000.ms,
                   curve: Curves.decelerate,
                 ),
             Positioned(
