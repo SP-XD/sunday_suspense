@@ -8,7 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/configs/app_router.gr.dart';
-import 'package:midnight_suspense/src/configs/env_variables.dart';
+import 'package:midnight_suspense/src/constants/env_variables.dart';
 import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
@@ -22,8 +22,7 @@ class SplashView extends StatefulWidget {
   State<SplashView> createState() => _SplashViewState();
 }
 
-class _SplashViewState extends State<SplashView> with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
+class _SplashViewState extends State<SplashView> {
   bool isLoading = false;
 
   @override
@@ -31,13 +30,10 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
     super.initState();
     FocusManager.instance.primaryFocus?.unfocus();
 
-    bootupTask();
-
-    // TODO: implement the controller with other animate effects to reduce auto creating individual controllers for the animate effects
-    _controller = AnimationController(vsync: this, duration: 2000.ms);
+    bootUpTask();
   }
 
-  bootupTask() async {
+  void bootUpTask() async {
     setState(() {
       isLoading = true;
     });
@@ -111,7 +107,16 @@ class _SplashViewState extends State<SplashView> with SingleTickerProviderStateM
                       );
                     },
                   ),
-            ),
+            )
+                .animate(
+                  delay: 500.ms,
+                )
+                .scale(
+                  begin: Offset(1.2, 1.2),
+                  end: Offset(1, 1),
+                  duration: 5000.ms,
+                  curve: Curves.decelerate,
+                ),
             Positioned(
               top: -100,
               left: -150,
