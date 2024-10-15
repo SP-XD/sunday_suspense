@@ -13,6 +13,7 @@ import 'package:midnight_suspense/src/data/models/category_model.dart';
 import 'package:midnight_suspense/src/data/repositories/app_data_repository.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
 import "package:audio_service/audio_service.dart" as audio_service;
+import 'package:midnight_suspense/src/services/bloc_manager_service.dart';
 
 GetIt getIt = GetIt.instance;
 Logger logger = Logger();
@@ -60,6 +61,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   var offlineDbProvider =
       getIt.registerSingleton(OfflineDbProvider(schemas: [AppDataSchema, CategoryModelSchema]));
   getIt.registerLazySingleton(() => AppDataRepository(offlineDbProvider: offlineDbProvider));
+
+  getIt.registerLazySingleton(() => VBlocManagerService());
 
   // Add cross-flavor configuration here
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);

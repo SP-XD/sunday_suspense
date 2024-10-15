@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:midnight_suspense/bootstrap.dart';
+import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/features/videos/videos.dart';
+import 'package:midnight_suspense/src/services/bloc_manager_service.dart';
 
 import '../bloc/category_bloc.dart';
 
@@ -54,9 +57,16 @@ class CategoryTabWidget extends StatelessWidget {
                       physics: const NeverScrollableScrollPhysics(),
                       children: loadedState.categories
                           .map(
-                            (c) => VideosWidget(
-                              categoryId: c.category_id,
-                              categoryType: c.type,
+                            (c) => BlocProvider.value(
+                              value: getIt<VBlocManagerService>().getBloc(
+                                c.category_id,
+                                c.type,
+                                RepositoryProvider.of<VideosRepository>(context),
+                              ),
+                              child: VideosWidget(
+                                categoryId: c.category_id,
+                                categoryType: c.type,
+                              ),
                             ),
                           )
                           .toList(),
