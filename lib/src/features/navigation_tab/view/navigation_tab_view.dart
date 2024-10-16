@@ -70,135 +70,166 @@ class _NavigationTabViewState extends State<NavigationTabView> with TickerProvid
             duration: Duration(milliseconds: 500),
           ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.transparent,
-              //   Colors.transparent,
-              Color.fromARGB(190, 60, 4, 0),
-            ],
-            stops: [0.1, 0.9],
-          ),
-        ),
-        child: ScrollToHide(
-          scrollController: context.watch<NavScrollControllerCubit>().state,
-          hideDirection: Axis.vertical,
-          height: 80 + _miniPlayerHeight,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                border: GradientBoxBorder(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.grey.shade900,
-                      Colors.transparent,
+      floatingActionButton: ScrollToHide(
+        scrollController: context.watch<NavScrollControllerCubit>().state,
+        hideDirection: Axis.vertical,
+        height: 75 + _miniPlayerHeight,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Container(
+                  width: 100,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(50),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 20,
+                        offset: Offset(0, 4),
+                        spreadRadius: 20,
+                      ),
+                      //   BoxShadow(
+                      //     color: Colors.red.shade900,
+                      //     blurRadius: 40,
+                      //     offset: Offset(0, -4),
+                      //     spreadRadius: -8,
+                      //   ),
+                      BoxShadow(
+                        color: Colors.red.shade900,
+                        blurRadius: 80,
+                        offset: Offset(0, -2),
+                        spreadRadius: 10,
+                      ),
                     ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
                   ),
-                  width: 1,
                 ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(1),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(25),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20, tileMode: TileMode.decal),
-                    child: AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      height: 70 + _miniPlayerHeight,
-                      constraints: BoxConstraints(maxHeight: 145, minHeight: 70),
-                      width: double.maxFinite,
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.all(Radius.circular(25)),
-                        //   border: Border.all(
-                        //     color: Colors.grey.withOpacity(0.1),
-                        //     width: 1,
-                        //     strokeAlign: BorderSide.strokeAlignInside,
-                        //   ),
-                        // boxShadow: [
-                        //   BoxShadow(
-                        //     color: Colors.red.shade700.withOpacity(0.1),
-                        //     spreadRadius: 1,
-                        //     blurRadius: 5,
-                        //     offset: Offset(1, 1),
-                        //   ),
-                        // ],
-                      ),
-                      child: NotificationListener<SizeChangedLayoutNotification>(
-                        onNotification: (notification) {
-                          _updateContainerHeight();
-                          return true;
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            SizeChangedLayoutNotifier(
-                              key: _sizedChangedLayoutKey,
-                              child: MiniPlayer(),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                              child: NavigationBar(
-                                selectedIndex: selectedIndex,
-                                onDestinationSelected: (value) {
-                                  log('value: $value');
-                                  HapticFeedback.lightImpact();
-                                  navTabAnimationController!.reset();
-                                  navTabAnimationController!.forward();
-                                  setState(() => selectedIndex = value);
-                                },
-                                height: 65,
-                                backgroundColor: Colors.transparent,
-                                labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-                                indicatorColor: Colors.transparent,
-                                overlayColor: WidgetStateProperty.all(Colors.black54),
-                                destinations: [
-                                  NavigationDestination(
-                                    icon: iconUnselected(Assets.icons.home.path),
-                                    label: 'Home',
-                                    selectedIcon: iconSelected(Assets.icons.home.path),
-                                  ),
-                                  NavigationDestination(
-                                    icon: iconUnselected(Assets.icons.playlist.path),
-                                    label: 'Category',
-                                    selectedIcon: iconSelected(Assets.icons.playlist.path),
-                                  ),
-                                  NavigationDestination(
-                                    icon: iconUnselected(Assets.icons.settings.path),
-                                    label: 'Settings',
-                                    selectedIcon: iconSelected(Assets.icons.settings.path),
-                                  ),
-                                ],
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 4,
+                      offset: Offset(0, 0),
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(24),
+                  border: GradientBoxBorder(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.grey.shade900,
+                        Colors.transparent,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                    width: 1,
+                  ),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(1),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(25),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50, tileMode: TileMode.decal),
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        height: 70 + _miniPlayerHeight,
+                        constraints: BoxConstraints(maxHeight: 145, minHeight: 70),
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(170, 5, 5, 5),
+                          borderRadius: BorderRadius.all(Radius.circular(25)),
+                          //   border: Border.all(
+                          //     color: Colors.grey.withOpacity(0.1),
+                          //     width: 1,
+                          //     strokeAlign: BorderSide.strokeAlignInside,
+                          //   ),
+                          // boxShadow: [
+                          //   BoxShadow(
+                          //     color: Colors.red.shade700.withOpacity(0.1),
+                          //     spreadRadius: 1,
+                          //     blurRadius: 5,
+                          //     offset: Offset(1, 1),
+                          //   ),
+                          // ],
+                        ),
+                        child: NotificationListener<SizeChangedLayoutNotification>(
+                          onNotification: (notification) {
+                            _updateContainerHeight();
+                            return true;
+                          },
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              SizeChangedLayoutNotifier(
+                                key: _sizedChangedLayoutKey,
+                                child: MiniPlayer(),
                               ),
-                            ),
-                            // Measure the height of the Column
-                            //   LayoutBuilder(
-                            //     builder: (context, innerConstraints) {
-                            //       WidgetsBinding.instance.addPostFrameCallback((_) {
-                            //         setState(() {
-                            //           log('innerConstraints: ${_columnKey.currentContext?.size?.height}');
-                            //           _containerHeight = innerConstraints.minHeight;
-                            //         });
-                            //       });
-                            //       return SizedBox.shrink();
-                            //     },
-                            //   ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                                child: NavigationBar(
+                                  selectedIndex: selectedIndex,
+                                  onDestinationSelected: (value) {
+                                    log('value: $value');
+                                    HapticFeedback.lightImpact();
+                                    navTabAnimationController!.reset();
+                                    navTabAnimationController!.forward();
+                                    setState(() => selectedIndex = value);
+                                  },
+                                  height: 65,
+                                  backgroundColor: Colors.transparent,
+                                  labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+                                  indicatorColor: Colors.transparent,
+                                  overlayColor: WidgetStateProperty.all(Colors.black54),
+                                  destinations: [
+                                    NavigationDestination(
+                                      icon: iconUnselected(Assets.icons.home.path),
+                                      label: 'Home',
+                                      selectedIcon: iconSelected(Assets.icons.home.path),
+                                    ),
+                                    NavigationDestination(
+                                      icon: iconUnselected(Assets.icons.playlist.path),
+                                      label: 'Category',
+                                      selectedIcon: iconSelected(Assets.icons.playlist.path),
+                                    ),
+                                    NavigationDestination(
+                                      icon: iconUnselected(Assets.icons.settings.path),
+                                      label: 'Settings',
+                                      selectedIcon: iconSelected(Assets.icons.settings.path),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Measure the height of the Column
+                              //   LayoutBuilder(
+                              //     builder: (context, innerConstraints) {
+                              //       WidgetsBinding.instance.addPostFrameCallback((_) {
+                              //         setState(() {
+                              //           log('innerConstraints: ${_columnKey.currentContext?.size?.height}');
+                              //           _containerHeight = innerConstraints.minHeight;
+                              //         });
+                              //       });
+                              //       return SizedBox.shrink();
+                              //     },
+                              //   ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

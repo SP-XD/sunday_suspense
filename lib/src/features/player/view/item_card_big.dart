@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:intl/intl.dart';
+import 'package:midnight_suspense/src/constants/constants.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
@@ -104,6 +105,7 @@ class ItemCardBig extends StatelessWidget {
                               formattedDate + ' // ' + formattedDuration,
                               style: textTheme.labelMedium?.copyWith(
                                 fontWeight: FontWeight.normal,
+                                color: SpxdAppConstants.white,
                                 shadows: [
                                   Shadow(
                                     color: Colors.black,
@@ -120,6 +122,7 @@ class ItemCardBig extends StatelessWidget {
                               maxLines: 3,
                               style: textTheme.titleMedium?.copyWith(
                                 fontWeight: FontWeight.bold,
+                                color: SpxdAppConstants.white,
                                 shadows: [
                                   Shadow(
                                     color: Colors.black,

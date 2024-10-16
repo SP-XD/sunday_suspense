@@ -6,6 +6,8 @@ class SpxdAppConstants {
 
   static const primaryColorDark = Color.fromARGB(255, 200, 7, 0);
 
+  static var white = Colors.grey.shade300;
+
   static const primaryGradient = LinearGradient(
     colors: [Color.fromARGB(255, 255, 34, 34), Color.fromARGB(255, 201, 0, 0)],
     begin: Alignment.topCenter,

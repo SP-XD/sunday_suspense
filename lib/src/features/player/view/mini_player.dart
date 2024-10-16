@@ -5,10 +5,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midnight_suspense/src/constants/colors.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/features/player/view/player_view.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
+import 'package:midnight_suspense/src/utils/custom_slider_shapes.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:ticker_text/ticker_text.dart';
 
@@ -57,14 +59,15 @@ class _MiniPlayerState extends State<MiniPlayer> {
                   topRight: Radius.circular(25),
                 ),
               ),
-              closedColor: Colors.black,
+              closedColor: Colors.transparent,
+              transitionType: ContainerTransitionType.fadeThrough,
               transitionDuration: Duration(milliseconds: 500),
               closedBuilder: (context, openContainerAction) {
                 return miniPlayerControls(openContainerAction, state, textTheme);
               },
             ),
             state.whenOrNull(
-                  loading: (state) => Divider(color: Colors.grey.shade800, height: 0.5, thickness: 0.5),
+                  loading: (state) => Divider(color: Colors.grey.shade900, height: 0.5, thickness: 0.5),
                   playing: (audioService) => playerSlider(audioService),
                   paused: (audioService) => playerSlider(audioService),
                   stopped: (audioService) => playerSlider(audioService),
@@ -80,10 +83,10 @@ class _MiniPlayerState extends State<MiniPlayer> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       height: 75,
-      // decoration: BoxDecoration(
-      //   color: Colors.grey.shade200,
-      //   borderRadius: BorderRadius.circular(20),
-      // ),
+      decoration: BoxDecoration(
+        color: Colors.transparent,
+        // borderRadius: BorderRadius.circular(20),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -179,7 +182,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
           child: TickerText(
             child: Text(
               '${title}',
-              style: textTheme.labelMedium,
+              style: textTheme.labelMedium?.copyWith(
+                color: SpxdAppConstants.white,
+              ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -233,7 +238,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
             data: SliderTheme.of(context).copyWith(
               trackHeight: 0.5,
               thumbShape: RoundSliderThumbShape(
-                enabledThumbRadius: 0,
+                enabledThumbRadius: 1,
                 disabledThumbRadius: 0,
                 elevation: 0,
                 pressedElevation: 0,
