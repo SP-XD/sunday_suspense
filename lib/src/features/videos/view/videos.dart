@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
@@ -23,16 +24,30 @@ class VideosWidget extends StatelessWidget {
         return state.map(
           initial: (_) => const SizedBox(height: 0, width: 0),
           loading: (_) => loadingWidget(),
-          loaded: (loadedState) => ListView.builder(
-            controller: context.watch<NavScrollControllerCubit>().state,
-            shrinkWrap: true,
-            itemCount: loadedState.videos.length,
-            physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.only(bottom: 15.0, left: 20, right: 20),
-              child: ItemCardBig(
-                key: Key(index.toString()),
-                video: loadedState.videos[index],
+          loaded: (loadedState) => ShaderMask(
+            shaderCallback: (bounds) => LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.black,
+                Colors.transparent,
+                Colors.transparent,
+                Colors.black,
+              ],
+              stops: [0.0, 0.05, 0.9, 1.0],
+            ).createShader(bounds),
+            blendMode: BlendMode.dstOut,
+            child: ListView.builder(
+              controller: context.watch<NavScrollControllerCubit>().state,
+              shrinkWrap: true,
+              itemCount: loadedState.videos.length,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.only(bottom: 15.0, left: 20, right: 20),
+                child: ItemCardBig(
+                  key: Key(index.toString()),
+                  video: loadedState.videos[index],
+                ),
               ),
             ),
           ),

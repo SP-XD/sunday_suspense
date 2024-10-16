@@ -27,29 +27,32 @@ class CategoryTabWidget extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  TabBar(
-                    labelColor: Colors.red.shade700,
-                    indicator: BoxDecoration(
-                      gradient: RadialGradient(
-                        colors: [Colors.red.withOpacity(0.2), Colors.transparent],
-                        radius: 1,
-                        stops: [0.1, 1],
-                        center: Alignment.bottomCenter,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: TabBar(
+                      labelColor: Colors.red.shade700,
+                      indicator: BoxDecoration(
+                        gradient: RadialGradient(
+                          colors: [Colors.red.withOpacity(0.2), Colors.transparent],
+                          radius: 1,
+                          stops: [0.1, 1],
+                          center: Alignment.bottomCenter,
+                        ),
+                        borderRadius: BorderRadius.circular(0),
                       ),
-                      borderRadius: BorderRadius.circular(0),
+                      unselectedLabelColor: Colors.grey.shade700,
+                      labelStyle: GoogleFonts.creepster(),
+                      dividerColor: Colors.transparent,
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      tabs: loadedState.categories
+                          .map(
+                            (c) => Tab(
+                              text: c.title,
+                            ),
+                          )
+                          .toList(),
                     ),
-                    unselectedLabelColor: Colors.grey.shade700,
-                    labelStyle: GoogleFonts.creepster(),
-                    dividerColor: Colors.transparent,
-                    isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    tabs: loadedState.categories
-                        .map(
-                          (c) => Tab(
-                            text: c.title,
-                          ),
-                        )
-                        .toList(),
                   ),
                   // TabBarView(children: []),
                   Expanded(
