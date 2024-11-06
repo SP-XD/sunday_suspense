@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:audio_service/audio_service.dart' as aps;
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
 import 'package:midnight_suspense/src/data/models/app_data_model.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
@@ -17,7 +18,7 @@ class AudioService extends aps.BaseAudioHandler with aps.SeekHandler {
     // what state to display, here we set up our audio handler to broadcast all
     // playback state changes as they happen via playbackState...
     _player.playbackEventStream.map(_transformEvent).pipe(playbackState);
-    ytProvider = YtExplodeProvider();
+    ytProvider = getIt<YtExplodeProvider>();
     _player.playbackEventStream.listen((event) {
       //   log('AudioService: playing ${event.currentIndex}');
       if (event.currentIndex == null) return;

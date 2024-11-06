@@ -10,10 +10,14 @@ import 'package:logger/logger.dart';
 import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
 import 'package:midnight_suspense/src/data/models/app_data_model.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
+import 'package:midnight_suspense/src/data/models/playlist_model.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/data/repositories/app_data_repository.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
 import "package:audio_service/audio_service.dart" as audio_service;
 import 'package:midnight_suspense/src/services/bloc_manager_service.dart';
+
+import 'src/data/data_provider/ytexplode_provider.dart';
 
 GetIt getIt = GetIt.instance;
 Logger logger = Logger();
@@ -58,8 +62,14 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     return audioService;
   });
 
-  var offlineDbProvider =
-      getIt.registerSingleton(OfflineDbProvider(schemas: [AppDataSchema, CategoryModelSchema]));
+  var offlineDbProvider = getIt.registerSingleton(OfflineDbProvider(schemas: [
+    AppDataSchema,
+    CategoryModelSchema,
+    VideoModelSchema,
+    PlaylistModelSchema,
+  ]));
+
+  getIt.registerLazySingleton(() => YtExplodeProvider());
   getIt.registerLazySingleton(() => AppDataRepository(offlineDbProvider: offlineDbProvider));
 
   getIt.registerLazySingleton(() => VBlocManagerService());

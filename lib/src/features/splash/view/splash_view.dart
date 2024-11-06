@@ -12,7 +12,6 @@ import 'package:midnight_suspense/src/constants/env_variables.dart';
 import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
-import 'package:page_transition/page_transition.dart';
 
 @RoutePage()
 class SplashView extends StatefulWidget {
@@ -114,7 +113,7 @@ class _SplashViewState extends State<SplashView> {
                 .scale(
                   begin: Offset(1.15, 1.15),
                   end: Offset(1, 1),
-                  duration: 8000.ms,
+                  duration: 10.seconds,
                   curve: Curves.decelerate,
                 ),
             Positioned(
@@ -135,7 +134,7 @@ class _SplashViewState extends State<SplashView> {
                       // onPlay: (controller) => controller.repeat(),
                       )
                   .slideX(
-                    duration: 2000.ms,
+                    duration: 10.seconds,
                     begin: -0.1,
                     end: 0,
                     curve: Curves.easeInOut,
@@ -159,7 +158,7 @@ class _SplashViewState extends State<SplashView> {
                     )
                     .animate()
                     .slideX(
-                      duration: 2000.ms,
+                      duration: 10.seconds,
                       begin: 0,
                       end: -0.1,
                       curve: Curves.decelerate,
