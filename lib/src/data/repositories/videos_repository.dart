@@ -1,31 +1,69 @@
+import 'dart:isolate';
+
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
+import 'package:midnight_suspense/src/services/isolate_service.dart';
 import 'package:midnight_suspense/src/utils/helper_functions.dart';
 
-class VideosRepository {
+class VideosRepository extends IsolateService {
   VideosRepository() {
-    ytProvider = YtExplodeProvider();
+    spawnIsolate();
   }
 
-  late final YtExplodeProvider ytProvider;
-
   Future<List<VideoModel>> getChannelVideos(String channelHandle) async {
-    final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle("@$channelHandle");
-    final response = await ytProvider.ytExplodeInstance!.channels.getUploadsFromPage(channelId.id);
-    // response.nextPage();
-
-    return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+    return await addJob<List<VideoModel>>(operation: 'getChannelVideos', params: channelHandle);
   }
 
   Future<List<VideoModel>> getPlaylistVideos(String playlistId) async {
-    final response = await ytProvider.ytExplodeInstance!.playlists.getVideos(playlistId);
-
-    return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+    return await addJob<List<VideoModel>>(operation: 'getPlaylistVideos', params: playlistId);
   }
 
-  ///! at the moment i don't want more than 20 search results but in future this functions should return VideoSearchList object and handle nextPage() in the Feature layer and convert the search results to app models
   Future<List<VideoModel>> fetchSearchResults(String query) async {
-    final searchResults = await ytProvider.ytExplodeInstance!.search.search(query);
-    return searchResults.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+    return await addJob<List<VideoModel>>(operation: 'fetchSearchResults', params: query);
+  }
+
+  @override
+  void handleCommandsToIsolate(
+    ReceivePort receivePort,
+    SendPort sendPort,
+  ) {
+    final ytProvider = YtExplodeProvider();
+
+    receivePort.listen((message) async {
+      final (int id, dynamic command) = message as (int, dynamic);
+      if (command is IsolateCommand) {
+        try {
+          final result = await _handleOperation(ytProvider, command.operation, command.params);
+          print("command $command");
+          sendPort.send((id, result));
+        } catch (e, st) {
+          sendPort.send((id, RemoteError(e.toString(), st.toString())));
+        }
+      }
+    });
+  }
+
+  static Future<dynamic> _handleOperation(
+    YtExplodeProvider ytProvider,
+    String operation,
+    dynamic params,
+  ) async {
+    switch (operation) {
+      case 'getChannelVideos':
+        final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle("@${params as String}");
+        final response = await ytProvider.ytExplodeInstance!.channels.getUploadsFromPage(channelId.id);
+        return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+
+      case 'getPlaylistVideos':
+        final response = await ytProvider.ytExplodeInstance!.playlists.getVideos(params as String);
+        return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+
+      case 'fetchSearchResults':
+        final searchResults = await ytProvider.ytExplodeInstance!.search.search(params as String);
+        return searchResults.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+
+      default:
+        throw UnimplementedError('Unknown operation: $operation');
+    }
   }
 }
