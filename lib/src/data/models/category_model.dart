@@ -2,10 +2,7 @@
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
-import 'package:midnight_suspense/src/data/models/channel_id_model.dart';
-import 'package:midnight_suspense/src/data/models/engagement_model.dart';
-import 'package:midnight_suspense/src/data/models/thumbnail_set_model.dart';
-import 'package:midnight_suspense/src/data/models/video_id_model.dart';
+import 'playlist_model.dart';
 import 'video_model.dart';
 
 part 'category_model.freezed.dart';
@@ -14,12 +11,26 @@ part 'category_model.g.dart';
 @Collection(ignore: {'copyWith'})
 @Freezed(fromJson: true, toJson: true)
 class CategoryModel with _$CategoryModel {
+  @JsonKey(
+    toJson: VideoModel.videosLinksToJson,
+    fromJson: VideoModel.videosLinksFromJson,
+    required: false,
+    includeIfNull: false,
+  )
+  final IsarLinks<VideoModel> videos = IsarLinks<VideoModel>();
+  @JsonKey(
+    toJson: PlaylistModel.playlistLinksToJson,
+    fromJson: PlaylistModel.playlistLinksFromJson,
+    required: true,
+    includeIfNull: false,
+  )
+  final IsarLinks<PlaylistModel> playlists = IsarLinks<PlaylistModel>();
+
   factory CategoryModel({
     @Default(Isar.autoIncrement) int id,
     @Index(unique: true, replace: true) required String category_id,
     @Enumerated(EnumType.name) required CategoryType type,
     required String title,
-    List<VideoModel>? videos,
     @Enumerated(EnumType.name) required CategorySourceType sourceType,
     @Enumerated(EnumType.name) required LanguageType language,
   }) = _CategoryModel;
@@ -37,6 +48,7 @@ enum CategoryType {
   channel,
   playlist,
   history,
+  liked,
 }
 
 enum CategorySourceType {

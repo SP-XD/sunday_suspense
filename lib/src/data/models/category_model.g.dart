@@ -44,12 +44,6 @@ const CategoryModelSchema = CollectionSchema(
       name: r'type',
       type: IsarType.string,
       enumMap: _CategoryModeltypeEnumValueMap,
-    ),
-    r'videos': PropertySchema(
-      id: 5,
-      name: r'videos',
-      type: IsarType.objectList,
-      target: r'VideoModel',
     )
   },
   estimateSize: _categoryModelEstimateSize,
@@ -72,14 +66,21 @@ const CategoryModelSchema = CollectionSchema(
       ],
     )
   },
-  links: {},
-  embeddedSchemas: {
-    r'VideoModel': VideoModelSchema,
-    r'VideoId': VideoIdSchema,
-    r'ChannelId': ChannelIdSchema,
-    r'ThumbnailSet': ThumbnailSetSchema,
-    r'Engagement': EngagementSchema
+  links: {
+    r'videos': LinkSchema(
+      id: -1306049584654770268,
+      name: r'videos',
+      target: r'VideoModel',
+      single: false,
+    ),
+    r'playlists': LinkSchema(
+      id: 4712181638123056803,
+      name: r'playlists',
+      target: r'PlaylistModel',
+      single: false,
+    )
   },
+  embeddedSchemas: {},
   getId: _categoryModelGetId,
   getLinks: _categoryModelGetLinks,
   attach: _categoryModelAttach,
@@ -97,20 +98,6 @@ int _categoryModelEstimateSize(
   bytesCount += 3 + object.sourceType.name.length * 3;
   bytesCount += 3 + object.title.length * 3;
   bytesCount += 3 + object.type.name.length * 3;
-  {
-    final list = object.videos;
-    if (list != null) {
-      bytesCount += 3 + list.length * 3;
-      {
-        final offsets = allOffsets[VideoModel]!;
-        for (var i = 0; i < list.length; i++) {
-          final value = list[i];
-          bytesCount +=
-              VideoModelSchema.estimateSize(value, offsets, allOffsets);
-        }
-      }
-    }
-  }
   return bytesCount;
 }
 
@@ -125,12 +112,6 @@ void _categoryModelSerialize(
   writer.writeString(offsets[2], object.sourceType.name);
   writer.writeString(offsets[3], object.title);
   writer.writeString(offsets[4], object.type.name);
-  writer.writeObjectList<VideoModel>(
-    offsets[5],
-    allOffsets,
-    VideoModelSchema.serialize,
-    object.videos,
-  );
 }
 
 CategoryModel _categoryModelDeserialize(
@@ -151,12 +132,6 @@ CategoryModel _categoryModelDeserialize(
     title: reader.readString(offsets[3]),
     type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[4])] ??
         CategoryType.channel,
-    videos: reader.readObjectList<VideoModel>(
-      offsets[5],
-      VideoModelSchema.deserialize,
-      allOffsets,
-      VideoModel(),
-    ),
   );
   return object;
 }
@@ -183,13 +158,6 @@ P _categoryModelDeserializeProp<P>(
     case 4:
       return (_CategoryModeltypeValueEnumMap[reader.readStringOrNull(offset)] ??
           CategoryType.channel) as P;
-    case 5:
-      return (reader.readObjectList<VideoModel>(
-        offset,
-        VideoModelSchema.deserialize,
-        allOffsets,
-        VideoModel(),
-      )) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -223,11 +191,13 @@ const _CategoryModeltypeEnumValueMap = {
   r'channel': r'channel',
   r'playlist': r'playlist',
   r'history': r'history',
+  r'liked': r'liked',
 };
 const _CategoryModeltypeValueEnumMap = {
   r'channel': CategoryType.channel,
   r'playlist': CategoryType.playlist,
   r'history': CategoryType.history,
+  r'liked': CategoryType.liked,
 };
 
 Id _categoryModelGetId(CategoryModel object) {
@@ -235,11 +205,15 @@ Id _categoryModelGetId(CategoryModel object) {
 }
 
 List<IsarLinkBase<dynamic>> _categoryModelGetLinks(CategoryModel object) {
-  return [];
+  return [object.videos, object.playlists];
 }
 
 void _categoryModelAttach(
-    IsarCollection<dynamic> col, Id id, CategoryModel object) {}
+    IsarCollection<dynamic> col, Id id, CategoryModel object) {
+  object.videos.attach(col, col.isar.collection<VideoModel>(), r'videos', id);
+  object.playlists
+      .attach(col, col.isar.collection<PlaylistModel>(), r'playlists', id);
+}
 
 extension CategoryModelByIndex on IsarCollection<CategoryModel> {
   Future<CategoryModel?> getByCategory_id(String category_id) {
@@ -1157,61 +1131,38 @@ extension CategoryModelQueryFilter
       ));
     });
   }
+}
 
-  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
-      videosIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'videos',
-      ));
-    });
-  }
+extension CategoryModelQueryObject
+    on QueryBuilder<CategoryModel, CategoryModel, QFilterCondition> {}
 
-  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
-      videosIsNotNull() {
+extension CategoryModelQueryLinks
+    on QueryBuilder<CategoryModel, CategoryModel, QFilterCondition> {
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition> videos(
+      FilterQuery<VideoModel> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'videos',
-      ));
+      return query.link(q, r'videos');
     });
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       videosLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'videos',
-        length,
-        true,
-        length,
-        true,
-      );
+      return query.linkLength(r'videos', length, true, length, true);
     });
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       videosIsEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'videos',
-        0,
-        true,
-        0,
-        true,
-      );
+      return query.linkLength(r'videos', 0, true, 0, true);
     });
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       videosIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'videos',
-        0,
-        false,
-        999999,
-        true,
-      );
+      return query.linkLength(r'videos', 0, false, 999999, true);
     });
   }
 
@@ -1221,13 +1172,7 @@ extension CategoryModelQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'videos',
-        0,
-        true,
-        length,
-        include,
-      );
+      return query.linkLength(r'videos', 0, true, length, include);
     });
   }
 
@@ -1237,13 +1182,7 @@ extension CategoryModelQueryFilter
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'videos',
-        length,
-        include,
-        999999,
-        true,
-      );
+      return query.linkLength(r'videos', length, include, 999999, true);
     });
   }
 
@@ -1255,29 +1194,72 @@ extension CategoryModelQueryFilter
     bool includeUpper = true,
   }) {
     return QueryBuilder.apply(this, (query) {
-      return query.listLength(
-        r'videos',
-        lower,
-        includeLower,
-        upper,
-        includeUpper,
-      );
+      return query.linkLength(
+          r'videos', lower, includeLower, upper, includeUpper);
     });
   }
-}
 
-extension CategoryModelQueryObject
-    on QueryBuilder<CategoryModel, CategoryModel, QFilterCondition> {
-  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
-      videosElement(FilterQuery<VideoModel> q) {
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition> playlists(
+      FilterQuery<PlaylistModel> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'videos');
+      return query.link(q, r'playlists');
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      playlistsLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'playlists', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      playlistsIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'playlists', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      playlistsIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'playlists', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      playlistsLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'playlists', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      playlistsLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'playlists', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      playlistsLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'playlists', lower, includeLower, upper, includeUpper);
     });
   }
 }
-
-extension CategoryModelQueryLinks
-    on QueryBuilder<CategoryModel, CategoryModel, QFilterCondition> {}
 
 extension CategoryModelQuerySortBy
     on QueryBuilder<CategoryModel, CategoryModel, QSortBy> {
@@ -1500,13 +1482,6 @@ extension CategoryModelQueryProperty
       return query.addPropertyName(r'type');
     });
   }
-
-  QueryBuilder<CategoryModel, List<VideoModel>?, QQueryOperations>
-      videosProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'videos');
-    });
-  }
 }
 
 // **************************************************************************
@@ -1519,9 +1494,6 @@ _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
       category_id: json['category_id'] as String,
       type: $enumDecode(_$CategoryTypeEnumMap, json['type']),
       title: json['title'] as String,
-      videos: (json['videos'] as List<dynamic>?)
-          ?.map((e) => VideoModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
       sourceType: $enumDecode(_$CategorySourceTypeEnumMap, json['sourceType']),
       language: $enumDecode(_$LanguageTypeEnumMap, json['language']),
     );
@@ -1532,7 +1504,6 @@ Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
       'category_id': instance.category_id,
       'type': _$CategoryTypeEnumMap[instance.type]!,
       'title': instance.title,
-      'videos': instance.videos,
       'sourceType': _$CategorySourceTypeEnumMap[instance.sourceType]!,
       'language': _$LanguageTypeEnumMap[instance.language]!,
     };
@@ -1541,6 +1512,7 @@ const _$CategoryTypeEnumMap = {
   CategoryType.channel: 'channel',
   CategoryType.playlist: 'playlist',
   CategoryType.history: 'history',
+  CategoryType.liked: 'liked',
 };
 
 const _$CategorySourceTypeEnumMap = {

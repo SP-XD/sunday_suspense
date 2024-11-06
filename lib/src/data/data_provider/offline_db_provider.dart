@@ -93,6 +93,30 @@ class OfflineDbProvider {
     });
   }
 
+  /// Insert or Update liked list, inserts if the liked list doesn't exist else updates
+  Future<void> upsertLikedList(CategoryModel likedModel) async {
+    if (appData == null) throw Exception("AppData not initialized");
+
+    if (likedModel.type != CategoryType.liked)
+      throw ArgumentError("likedModel must be of type CategoryType.liked");
+
+    await db.writeTxn(() async {
+      final categories = await db.collection<CategoryModel>();
+      likedModel = likedModel.copyWith(category_id: "liked_category_spxd");
+      await categories.putByCategory_id(likedModel);
+      appData!.builtInCategories.add(likedModel);
+      appData!.builtInCategories.save();
+    });
+  }
+
+  Future<CategoryModel?> getLikedList() async {
+    return await db.txn(() async {
+      final categories = await db.collection<CategoryModel>();
+      final result = await categories.filter().typeEqualTo(CategoryType.liked).findFirst();
+      return result;
+    });
+  }
+
   /// Insert or Update history list, inserts if the history list doesn't exist else updates
   Future<void> upsertHistoryList(CategoryModel historyModel) async {
     if (appData == null) {
@@ -105,6 +129,7 @@ class OfflineDbProvider {
 
     await db.writeTxn(() async {
       final categories = await db.collection<CategoryModel>();
+      historyModel = historyModel.copyWith(category_id: "history_category_spxd");
       await categories.putByCategory_id(historyModel);
       appData!.builtInCategories.add(historyModel);
       appData!.builtInCategories.save();

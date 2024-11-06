@@ -38,14 +38,8 @@ const AppDataSchema = CollectionSchema(
       name: r'isOnboardingDone',
       type: IsarType.bool,
     ),
-    r'newReleases': PropertySchema(
-      id: 4,
-      name: r'newReleases',
-      type: IsarType.object,
-      target: r'NewReleasesModel',
-    ),
     r'selectedLanguages': PropertySchema(
-      id: 5,
+      id: 4,
       name: r'selectedLanguages',
       type: IsarType.stringList,
       enumMap: _AppDataselectedLanguagesEnumValueMap,
@@ -71,14 +65,7 @@ const AppDataSchema = CollectionSchema(
       single: false,
     )
   },
-  embeddedSchemas: {
-    r'NewReleasesModel': NewReleasesModelSchema,
-    r'VideoModel': VideoModelSchema,
-    r'VideoId': VideoIdSchema,
-    r'ChannelId': ChannelIdSchema,
-    r'ThumbnailSet': ThumbnailSetSchema,
-    r'Engagement': EngagementSchema
-  },
+  embeddedSchemas: {},
   getId: _appDataGetId,
   getLinks: _appDataGetLinks,
   attach: _appDataAttach,
@@ -98,14 +85,6 @@ int _appDataEstimateSize(
     }
   }
   bytesCount += 3 + object.dataQuality.name.length * 3;
-  {
-    final value = object.newReleases;
-    if (value != null) {
-      bytesCount += 3 +
-          NewReleasesModelSchema.estimateSize(
-              value, allOffsets[NewReleasesModel]!, allOffsets);
-    }
-  }
   bytesCount += 3 + object.selectedLanguages.length * 3;
   {
     for (var i = 0; i < object.selectedLanguages.length; i++) {
@@ -126,14 +105,8 @@ void _appDataSerialize(
   writer.writeString(offsets[1], object.dataQuality.name);
   writer.writeLong(offsets[2], object.hashCode);
   writer.writeBool(offsets[3], object.isOnboardingDone);
-  writer.writeObject<NewReleasesModel>(
-    offsets[4],
-    allOffsets,
-    NewReleasesModelSchema.serialize,
-    object.newReleases,
-  );
   writer.writeStringList(
-      offsets[5], object.selectedLanguages.map((e) => e.name).toList());
+      offsets[4], object.selectedLanguages.map((e) => e.name).toList());
 }
 
 AppData _appDataDeserialize(
@@ -150,13 +123,8 @@ AppData _appDataDeserialize(
       _AppDatadataQualityValueEnumMap[reader.readStringOrNull(offsets[1])] ??
           DataQuality.low;
   object.isOnboardingDone = reader.readBool(offsets[3]);
-  object.newReleases = reader.readObjectOrNull<NewReleasesModel>(
-    offsets[4],
-    NewReleasesModelSchema.deserialize,
-    allOffsets,
-  );
   object.selectedLanguages = reader
-          .readStringList(offsets[5])
+          .readStringList(offsets[4])
           ?.map((e) =>
               _AppDataselectedLanguagesValueEnumMap[e] ?? LanguageType.english)
           .toList() ??
@@ -182,12 +150,6 @@ P _appDataDeserializeProp<P>(
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readObjectOrNull<NewReleasesModel>(
-        offset,
-        NewReleasesModelSchema.deserialize,
-        allOffsets,
-      )) as P;
-    case 5:
       return (reader
               .readStringList(offset)
               ?.map((e) =>
@@ -734,22 +696,6 @@ extension AppDataQueryFilter
     });
   }
 
-  QueryBuilder<AppData, AppData, QAfterFilterCondition> newReleasesIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'newReleases',
-      ));
-    });
-  }
-
-  QueryBuilder<AppData, AppData, QAfterFilterCondition> newReleasesIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'newReleases',
-      ));
-    });
-  }
-
   QueryBuilder<AppData, AppData, QAfterFilterCondition>
       selectedLanguagesElementEqualTo(
     LanguageType value, {
@@ -979,14 +925,7 @@ extension AppDataQueryFilter
 }
 
 extension AppDataQueryObject
-    on QueryBuilder<AppData, AppData, QFilterCondition> {
-  QueryBuilder<AppData, AppData, QAfterFilterCondition> newReleases(
-      FilterQuery<NewReleasesModel> q) {
-    return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'newReleases');
-    });
-  }
-}
+    on QueryBuilder<AppData, AppData, QFilterCondition> {}
 
 extension AppDataQueryLinks
     on QueryBuilder<AppData, AppData, QFilterCondition> {
@@ -1292,13 +1231,6 @@ extension AppDataQueryProperty
   QueryBuilder<AppData, bool, QQueryOperations> isOnboardingDoneProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isOnboardingDone');
-    });
-  }
-
-  QueryBuilder<AppData, NewReleasesModel?, QQueryOperations>
-      newReleasesProperty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'newReleases');
     });
   }
 

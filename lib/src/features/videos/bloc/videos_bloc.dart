@@ -1,9 +1,11 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
+import 'package:midnight_suspense/src/services/isolate_service.dart';
 
 part 'videos_event.dart';
 part 'videos_state.dart';
@@ -23,6 +25,8 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
               videos = await _videosRepository.getPlaylistVideos(event.categoryId);
             // TODO: implement history category type
             case CategoryType.history:
+              videos = [];
+            case CategoryType.liked:
               videos = [];
           }
 

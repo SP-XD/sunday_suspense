@@ -58,7 +58,7 @@ class AppData {
     includeToJson: false,
   )
   // TODO: implement this with notifying of new releases in the future
-  NewReleasesModel? newReleases;
+//   NewReleasesModel? newReleases;
 
   AppData({
     this.id,

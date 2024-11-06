@@ -20,8 +20,11 @@ VideoModel _$VideoModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VideoModel {
+// ignore: unused_element
+  int get id => throw _privateConstructorUsedError;
+
   /// Video ID.
-  VideoId? get id => throw _privateConstructorUsedError;
+  VideoId? get videoId => throw _privateConstructorUsedError;
 
   /// Video title.
   String? get title => throw _privateConstructorUsedError;
@@ -71,7 +74,8 @@ abstract class $VideoModelCopyWith<$Res> {
       _$VideoModelCopyWithImpl<$Res, VideoModel>;
   @useResult
   $Res call(
-      {VideoId? id,
+      {int id,
+      VideoId? videoId,
       String? title,
       String? author,
       ChannelId? channelId,
@@ -83,7 +87,7 @@ abstract class $VideoModelCopyWith<$Res> {
       Engagement? engagement,
       bool? isLive});
 
-  $VideoIdCopyWith<$Res>? get id;
+  $VideoIdCopyWith<$Res>? get videoId;
   $ChannelIdCopyWith<$Res>? get channelId;
   $ThumbnailSetCopyWith<$Res>? get thumbnails;
   $EngagementCopyWith<$Res>? get engagement;
@@ -104,7 +108,8 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
+    Object? videoId = freezed,
     Object? title = freezed,
     Object? author = freezed,
     Object? channelId = freezed,
@@ -117,9 +122,13 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
     Object? isLive = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      videoId: freezed == videoId
+          ? _value.videoId
+          : videoId // ignore: cast_nullable_to_non_nullable
               as VideoId?,
       title: freezed == title
           ? _value.title
@@ -168,13 +177,13 @@ class _$VideoModelCopyWithImpl<$Res, $Val extends VideoModel>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $VideoIdCopyWith<$Res>? get id {
-    if (_value.id == null) {
+  $VideoIdCopyWith<$Res>? get videoId {
+    if (_value.videoId == null) {
       return null;
     }
 
-    return $VideoIdCopyWith<$Res>(_value.id!, (value) {
-      return _then(_value.copyWith(id: value) as $Val);
+    return $VideoIdCopyWith<$Res>(_value.videoId!, (value) {
+      return _then(_value.copyWith(videoId: value) as $Val);
     });
   }
 
@@ -229,7 +238,8 @@ abstract class _$$VideoImplCopyWith<$Res> implements $VideoModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {VideoId? id,
+      {int id,
+      VideoId? videoId,
       String? title,
       String? author,
       ChannelId? channelId,
@@ -242,7 +252,7 @@ abstract class _$$VideoImplCopyWith<$Res> implements $VideoModelCopyWith<$Res> {
       bool? isLive});
 
   @override
-  $VideoIdCopyWith<$Res>? get id;
+  $VideoIdCopyWith<$Res>? get videoId;
   @override
   $ChannelIdCopyWith<$Res>? get channelId;
   @override
@@ -264,7 +274,8 @@ class __$$VideoImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
+    Object? id = null,
+    Object? videoId = freezed,
     Object? title = freezed,
     Object? author = freezed,
     Object? channelId = freezed,
@@ -277,9 +288,13 @@ class __$$VideoImplCopyWithImpl<$Res>
     Object? isLive = freezed,
   }) {
     return _then(_$VideoImpl(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      videoId: freezed == videoId
+          ? _value.videoId
+          : videoId // ignore: cast_nullable_to_non_nullable
               as VideoId?,
       title: freezed == title
           ? _value.title
@@ -329,7 +344,8 @@ class __$$VideoImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$VideoImpl extends _Video {
   const _$VideoImpl(
-      {this.id,
+      {this.id = Isar.autoIncrement,
+      this.videoId,
       this.title,
       this.author,
       this.channelId,
@@ -345,9 +361,14 @@ class _$VideoImpl extends _Video {
   factory _$VideoImpl.fromJson(Map<String, dynamic> json) =>
       _$$VideoImplFromJson(json);
 
+// ignore: unused_element
+  @override
+  @JsonKey()
+  final int id;
+
   /// Video ID.
   @override
-  final VideoId? id;
+  final VideoId? videoId;
 
   /// Video title.
   @override
@@ -392,7 +413,7 @@ class _$VideoImpl extends _Video {
 
   @override
   String toString() {
-    return 'VideoModel._internal(id: $id, title: $title, author: $author, channelId: $channelId, uploadDate: $uploadDate, description: $description, watchedDuration: $watchedDuration, duration: $duration, thumbnails: $thumbnails, engagement: $engagement, isLive: $isLive)';
+    return 'VideoModel._internal(id: $id, videoId: $videoId, title: $title, author: $author, channelId: $channelId, uploadDate: $uploadDate, description: $description, watchedDuration: $watchedDuration, duration: $duration, thumbnails: $thumbnails, engagement: $engagement, isLive: $isLive)';
   }
 
   @override
@@ -401,6 +422,7 @@ class _$VideoImpl extends _Video {
         (other.runtimeType == runtimeType &&
             other is _$VideoImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.videoId, videoId) || other.videoId == videoId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.author, author) || other.author == author) &&
             (identical(other.channelId, channelId) ||
@@ -425,6 +447,7 @@ class _$VideoImpl extends _Video {
   int get hashCode => Object.hash(
       runtimeType,
       id,
+      videoId,
       title,
       author,
       channelId,
@@ -454,7 +477,8 @@ class _$VideoImpl extends _Video {
 
 abstract class _Video extends VideoModel {
   const factory _Video(
-      {final VideoId? id,
+      {final int id,
+      final VideoId? videoId,
       final String? title,
       final String? author,
       final ChannelId? channelId,
@@ -469,9 +493,13 @@ abstract class _Video extends VideoModel {
 
   factory _Video.fromJson(Map<String, dynamic> json) = _$VideoImpl.fromJson;
 
+// ignore: unused_element
+  @override
+  int get id;
+
   /// Video ID.
   @override
-  VideoId? get id;
+  VideoId? get videoId;
 
   /// Video title.
   @override

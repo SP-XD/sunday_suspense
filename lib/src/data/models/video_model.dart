@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
+import 'package:midnight_suspense/bootstrap.dart';
+import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
 
 import 'channel_id_model.dart';
 import 'engagement_model.dart';
@@ -9,16 +11,16 @@ import 'video_id_model.dart';
 part 'video_model.freezed.dart';
 part 'video_model.g.dart';
 
-@Embedded(ignore: {'copyWith'})
+@Collection(ignore: {'copyWith'})
 @Freezed(toJson: true, fromJson: true)
 class VideoModel with _$VideoModel {
   /// Video URL.
   @ignore
-  String get youtubeUrl => 'https://www.youtube.com/watch?v=$id';
+  String get youtubeUrl => 'https://www.youtube.com/watch?v=${videoId?.value}';
 
   /// Video app URL.
   @ignore
-  String get appUrl => 'https://midnightsuspense.in/share/watch?v=$id';
+  String get appUrl => 'https://midnightsuspense.in/share/watch?v=${videoId?.value}';
 
   /// Duration of the video in seconds watched by the user.
   @ignore
@@ -28,9 +30,16 @@ class VideoModel with _$VideoModel {
   @ignore
   Duration get totalDurationConverted => Duration(seconds: duration ?? 0);
 
+  // ignore: invalid_annotation_target
+  @Index()
+  String get videoIdIndexed => videoId?.value ?? '';
+
+  @override
+  Id get id => id;
+
   factory VideoModel({
     /// Video ID.
-    VideoId? id,
+    VideoId? videoId,
 
     /// Video title.
     String? title,
@@ -65,7 +74,7 @@ class VideoModel with _$VideoModel {
   }) {
     return VideoModel._internal(
       /// Video ID.
-      id: id,
+      videoId: videoId,
 
       /// Video title.
       title: title,
@@ -89,8 +98,11 @@ class VideoModel with _$VideoModel {
 
   /// Initializes an instance of [Video]
   const factory VideoModel._internal({
+    // ignore: unused_element
+    @Default(Isar.autoIncrement) int id,
+
     /// Video ID.
-    VideoId? id,
+    VideoId? videoId,
 
     /// Video title.
     String? title,
@@ -128,4 +140,25 @@ class VideoModel with _$VideoModel {
   const VideoModel._();
 
   factory VideoModel.fromJson(Map<String, dynamic> json) => _$VideoModelFromJson(json);
+
+  static List<VideoModel> videosLinksToJson(IsarLinks<VideoModel> videos) {
+    videos.load();
+    return videos.toList();
+  }
+
+  static IsarLinks<VideoModel> videosLinksFromJson(List<dynamic>? videos) {
+    if (videos == null) {
+      return IsarLinks<VideoModel>();
+    }
+
+    var dbProvider = getIt<OfflineDbProvider>();
+    var videosCollection = dbProvider.db.collection<VideoModel>();
+    var videoModels = videos.map((c) => VideoModel.fromJson(c as Map<String, dynamic>)).toList();
+    videosCollection.putAll(videoModels);
+
+    IsarLinks<VideoModel> videosLinks = IsarLinks<VideoModel>();
+    videosLinks.addAll(videoModels);
+
+    return videosLinks;
+  }
 }

@@ -8,7 +8,7 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart'
 
 VideoModel fromYoutubeVideoToAppVideoModel(Video video) {
   return VideoModel(
-    id: VideoId(idOrUrl: video.id.value),
+    videoId: VideoId(idOrUrl: video.id.value),
     title: video.title,
     description: video.description,
     author: video.author,
