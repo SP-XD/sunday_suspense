@@ -52,15 +52,15 @@ class VideosRepository extends IsolateService {
       case 'getChannelVideos':
         final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle("@${params as String}");
         final response = await ytProvider.ytExplodeInstance!.channels.getUploadsFromPage(channelId.id);
-        return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+        return response.map((e) => VideoModel.fromYoutubeVideoModel(e)).toList();
 
       case 'getPlaylistVideos':
         final response = await ytProvider.ytExplodeInstance!.playlists.getVideos(params as String);
-        return response.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+        return response.map((e) => VideoModel.fromYoutubeVideoModel(e)).toList();
 
       case 'fetchSearchResults':
         final searchResults = await ytProvider.ytExplodeInstance!.search.search(params as String);
-        return searchResults.map((e) => fromYoutubeVideoToAppVideoModel(e)).toList();
+        return searchResults.map((e) => VideoModel.fromYoutubeVideoModel(e)).toList();
 
       default:
         throw UnimplementedError('Unknown operation: $operation');

@@ -2,6 +2,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:isar/isar.dart';
 import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart' as yt;
 
 import 'channel_id_model.dart';
 import 'engagement_model.dart';
@@ -35,6 +36,9 @@ class VideoModel with _$VideoModel {
   String get videoIdIndexed => videoId?.value ?? '';
 
   @override
+
+  /// This is the id used by isar not the id of the video
+  /// Use [videoId] to get the id of the video
   Id get id => id;
 
   factory VideoModel({
@@ -160,5 +164,26 @@ class VideoModel with _$VideoModel {
     videosLinks.addAll(videoModels);
 
     return videosLinks;
+  }
+
+  static VideoModel fromYoutubeVideoModel(yt.Video video) {
+    return VideoModel(
+      videoId: VideoId(idOrUrl: video.id.value),
+      title: video.title,
+      description: video.description,
+      author: video.author,
+      channelId: ChannelId(value: video.channelId.value),
+      duration: video.duration?.inSeconds,
+      thumbnails: ThumbnailSet(
+        videoId: video.thumbnails.videoId,
+      ),
+      uploadDate: video.uploadDate,
+      isLive: video.isLive,
+      engagement: Engagement(
+        viewCount: video.engagement.viewCount,
+        likeCount: video.engagement.likeCount,
+        dislikeCount: video.engagement.dislikeCount,
+      ),
+    );
   }
 }

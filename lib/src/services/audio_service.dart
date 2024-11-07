@@ -71,7 +71,7 @@ class AudioService extends aps.BaseAudioHandler with aps.SeekHandler {
 
   /// Plays the audio from the given video.
   Future<void> playAudio({required VideoModel video}) async {
-    var streamManifest = await ytProvider.ytExplodeInstance!.videos.streamsClient.getManifest(video.id);
+    var streamManifest = await ytProvider.ytExplodeInstance!.videos.streamsClient.getManifest(video.videoId);
 
     // audioPlaylist.clear() is buggy, so we have to create a new instance
     audioPlaylist = ConcatenatingAudioSource(
