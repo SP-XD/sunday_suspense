@@ -42,6 +42,18 @@ class OfflineDbProvider {
     appData = await db.appDatas.get(_defaultAppDataId);
   }
 
+  Future<void> updateAppData({required AppData data}) async {
+    if (appData == null) {
+      throw Exception('AppData not initialized');
+    }
+
+    await db.writeTxn(() async {
+      appData!.categoryVersion = data.categoryVersion;
+      appData!.builtInCategories = data.builtInCategories;
+      await db.appDatas.put(appData!);
+    });
+  }
+
   /// Insert or Update a category, inserts if the id of the category doesn't exist else updates
   Future<void> upsertCategory(
     List<CategoryModel> categoryList,
@@ -54,10 +66,10 @@ class OfflineDbProvider {
 
     await db.writeTxn(() async {
       final categories = await db.collection<CategoryModel>();
-      await categories.putAllByCategory_id(categoryList);
+      await categories.putAllByInternal_id(categoryList);
 
       final currentUpdatedCategories =
-          await categories.getAllByCategory_id(categoryList.map((c) => c.category_id).toList());
+          await categories.getAllByInternal_id(categoryList.map((c) => c.internal_id).toList());
 
       currentUpdatedCategories.forEach((c) {
         if (c!.sourceType == CategorySourceType.builtInCategory)
@@ -103,7 +115,7 @@ class OfflineDbProvider {
     await db.writeTxn(() async {
       final categories = await db.collection<CategoryModel>();
       likedModel = likedModel.copyWith(category_id: "liked_category_spxd");
-      await categories.putByCategory_id(likedModel);
+      await categories.putByInternal_id(likedModel);
       appData!.builtInCategories.add(likedModel);
       appData!.builtInCategories.save();
     });
@@ -130,7 +142,7 @@ class OfflineDbProvider {
     await db.writeTxn(() async {
       final categories = await db.collection<CategoryModel>();
       historyModel = historyModel.copyWith(category_id: "history_category_spxd");
-      await categories.putByCategory_id(historyModel);
+      await categories.putByInternal_id(historyModel);
       appData!.builtInCategories.add(historyModel);
       appData!.builtInCategories.save();
     });

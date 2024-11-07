@@ -39,12 +39,15 @@ class CategoriesRepository {
       final appData = AppData.fromJson(jsonData as Map<String, dynamic>);
       logger.d(
           'appData: $appData, jsonString: $jsonString, offlineDbProvider.appData: ${offlineDbProvider.appData ?? 'null'}');
-      if (offlineDbProvider.appData == null ||
-          (offlineDbProvider.appData?.categoryVersion != null &&
-              offlineDbProvider.appData!.categoryVersion != appData.categoryVersion) ||
-          (offlineDbProvider.appData != null && offlineDbProvider.appData!.builtInCategories.isEmpty)) {
-        logger.d('categories fetched and saved');
+
+      if (offlineDbProvider.appData == null) {
+        logger.d('categories fetched and saved. category_version: ${appData.categoryVersion}');
         offlineDbProvider.initAppData(data: appData);
+      } else if ((offlineDbProvider.appData!.categoryVersion != null &&
+              offlineDbProvider.appData!.categoryVersion != appData.categoryVersion) ||
+          offlineDbProvider.appData!.builtInCategories.isEmpty) {
+        logger.d('categories fetched and updated to category_version: ${appData.categoryVersion}');
+        offlineDbProvider.updateAppData(data: appData);
       }
     }
   }
