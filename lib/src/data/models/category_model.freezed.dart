@@ -22,6 +22,7 @@ CategoryModel _$CategoryModelFromJson(Map<String, dynamic> json) {
 mixin _$CategoryModel {
   int get id => throw _privateConstructorUsedError;
   @Index(unique: true, replace: true)
+  String get internal_id => throw _privateConstructorUsedError;
   String get category_id => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   CategoryType get type => throw _privateConstructorUsedError;
@@ -49,7 +50,8 @@ abstract class $CategoryModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      @Index(unique: true, replace: true) String category_id,
+      @Index(unique: true, replace: true) String internal_id,
+      String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
       @Enumerated(EnumType.name) CategorySourceType sourceType,
@@ -72,6 +74,7 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
   @override
   $Res call({
     Object? id = null,
+    Object? internal_id = null,
     Object? category_id = null,
     Object? type = null,
     Object? title = null,
@@ -83,6 +86,10 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      internal_id: null == internal_id
+          ? _value.internal_id
+          : internal_id // ignore: cast_nullable_to_non_nullable
+              as String,
       category_id: null == category_id
           ? _value.category_id
           : category_id // ignore: cast_nullable_to_non_nullable
@@ -117,7 +124,8 @@ abstract class _$$CategoryModelImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      @Index(unique: true, replace: true) String category_id,
+      @Index(unique: true, replace: true) String internal_id,
+      String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
       @Enumerated(EnumType.name) CategorySourceType sourceType,
@@ -138,6 +146,7 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
+    Object? internal_id = null,
     Object? category_id = null,
     Object? type = null,
     Object? title = null,
@@ -149,6 +158,10 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
+      internal_id: null == internal_id
+          ? _value.internal_id
+          : internal_id // ignore: cast_nullable_to_non_nullable
+              as String,
       category_id: null == category_id
           ? _value.category_id
           : category_id // ignore: cast_nullable_to_non_nullable
@@ -178,7 +191,8 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
 class _$CategoryModelImpl extends _CategoryModel {
   _$CategoryModelImpl(
       {this.id = Isar.autoIncrement,
-      @Index(unique: true, replace: true) required this.category_id,
+      @Index(unique: true, replace: true) required this.internal_id,
+      required this.category_id,
       @Enumerated(EnumType.name) required this.type,
       required this.title,
       @Enumerated(EnumType.name) required this.sourceType,
@@ -193,6 +207,8 @@ class _$CategoryModelImpl extends _CategoryModel {
   final int id;
   @override
   @Index(unique: true, replace: true)
+  final String internal_id;
+  @override
   final String category_id;
   @override
   @Enumerated(EnumType.name)
@@ -208,7 +224,7 @@ class _$CategoryModelImpl extends _CategoryModel {
 
   @override
   String toString() {
-    return 'CategoryModel(id: $id, category_id: $category_id, type: $type, title: $title, sourceType: $sourceType, language: $language)';
+    return 'CategoryModel(id: $id, internal_id: $internal_id, category_id: $category_id, type: $type, title: $title, sourceType: $sourceType, language: $language)';
   }
 
   @override
@@ -217,6 +233,8 @@ class _$CategoryModelImpl extends _CategoryModel {
         (other.runtimeType == runtimeType &&
             other is _$CategoryModelImpl &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.internal_id, internal_id) ||
+                other.internal_id == internal_id) &&
             (identical(other.category_id, category_id) ||
                 other.category_id == category_id) &&
             (identical(other.type, type) || other.type == type) &&
@@ -229,8 +247,8 @@ class _$CategoryModelImpl extends _CategoryModel {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, category_id, type, title, sourceType, language);
+  int get hashCode => Object.hash(runtimeType, id, internal_id, category_id,
+      type, title, sourceType, language);
 
   /// Create a copy of CategoryModel
   /// with the given fields replaced by the non-null parameter values.
@@ -251,7 +269,8 @@ class _$CategoryModelImpl extends _CategoryModel {
 abstract class _CategoryModel extends CategoryModel {
   factory _CategoryModel(
       {final int id,
-      @Index(unique: true, replace: true) required final String category_id,
+      @Index(unique: true, replace: true) required final String internal_id,
+      required final String category_id,
       @Enumerated(EnumType.name) required final CategoryType type,
       required final String title,
       @Enumerated(EnumType.name) required final CategorySourceType sourceType,
@@ -266,6 +285,8 @@ abstract class _CategoryModel extends CategoryModel {
   int get id;
   @override
   @Index(unique: true, replace: true)
+  String get internal_id;
+  @override
   String get category_id;
   @override
   @Enumerated(EnumType.name)

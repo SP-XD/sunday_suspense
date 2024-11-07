@@ -22,25 +22,30 @@ const CategoryModelSchema = CollectionSchema(
       name: r'category_id',
       type: IsarType.string,
     ),
-    r'language': PropertySchema(
+    r'internal_id': PropertySchema(
       id: 1,
+      name: r'internal_id',
+      type: IsarType.string,
+    ),
+    r'language': PropertySchema(
+      id: 2,
       name: r'language',
       type: IsarType.string,
       enumMap: _CategoryModellanguageEnumValueMap,
     ),
     r'sourceType': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'sourceType',
       type: IsarType.string,
       enumMap: _CategoryModelsourceTypeEnumValueMap,
     ),
     r'title': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'type',
       type: IsarType.string,
       enumMap: _CategoryModeltypeEnumValueMap,
@@ -52,14 +57,14 @@ const CategoryModelSchema = CollectionSchema(
   deserializeProp: _categoryModelDeserializeProp,
   idName: r'id',
   indexes: {
-    r'category_id': IndexSchema(
-      id: 9190778373896999248,
-      name: r'category_id',
+    r'internal_id': IndexSchema(
+      id: 9145036787039816154,
+      name: r'internal_id',
       unique: true,
       replace: true,
       properties: [
         IndexPropertySchema(
-          name: r'category_id',
+          name: r'internal_id',
           type: IndexType.hash,
           caseSensitive: true,
         )
@@ -94,6 +99,7 @@ int _categoryModelEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.category_id.length * 3;
+  bytesCount += 3 + object.internal_id.length * 3;
   bytesCount += 3 + object.language.name.length * 3;
   bytesCount += 3 + object.sourceType.name.length * 3;
   bytesCount += 3 + object.title.length * 3;
@@ -108,10 +114,11 @@ void _categoryModelSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.category_id);
-  writer.writeString(offsets[1], object.language.name);
-  writer.writeString(offsets[2], object.sourceType.name);
-  writer.writeString(offsets[3], object.title);
-  writer.writeString(offsets[4], object.type.name);
+  writer.writeString(offsets[1], object.internal_id);
+  writer.writeString(offsets[2], object.language.name);
+  writer.writeString(offsets[3], object.sourceType.name);
+  writer.writeString(offsets[4], object.title);
+  writer.writeString(offsets[5], object.type.name);
 }
 
 CategoryModel _categoryModelDeserialize(
@@ -123,14 +130,15 @@ CategoryModel _categoryModelDeserialize(
   final object = CategoryModel(
     category_id: reader.readString(offsets[0]),
     id: id,
+    internal_id: reader.readString(offsets[1]),
     language: _CategoryModellanguageValueEnumMap[
-            reader.readStringOrNull(offsets[1])] ??
+            reader.readStringOrNull(offsets[2])] ??
         LanguageType.english,
     sourceType: _CategoryModelsourceTypeValueEnumMap[
-            reader.readStringOrNull(offsets[2])] ??
+            reader.readStringOrNull(offsets[3])] ??
         CategorySourceType.builtInCategory,
-    title: reader.readString(offsets[3]),
-    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[4])] ??
+    title: reader.readString(offsets[4]),
+    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[5])] ??
         CategoryType.channel,
   );
   return object;
@@ -146,16 +154,18 @@ P _categoryModelDeserializeProp<P>(
     case 0:
       return (reader.readString(offset)) as P;
     case 1:
+      return (reader.readString(offset)) as P;
+    case 2:
       return (_CategoryModellanguageValueEnumMap[
               reader.readStringOrNull(offset)] ??
           LanguageType.english) as P;
-    case 2:
+    case 3:
       return (_CategoryModelsourceTypeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           CategorySourceType.builtInCategory) as P;
-    case 3:
-      return (reader.readString(offset)) as P;
     case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
       return (_CategoryModeltypeValueEnumMap[reader.readStringOrNull(offset)] ??
           CategoryType.channel) as P;
     default:
@@ -216,58 +226,58 @@ void _categoryModelAttach(
 }
 
 extension CategoryModelByIndex on IsarCollection<CategoryModel> {
-  Future<CategoryModel?> getByCategory_id(String category_id) {
-    return getByIndex(r'category_id', [category_id]);
+  Future<CategoryModel?> getByInternal_id(String internal_id) {
+    return getByIndex(r'internal_id', [internal_id]);
   }
 
-  CategoryModel? getByCategory_idSync(String category_id) {
-    return getByIndexSync(r'category_id', [category_id]);
+  CategoryModel? getByInternal_idSync(String internal_id) {
+    return getByIndexSync(r'internal_id', [internal_id]);
   }
 
-  Future<bool> deleteByCategory_id(String category_id) {
-    return deleteByIndex(r'category_id', [category_id]);
+  Future<bool> deleteByInternal_id(String internal_id) {
+    return deleteByIndex(r'internal_id', [internal_id]);
   }
 
-  bool deleteByCategory_idSync(String category_id) {
-    return deleteByIndexSync(r'category_id', [category_id]);
+  bool deleteByInternal_idSync(String internal_id) {
+    return deleteByIndexSync(r'internal_id', [internal_id]);
   }
 
-  Future<List<CategoryModel?>> getAllByCategory_id(
-      List<String> category_idValues) {
-    final values = category_idValues.map((e) => [e]).toList();
-    return getAllByIndex(r'category_id', values);
+  Future<List<CategoryModel?>> getAllByInternal_id(
+      List<String> internal_idValues) {
+    final values = internal_idValues.map((e) => [e]).toList();
+    return getAllByIndex(r'internal_id', values);
   }
 
-  List<CategoryModel?> getAllByCategory_idSync(List<String> category_idValues) {
-    final values = category_idValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'category_id', values);
+  List<CategoryModel?> getAllByInternal_idSync(List<String> internal_idValues) {
+    final values = internal_idValues.map((e) => [e]).toList();
+    return getAllByIndexSync(r'internal_id', values);
   }
 
-  Future<int> deleteAllByCategory_id(List<String> category_idValues) {
-    final values = category_idValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'category_id', values);
+  Future<int> deleteAllByInternal_id(List<String> internal_idValues) {
+    final values = internal_idValues.map((e) => [e]).toList();
+    return deleteAllByIndex(r'internal_id', values);
   }
 
-  int deleteAllByCategory_idSync(List<String> category_idValues) {
-    final values = category_idValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'category_id', values);
+  int deleteAllByInternal_idSync(List<String> internal_idValues) {
+    final values = internal_idValues.map((e) => [e]).toList();
+    return deleteAllByIndexSync(r'internal_id', values);
   }
 
-  Future<Id> putByCategory_id(CategoryModel object) {
-    return putByIndex(r'category_id', object);
+  Future<Id> putByInternal_id(CategoryModel object) {
+    return putByIndex(r'internal_id', object);
   }
 
-  Id putByCategory_idSync(CategoryModel object, {bool saveLinks = true}) {
-    return putByIndexSync(r'category_id', object, saveLinks: saveLinks);
+  Id putByInternal_idSync(CategoryModel object, {bool saveLinks = true}) {
+    return putByIndexSync(r'internal_id', object, saveLinks: saveLinks);
   }
 
-  Future<List<Id>> putAllByCategory_id(List<CategoryModel> objects) {
-    return putAllByIndex(r'category_id', objects);
+  Future<List<Id>> putAllByInternal_id(List<CategoryModel> objects) {
+    return putAllByIndex(r'internal_id', objects);
   }
 
-  List<Id> putAllByCategory_idSync(List<CategoryModel> objects,
+  List<Id> putAllByInternal_idSync(List<CategoryModel> objects,
       {bool saveLinks = true}) {
-    return putAllByIndexSync(r'category_id', objects, saveLinks: saveLinks);
+    return putAllByIndexSync(r'internal_id', objects, saveLinks: saveLinks);
   }
 }
 
@@ -352,44 +362,44 @@ extension CategoryModelQueryWhere
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterWhereClause>
-      category_idEqualTo(String category_id) {
+      internal_idEqualTo(String internal_id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'category_id',
-        value: [category_id],
+        indexName: r'internal_id',
+        value: [internal_id],
       ));
     });
   }
 
   QueryBuilder<CategoryModel, CategoryModel, QAfterWhereClause>
-      category_idNotEqualTo(String category_id) {
+      internal_idNotEqualTo(String internal_id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'category_id',
+              indexName: r'internal_id',
               lower: [],
-              upper: [category_id],
+              upper: [internal_id],
               includeUpper: false,
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'category_id',
-              lower: [category_id],
+              indexName: r'internal_id',
+              lower: [internal_id],
               includeLower: false,
               upper: [],
             ));
       } else {
         return query
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'category_id',
-              lower: [category_id],
+              indexName: r'internal_id',
+              lower: [internal_id],
               includeLower: false,
               upper: [],
             ))
             .addWhereClause(IndexWhereClause.between(
-              indexName: r'category_id',
+              indexName: r'internal_id',
               lower: [],
-              upper: [category_id],
+              upper: [internal_id],
               includeUpper: false,
             ));
       }
@@ -585,6 +595,142 @@ extension CategoryModelQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'internal_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'internal_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'internal_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'internal_id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'internal_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'internal_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'internal_id',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'internal_id',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'internal_id',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      internal_idIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'internal_id',
+        value: '',
       ));
     });
   }
@@ -1276,6 +1422,19 @@ extension CategoryModelQuerySortBy
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortByInternal_id() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'internal_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy>
+      sortByInternal_idDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'internal_id', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortByLanguage() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'language', Sort.asc);
@@ -1354,6 +1513,19 @@ extension CategoryModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenByInternal_id() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'internal_id', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy>
+      thenByInternal_idDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'internal_id', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenByLanguage() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'language', Sort.asc);
@@ -1414,6 +1586,13 @@ extension CategoryModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByInternal_id(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'internal_id', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByLanguage(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1457,6 +1636,12 @@ extension CategoryModelQueryProperty
     });
   }
 
+  QueryBuilder<CategoryModel, String, QQueryOperations> internal_idProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'internal_id');
+    });
+  }
+
   QueryBuilder<CategoryModel, LanguageType, QQueryOperations>
       languageProperty() {
     return QueryBuilder.apply(this, (query) {
@@ -1491,6 +1676,7 @@ extension CategoryModelQueryProperty
 _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
     _$CategoryModelImpl(
       id: (json['id'] as num?)?.toInt() ?? Isar.autoIncrement,
+      internal_id: json['internal_id'] as String,
       category_id: json['category_id'] as String,
       type: $enumDecode(_$CategoryTypeEnumMap, json['type']),
       title: json['title'] as String,
@@ -1501,6 +1687,7 @@ _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
+      'internal_id': instance.internal_id,
       'category_id': instance.category_id,
       'type': _$CategoryTypeEnumMap[instance.type]!,
       'title': instance.title,

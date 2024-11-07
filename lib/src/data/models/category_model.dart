@@ -28,7 +28,8 @@ class CategoryModel with _$CategoryModel {
 
   factory CategoryModel({
     @Default(Isar.autoIncrement) int id,
-    @Index(unique: true, replace: true) required String category_id,
+    @Index(unique: true, replace: true) required String internal_id,
+    required String category_id,
     @Enumerated(EnumType.name) required CategoryType type,
     required String title,
     @Enumerated(EnumType.name) required CategorySourceType sourceType,
