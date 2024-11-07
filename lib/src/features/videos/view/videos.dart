@@ -27,7 +27,16 @@ class VideosWidget extends StatelessWidget {
             context.read<VideosBloc>().add(VideosEvent.loadVideos());
             return const SizedBox(height: 0, width: 0);
           },
-          loading: (_) => loadingWidget(),
+          loading: (_) => ListView.builder(
+            controller: context.watch<NavScrollControllerCubit>().state,
+            shrinkWrap: true,
+            itemCount: 4,
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(bottom: 15.0, left: 20, right: 20),
+              child: ItemCardBig.shimmer(),
+            ),
+          ),
           loaded: (loadedState) => ShaderMask(
             shaderCallback: (bounds) => LinearGradient(
               begin: Alignment.topCenter,

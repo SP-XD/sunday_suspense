@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:intl/intl.dart';
@@ -16,15 +15,22 @@ class ItemCardBig extends StatelessWidget {
   ItemCardBig({
     super.key,
     required this.video,
-  });
-  final VideoModel video;
+  }) : this.shimmerMode = false;
+
+  ItemCardBig.shimmer({
+    super.key,
+  })  : this.video = null,
+        this.shimmerMode = true;
+
+  final bool shimmerMode;
+  final VideoModel? video;
   final DateFormat dateFormat = DateFormat('d MMM yyyy');
 
   @override
   Widget build(BuildContext context) {
-    final String formattedDate = video.uploadDate != null ? dateFormat.format(video.uploadDate!) : '--';
+    final String formattedDate = video?.uploadDate != null ? dateFormat.format(video!.uploadDate!) : '--';
     final textTheme = Theme.of(context).textTheme;
-    final String formattedDuration = formatDuration(video.totalDurationConverted);
+    final String formattedDuration = formatDuration(video?.totalDurationConverted ?? Duration.zero);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -35,7 +41,8 @@ class ItemCardBig extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              const Color.fromARGB(122, 183, 28, 28),
+              //   if (shimmerMode) Colors.grey.shade900 else const Color.fromARGB(122, 183, 28, 28),
+              Colors.grey.shade900,
               Colors.grey.shade900,
             ],
             stops: [0.1, 0.3],
@@ -52,95 +59,114 @@ class ItemCardBig extends StatelessWidget {
             aspectRatio: 16 / 12,
             child: Stack(
               children: [
-                Positioned.fill(
-                  child: CachedNetworkImage(
-                    imageUrl: video.thumbnails!.maxResUrl.isNotEmpty
-                        ? video.thumbnails!.maxResUrl
-                        : video.thumbnails!.highResUrl.isNotEmpty
-                            ? video.thumbnails!.highResUrl
-                            : video.thumbnails!.mediumResUrl.isNotEmpty
-                                ? video.thumbnails!.mediumResUrl
-                                : video.thumbnails!.lowResUrl,
-                    fit: BoxFit.fitWidth,
-                    alignment: Alignment.topCenter,
-                    memCacheHeight: 683,
-                    memCacheWidth: 1094,
-                  ),
-                ),
-                Positioned.fill(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [Colors.black12, Colors.black],
-                        stops: [0.2, 0.8],
-                      ),
+                if (shimmerMode)
+                  Positioned.fill(
+                    child: Container(
+                      color: const Color.fromARGB(255, 11, 11, 11),
+                      //   color: SpxdAppConstants.primaryColorDarkest,
+                    )
+                        .animate(
+                          onPlay: (controller) => controller.repeat(),
+                          autoPlay: true,
+                        )
+                        .shimmer(
+                          //   color: SpxdAppConstants.primaryColorDarkest,
+                          color: const Color.fromARGB(255, 27, 27, 27),
+                          size: 1,
+                          duration: 2000.ms,
+                        ),
+                  )
+                else ...[
+                  Positioned.fill(
+                    child: CachedNetworkImage(
+                      imageUrl: video!.thumbnails!.maxResUrl.isNotEmpty
+                          ? video!.thumbnails!.maxResUrl
+                          : video!.thumbnails!.highResUrl.isNotEmpty
+                              ? video!.thumbnails!.highResUrl
+                              : video!.thumbnails!.mediumResUrl.isNotEmpty
+                                  ? video!.thumbnails!.mediumResUrl
+                                  : video!.thumbnails!.lowResUrl,
+                      fit: BoxFit.fitWidth,
+                      alignment: Alignment.topCenter,
+                      memCacheHeight: 683,
+                      memCacheWidth: 1094,
                     ),
                   ),
-                ),
-                Positioned.fill(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      splashColor: Theme.of(context).primaryColorDark,
-                      overlayColor: WidgetStateProperty.all(Colors.red.shade800.withOpacity(0.2)),
-                      onTap: () {},
-                    ),
-                  ),
-                ),
-                Positioned(
-                  bottom: 10,
-                  left: 15,
-                  right: 10,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              formattedDate + ' // ' + formattedDuration,
-                              style: textTheme.labelMedium?.copyWith(
-                                fontWeight: FontWeight.normal,
-                                color: SpxdAppConstants.white,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(1, 1),
-                                    blurRadius: 5,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              video.title.toString(),
-                              softWrap: true,
-                              maxLines: 3,
-                              style: textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: SpxdAppConstants.white,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors.black,
-                                    offset: Offset(1, 1),
-                                    blurRadius: 15,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                          ],
+                  Positioned.fill(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.black12, Colors.black],
+                          stops: [0.2, 0.8],
                         ),
                       ),
-                      const SizedBox(width: 2),
-                      iconButtonWidget(video)
-                    ],
+                    ),
                   ),
-                ),
+                  Positioned.fill(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        splashColor: Theme.of(context).primaryColorDark,
+                        overlayColor: WidgetStateProperty.all(Colors.red.shade800.withOpacity(0.2)),
+                        onTap: () {},
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 8,
+                    left: 15,
+                    right: 10,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                formattedDate + ' // ' + formattedDuration,
+                                style: textTheme.labelMedium?.copyWith(
+                                  fontWeight: FontWeight.w300,
+                                  color: SpxdAppConstants.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black,
+                                      offset: Offset(1, 1),
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                video!.title.toString(),
+                                softWrap: true,
+                                maxLines: 3,
+                                style: textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: SpxdAppConstants.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black,
+                                      offset: Offset(1, 1),
+                                      blurRadius: 15,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        iconButtonWidget(video!)
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -163,14 +189,14 @@ class ItemCardBig extends StatelessWidget {
             VideoModel? currentVideo = state.maybeMap(
               playing: (playingState) => playingState.audioService.currentlyPlaying,
               paused: (pausedState) => pausedState.audioService.currentlyPlaying,
-              loading: (loadingState) => loadingState.video,
+              loading: (loadingState) => loadingState.video!,
               orElse: () => null,
             );
 
-            if (isPlaying && currentVideo != null && currentVideo.id?.value == video.id?.value) {
+            if (isPlaying && currentVideo != null && currentVideo.videoId?.value == video.videoId?.value) {
               context.read<PlayerBloc>().add(PlayerEvent.pause());
             } else {
-              if (currentVideo?.id?.value != video.id?.value) {
+              if (currentVideo?.videoId?.value != video.videoId?.value) {
                 context.read<PlayerBloc>().add(PlayerEvent.playFromChannel(video: video));
               } else
                 context.read<PlayerBloc>().add(PlayerEvent.play());
@@ -186,10 +212,11 @@ class ItemCardBig extends StatelessWidget {
             ),
           ),
           icon: state.maybeMap(
-            playing: (playState) => playState.audioService.currentlyPlaying?.id?.value == video.id?.value
-                ? Assets.icons.pause.svg(height: 40, width: 40)
-                : Assets.icons.play.svg(height: 40, width: 40),
-            loading: (loadingState) => loadingState.video?.id?.value == video.id?.value
+            playing: (playState) =>
+                playState.audioService.currentlyPlaying?.videoId?.value == video.videoId?.value
+                    ? Assets.icons.pause.svg(height: 40, width: 40)
+                    : Assets.icons.play.svg(height: 40, width: 40),
+            loading: (loadingState) => loadingState.video?.videoId?.value == video.videoId?.value
                 ? loadingWidget(size: 10)
                 : Assets.icons.play.svg(height: 40, width: 40),
             orElse: () => Assets.icons.play.svg(height: 40, width: 40),
