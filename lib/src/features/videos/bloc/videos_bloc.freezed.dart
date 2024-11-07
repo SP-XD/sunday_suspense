@@ -16,22 +16,19 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$VideosEvent {
-  String get categoryId => throw _privateConstructorUsedError;
-  CategoryType get categoryType => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String categoryId, CategoryType categoryType)
-        loadVideos,
+    required TResult Function() loadVideos,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String categoryId, CategoryType categoryType)? loadVideos,
+    TResult? Function()? loadVideos,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String categoryId, CategoryType categoryType)? loadVideos,
+    TResult Function()? loadVideos,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -51,12 +48,6 @@ mixin _$VideosEvent {
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $VideosEventCopyWith<VideosEvent> get copyWith =>
-      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -64,8 +55,6 @@ abstract class $VideosEventCopyWith<$Res> {
   factory $VideosEventCopyWith(
           VideosEvent value, $Res Function(VideosEvent) then) =
       _$VideosEventCopyWithImpl<$Res, VideosEvent>;
-  @useResult
-  $Res call({String categoryId, CategoryType categoryType});
 }
 
 /// @nodoc
@@ -80,34 +69,13 @@ class _$VideosEventCopyWithImpl<$Res, $Val extends VideosEvent>
 
   /// Create a copy of VideosEvent
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? categoryId = null,
-    Object? categoryType = null,
-  }) {
-    return _then(_value.copyWith(
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryType: null == categoryType
-          ? _value.categoryType
-          : categoryType // ignore: cast_nullable_to_non_nullable
-              as CategoryType,
-    ) as $Val);
-  }
 }
 
 /// @nodoc
-abstract class _$$LoadVideosImplCopyWith<$Res>
-    implements $VideosEventCopyWith<$Res> {
+abstract class _$$LoadVideosImplCopyWith<$Res> {
   factory _$$LoadVideosImplCopyWith(
           _$LoadVideosImpl value, $Res Function(_$LoadVideosImpl) then) =
       __$$LoadVideosImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String categoryId, CategoryType categoryType});
 }
 
 /// @nodoc
@@ -120,88 +88,57 @@ class __$$LoadVideosImplCopyWithImpl<$Res>
 
   /// Create a copy of VideosEvent
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? categoryId = null,
-    Object? categoryType = null,
-  }) {
-    return _then(_$LoadVideosImpl(
-      categoryId: null == categoryId
-          ? _value.categoryId
-          : categoryId // ignore: cast_nullable_to_non_nullable
-              as String,
-      categoryType: null == categoryType
-          ? _value.categoryType
-          : categoryType // ignore: cast_nullable_to_non_nullable
-              as CategoryType,
-    ));
-  }
 }
 
 /// @nodoc
 
-class _$LoadVideosImpl implements _LoadVideos {
-  const _$LoadVideosImpl(
-      {required this.categoryId, required this.categoryType});
+class _$LoadVideosImpl with DiagnosticableTreeMixin implements _LoadVideos {
+  const _$LoadVideosImpl();
 
   @override
-  final String categoryId;
-  @override
-  final CategoryType categoryType;
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'VideosEvent.loadVideos()';
+  }
 
   @override
-  String toString() {
-    return 'VideosEvent.loadVideos(categoryId: $categoryId, categoryType: $categoryType)';
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'VideosEvent.loadVideos'));
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$LoadVideosImpl &&
-            (identical(other.categoryId, categoryId) ||
-                other.categoryId == categoryId) &&
-            (identical(other.categoryType, categoryType) ||
-                other.categoryType == categoryType));
+        (other.runtimeType == runtimeType && other is _$LoadVideosImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, categoryId, categoryType);
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$LoadVideosImplCopyWith<_$LoadVideosImpl> get copyWith =>
-      __$$LoadVideosImplCopyWithImpl<_$LoadVideosImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(String categoryId, CategoryType categoryType)
-        loadVideos,
+    required TResult Function() loadVideos,
   }) {
-    return loadVideos(categoryId, categoryType);
+    return loadVideos();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(String categoryId, CategoryType categoryType)? loadVideos,
+    TResult? Function()? loadVideos,
   }) {
-    return loadVideos?.call(categoryId, categoryType);
+    return loadVideos?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(String categoryId, CategoryType categoryType)? loadVideos,
+    TResult Function()? loadVideos,
     required TResult orElse(),
   }) {
     if (loadVideos != null) {
-      return loadVideos(categoryId, categoryType);
+      return loadVideos();
     }
     return orElse();
   }
@@ -236,21 +173,7 @@ class _$LoadVideosImpl implements _LoadVideos {
 }
 
 abstract class _LoadVideos implements VideosEvent {
-  const factory _LoadVideos(
-      {required final String categoryId,
-      required final CategoryType categoryType}) = _$LoadVideosImpl;
-
-  @override
-  String get categoryId;
-  @override
-  CategoryType get categoryType;
-
-  /// Create a copy of VideosEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$LoadVideosImplCopyWith<_$LoadVideosImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _LoadVideos() = _$LoadVideosImpl;
 }
 
 /// @nodoc
@@ -349,12 +272,18 @@ class __$$InitialImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$InitialImpl implements _Initial {
+class _$InitialImpl with DiagnosticableTreeMixin implements _Initial {
   const _$InitialImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.initial()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'VideosState.initial'));
   }
 
   @override
@@ -457,12 +386,18 @@ class __$$LoadingImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadingImpl implements _Loading {
+class _$LoadingImpl with DiagnosticableTreeMixin implements _Loading {
   const _$LoadingImpl();
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.loading()';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('type', 'VideosState.loading'));
   }
 
   @override
@@ -579,15 +514,23 @@ class __$$LoadedImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$LoadedImpl implements _Loaded {
+class _$LoadedImpl with DiagnosticableTreeMixin implements _Loaded {
   _$LoadedImpl(this.videos);
 
   @override
   List<VideoModel> videos;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.loaded(videos: $videos)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosState.loaded'))
+      ..add(DiagnosticsProperty('videos', videos));
   }
 
   /// Create a copy of VideosState
@@ -721,15 +664,23 @@ class __$$ErrorImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$ErrorImpl implements _Error {
+class _$ErrorImpl with DiagnosticableTreeMixin implements _Error {
   _$ErrorImpl(this.message);
 
   @override
   String message;
 
   @override
-  String toString() {
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
     return 'VideosState.error(message: $message)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'VideosState.error'))
+      ..add(DiagnosticsProperty('message', message));
   }
 
   /// Create a copy of VideosState

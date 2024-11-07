@@ -5,24 +5,23 @@ import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
-import 'package:midnight_suspense/src/services/isolate_service.dart';
 
 part 'videos_event.dart';
 part 'videos_state.dart';
 part 'videos_bloc.freezed.dart';
 
 class VideosBloc extends Bloc<VideosEvent, VideosState> {
-  VideosBloc(this.id, this._videosRepository) : super(VideosState.initial()) {
+  VideosBloc(this.categoryId, this.categoryType, this._videosRepository) : super(VideosState.initial()) {
     on<VideosEvent>((event, emit) async {
       await event.map(loadVideos: (event) async {
         emit(VideosState.loading());
         try {
           List<VideoModel> videos;
-          switch (event.categoryType) {
+          switch (categoryType) {
             case CategoryType.channel:
-              videos = await _videosRepository.getChannelVideos(event.categoryId);
+              videos = await _videosRepository.getChannelVideos(categoryId);
             case CategoryType.playlist:
-              videos = await _videosRepository.getPlaylistVideos(event.categoryId);
+              videos = await _videosRepository.getPlaylistVideos(categoryId);
             // TODO: implement history category type
             case CategoryType.history:
               videos = [];
@@ -30,7 +29,7 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
               videos = [];
           }
 
-          logger.i("event category type: ${event.categoryType}, videos: ${videos.length}");
+          logger.i("event categoryId: $categoryId, category_type: $categoryType, videos: ${videos.length}");
 
           emit(VideosState.loaded(videos));
         } catch (e, st) {
@@ -42,5 +41,6 @@ class VideosBloc extends Bloc<VideosEvent, VideosState> {
   }
 
   final VideosRepository _videosRepository;
-  final String id;
+  final String categoryId;
+  final CategoryType categoryType;
 }

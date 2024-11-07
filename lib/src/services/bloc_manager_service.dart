@@ -11,13 +11,9 @@ class VBlocManagerService {
     } else {
       final bloc = VideosBloc(
         categoryId,
+        type,
         videosRepository,
-      )..add(
-          VideosEvent.loadVideos(
-            categoryId: categoryId,
-            categoryType: type,
-          ),
-        );
+      );
       _blocs[categoryId] = bloc;
       return bloc;
     }

@@ -22,7 +22,11 @@ class VideosWidget extends StatelessWidget {
     return BlocBuilder<VideosBloc, VideosState>(
       builder: (context, state) {
         return state.map(
-          initial: (_) => const SizedBox(height: 0, width: 0),
+          initial: (_) {
+            // Hotfix way to lazy load videos, as blocs skips initial event when listening
+            context.read<VideosBloc>().add(VideosEvent.loadVideos());
+            return const SizedBox(height: 0, width: 0);
+          },
           loading: (_) => loadingWidget(),
           loaded: (loadedState) => ShaderMask(
             shaderCallback: (bounds) => LinearGradient(
