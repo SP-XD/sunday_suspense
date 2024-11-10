@@ -1,16 +1,6 @@
-import 'dart:developer';
-
-import 'package:animations/animations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart' hide SearchBar;
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:midnight_suspense/src/features/category/view/category_tab_widget.dart';
-import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
-import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
-import 'package:midnight_suspense/src/features/home/bloc/home_bloc.dart';
-import 'package:midnight_suspense/src/features/player/player.dart';
-import 'package:midnight_suspense/src/features/player/view/item_card_big.dart';
 import 'package:midnight_suspense/src/features/searchbar/searchbar.dart';
 
 @RoutePage()

@@ -3,7 +3,6 @@ import 'dart:isolate';
 import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/services/isolate_service.dart';
-import 'package:midnight_suspense/src/utils/helper_functions.dart';
 
 class VideosRepository extends IsolateService {
   VideosRepository() {
@@ -20,6 +19,10 @@ class VideosRepository extends IsolateService {
 
   Future<List<VideoModel>> fetchSearchResults(String query) async {
     return await addJob<List<VideoModel>>(operation: 'fetchSearchResults', params: query);
+  }
+
+  Future<String> getVideoDescription(String videoId) async {
+    return await addJob<String>(operation: 'getVideoDescription', params: videoId);
   }
 
   @override
@@ -61,6 +64,10 @@ class VideosRepository extends IsolateService {
       case 'fetchSearchResults':
         final searchResults = await ytProvider.ytExplodeInstance!.search.search(params as String);
         return searchResults.map((e) => VideoModel.fromYoutubeVideoModel(e)).toList();
+
+      case "getVideoDescription":
+        final video = await ytProvider.ytExplodeInstance!.videos.get(params as String);
+        return video.description;
 
       default:
         throw UnimplementedError('Unknown operation: $operation');

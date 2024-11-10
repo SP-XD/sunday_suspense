@@ -5,7 +5,7 @@ import 'package:midnight_suspense/src/data/models/category_model.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/features/player/view/item_card_big.dart';
 import 'package:midnight_suspense/src/features/videos/bloc/videos_bloc.dart';
-import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
+import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller_cubit.dart';
 
 class VideosWidget extends StatelessWidget {
   const VideosWidget({

@@ -11,6 +11,10 @@ class IsolateCommand {
     required this.operation,
     required this.params,
   });
+
+  Future<dynamic> execute() {
+    throw UnimplementedError();
+  }
 }
 
 abstract class IsolateService {
@@ -93,16 +97,16 @@ abstract class IsolateService {
         receivePort.close();
         return;
       }
-      //   final (int id, dynamic command) = message as (int, dynamic);
+      final (int id, dynamic command) = message as (int, dynamic);
 
-      //   if (command is IsolateCommand) {
-      //     try {
-      //       final result = await command.execute();
-      //       sendPort.send((id, result));
-      //     } catch (e, st) {
-      //       sendPort.send((id, RemoteError(e.toString(), st.toString())));
-      //     }
-      //   }
+      if (command is IsolateCommand) {
+        try {
+          final result = await command.execute();
+          sendPort.send((id, result));
+        } catch (e, st) {
+          sendPort.send((id, RemoteError(e.toString(), st.toString())));
+        }
+      }
 
       //   final (int id, String jsonText, dynamic Function(dynamic params) callback) =
       //       message as (int, String, WorkerCallback);

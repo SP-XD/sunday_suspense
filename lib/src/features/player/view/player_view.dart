@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:midnight_suspense/bootstrap.dart';
+import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
 import 'package:midnight_suspense/src/features/common_widgets/blur_art.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
+import 'package:midnight_suspense/src/features/player/view/player_info_tab.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
 import 'package:rxdart/rxdart.dart';
@@ -21,10 +24,25 @@ class PlayerView extends StatefulWidget {
   State<PlayerView> createState() => _PlayerViewState();
 }
 
-class _PlayerViewState extends State<PlayerView> {
+class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateMixin {
   Stream<Duration> currentPositionStream = Stream.value(Duration.zero);
   Stream<Duration?> durationStream = Stream.value(null);
   Stream<Duration> bufferedPositionStream = Stream.value(Duration.zero);
+
+  AnimationController? artWorkAnimationController;
+  String artWorkUrl = "";
+
+  @override
+  void initState() {
+    super.initState();
+    artWorkAnimationController = AnimationController(vsync: this, duration: 30.seconds);
+  }
+
+  @override
+  void dispose() {
+    artWorkAnimationController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +63,14 @@ class _PlayerViewState extends State<PlayerView> {
         ),
         body: BlocBuilder<PlayerBloc, PlayerState>(
           builder: (context, state) {
+            if (artWorkUrl.isEmpty) {
+              state.mapOrNull(
+                loading: (loadingState) {
+                  artWorkUrl = loadingState.video?.thumbnails?.lowResUrl ?? '';
+                },
+              );
+            }
+
             return Stack(
               children: [
                 Positioned.fill(
@@ -61,15 +87,7 @@ class _PlayerViewState extends State<PlayerView> {
                         stops: [0.5, 0.99],
                       ),
                     ),
-                    child: state.mapOrNull(
-                      loading: (initialState) =>
-                          blurArt(imageUrl: initialState.video?.thumbnails?.lowResUrl ?? ''),
-                      playing: (playingState) =>
-                          blurArt(imageUrl: playingState.audioService.currentThumbnail),
-                      paused: (pausedState) => blurArt(imageUrl: pausedState.audioService.currentThumbnail),
-                      stopped: (stoppedState) =>
-                          blurArt(imageUrl: stoppedState.audioService.currentThumbnail),
-                    ),
+                    child: BlurArtWidget(imageUrl: artWorkUrl),
                   ),
                 ),
                 state.mapOrNull(
@@ -90,6 +108,16 @@ class _PlayerViewState extends State<PlayerView> {
   }
 
   Column playerControls(BuildContext context, AudioService audioService, bool isPlaying) {
+    if (artWorkAnimationController != null) {
+      if (!isPlaying)
+        artWorkAnimationController!.animateBack(
+          0,
+          duration: 2.seconds,
+          curve: Curves.fastEaseInToSlowEaseOut,
+        );
+      else
+        artWorkAnimationController!.repeat();
+    }
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -135,7 +163,9 @@ class _PlayerViewState extends State<PlayerView> {
           ),
         )
             .animate(
+              controller: artWorkAnimationController,
               onPlay: (controller) => controller.repeat(),
+              autoPlay: true,
             )
             .rotate(
               duration: Duration(seconds: 30),
@@ -213,6 +243,7 @@ class _PlayerViewState extends State<PlayerView> {
             ),
           ],
         ),
+        PlayerInfoTab(videoId: audioService.currentlyPlaying?.videoId?.value ?? ""),
         SizedBox(height: 10)
       ],
     );

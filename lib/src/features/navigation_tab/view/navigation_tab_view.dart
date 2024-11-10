@@ -10,7 +10,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gradient_borders/gradient_borders.dart';
 import 'package:midnight_suspense/src/features/category/category.dart';
 import 'package:midnight_suspense/src/features/settings/settings.dart';
-import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
+import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/features/blank/blank.dart';
 import 'package:midnight_suspense/src/features/home/home.dart';
 import 'package:midnight_suspense/src/features/player/player.dart';

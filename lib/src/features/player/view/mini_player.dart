@@ -59,7 +59,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                   topRight: Radius.circular(25),
                 ),
               ),
-              closedColor: Colors.transparent,
+              closedColor: Colors.black,
               transitionType: ContainerTransitionType.fadeThrough,
               transitionDuration: Duration(milliseconds: 500),
               closedBuilder: (context, openContainerAction) {
@@ -106,7 +106,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
               ),
               loading: (state) => thumbnailAndTitle(
                 textTheme,
-                thumbnailUrl: state.video?.thumbnails?.mediumResUrl ?? "",
+                thumbnailUrl: state.video?.thumbnails?.lowResUrl ?? "",
                 title: state.video?.title ?? "",
               ),
               playing: (playingState) => thumbnailAndTitle(
@@ -165,8 +165,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
               borderRadius: BorderRadius.circular(15),
               child: CachedNetworkImage(
                 imageUrl: thumbnailUrl,
-                memCacheWidth: 300,
-                memCacheHeight: 200,
+                memCacheWidth: 150,
+                memCacheHeight: 120,
                 width: 70,
                 height: 50,
                 fit: BoxFit.cover,

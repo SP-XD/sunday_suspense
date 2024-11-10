@@ -5,7 +5,7 @@ import 'package:midnight_suspense/src/configs/app_router.dart';
 import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
 import 'package:midnight_suspense/src/features/category/bloc/category_bloc.dart';
 import 'package:midnight_suspense/src/features/preferred_languages/bloc/preferred_languages_bloc.dart';
-import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller/nav_scroll_controller_cubit.dart';
+import 'package:midnight_suspense/src/shared_bloc/nav_scroll_controller_cubit.dart';
 import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
 import 'package:midnight_suspense/src/features/home/bloc/home_bloc.dart';
 import 'package:midnight_suspense/src/l10n/l10n.dart';
@@ -93,8 +93,8 @@ class _AppState extends State<App> {
             useMaterial3: true,
           ),
           themeMode: ThemeMode.dark,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
+          //   localizationsDelegates: AppLocalizations.localizationsDelegates,
+          //   supportedLocales: AppLocalizations.supportedLocales,
           debugShowCheckedModeBanner: false,
         ),
       ),
