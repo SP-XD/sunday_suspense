@@ -78,6 +78,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge, overlays: [SystemUiOverlay.bottom]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
+    systemNavigationBarColor: Colors.black,
   ));
 
   runApp(await builder());
