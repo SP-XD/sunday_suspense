@@ -114,3 +114,4 @@ app.*.map.json
 .env
 .idea/
 
+/.idea/.wiseGPT/
