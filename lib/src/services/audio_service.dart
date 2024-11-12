@@ -142,7 +142,7 @@ class AudioService extends aps.BaseAudioHandler with aps.SeekHandler {
   Future<void> stop() async {
     await audioSession.setActive(false);
     _player.stop();
-    this.stop();
+    // this.stop();
   }
 
   /// Seeks to a specific position in the audio.
