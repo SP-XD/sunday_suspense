@@ -1002,7 +1002,7 @@ mixin _$PlayerState {
     required TResult Function(VideoModel? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
-    required TResult Function(AudioService audioService) stopped,
+    required TResult Function() stopped,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1012,7 +1012,7 @@ mixin _$PlayerState {
     TResult? Function(VideoModel? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
-    TResult? Function(AudioService audioService)? stopped,
+    TResult? Function()? stopped,
     TResult? Function()? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -1022,7 +1022,7 @@ mixin _$PlayerState {
     TResult Function(VideoModel? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
-    TResult Function(AudioService audioService)? stopped,
+    TResult Function()? stopped,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -1126,7 +1126,7 @@ class _$PlayerInitialImpl implements _PlayerInitial {
     required TResult Function(VideoModel? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
-    required TResult Function(AudioService audioService) stopped,
+    required TResult Function() stopped,
     required TResult Function() error,
   }) {
     return initial();
@@ -1139,7 +1139,7 @@ class _$PlayerInitialImpl implements _PlayerInitial {
     TResult? Function(VideoModel? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
-    TResult? Function(AudioService audioService)? stopped,
+    TResult? Function()? stopped,
     TResult? Function()? error,
   }) {
     return initial?.call();
@@ -1152,7 +1152,7 @@ class _$PlayerInitialImpl implements _PlayerInitial {
     TResult Function(VideoModel? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
-    TResult Function(AudioService audioService)? stopped,
+    TResult Function()? stopped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -1298,7 +1298,7 @@ class _$PlayerLoadingImpl implements _PlayerLoading {
     required TResult Function(VideoModel? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
-    required TResult Function(AudioService audioService) stopped,
+    required TResult Function() stopped,
     required TResult Function() error,
   }) {
     return loading(video);
@@ -1311,7 +1311,7 @@ class _$PlayerLoadingImpl implements _PlayerLoading {
     TResult? Function(VideoModel? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
-    TResult? Function(AudioService audioService)? stopped,
+    TResult? Function()? stopped,
     TResult? Function()? error,
   }) {
     return loading?.call(video);
@@ -1324,7 +1324,7 @@ class _$PlayerLoadingImpl implements _PlayerLoading {
     TResult Function(VideoModel? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
-    TResult Function(AudioService audioService)? stopped,
+    TResult Function()? stopped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -1463,7 +1463,7 @@ class _$PlayerPlayingImpl implements _PlayerPlaying {
     required TResult Function(VideoModel? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
-    required TResult Function(AudioService audioService) stopped,
+    required TResult Function() stopped,
     required TResult Function() error,
   }) {
     return playing(audioService);
@@ -1476,7 +1476,7 @@ class _$PlayerPlayingImpl implements _PlayerPlaying {
     TResult? Function(VideoModel? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
-    TResult? Function(AudioService audioService)? stopped,
+    TResult? Function()? stopped,
     TResult? Function()? error,
   }) {
     return playing?.call(audioService);
@@ -1489,7 +1489,7 @@ class _$PlayerPlayingImpl implements _PlayerPlaying {
     TResult Function(VideoModel? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
-    TResult Function(AudioService audioService)? stopped,
+    TResult Function()? stopped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -1629,7 +1629,7 @@ class _$PlayerPausedImpl implements _PlayerPaused {
     required TResult Function(VideoModel? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
-    required TResult Function(AudioService audioService) stopped,
+    required TResult Function() stopped,
     required TResult Function() error,
   }) {
     return paused(audioService);
@@ -1642,7 +1642,7 @@ class _$PlayerPausedImpl implements _PlayerPaused {
     TResult? Function(VideoModel? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
-    TResult? Function(AudioService audioService)? stopped,
+    TResult? Function()? stopped,
     TResult? Function()? error,
   }) {
     return paused?.call(audioService);
@@ -1655,7 +1655,7 @@ class _$PlayerPausedImpl implements _PlayerPaused {
     TResult Function(VideoModel? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
-    TResult Function(AudioService audioService)? stopped,
+    TResult Function()? stopped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -1727,8 +1727,6 @@ abstract class _$$PlayerStoppedImplCopyWith<$Res> {
   factory _$$PlayerStoppedImplCopyWith(
           _$PlayerStoppedImpl value, $Res Function(_$PlayerStoppedImpl) then) =
       __$$PlayerStoppedImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({AudioService audioService});
 }
 
 /// @nodoc
@@ -1741,52 +1739,26 @@ class __$$PlayerStoppedImplCopyWithImpl<$Res>
 
   /// Create a copy of PlayerState
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? audioService = null,
-  }) {
-    return _then(_$PlayerStoppedImpl(
-      null == audioService
-          ? _value.audioService
-          : audioService // ignore: cast_nullable_to_non_nullable
-              as AudioService,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$PlayerStoppedImpl implements _PlayerStopped {
-  const _$PlayerStoppedImpl(this.audioService);
-
-  @override
-  final AudioService audioService;
+  const _$PlayerStoppedImpl();
 
   @override
   String toString() {
-    return 'PlayerState.stopped(audioService: $audioService)';
+    return 'PlayerState.stopped()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$PlayerStoppedImpl &&
-            (identical(other.audioService, audioService) ||
-                other.audioService == audioService));
+        (other.runtimeType == runtimeType && other is _$PlayerStoppedImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, audioService);
-
-  /// Create a copy of PlayerState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$PlayerStoppedImplCopyWith<_$PlayerStoppedImpl> get copyWith =>
-      __$$PlayerStoppedImplCopyWithImpl<_$PlayerStoppedImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
@@ -1795,10 +1767,10 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
     required TResult Function(VideoModel? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
-    required TResult Function(AudioService audioService) stopped,
+    required TResult Function() stopped,
     required TResult Function() error,
   }) {
-    return stopped(audioService);
+    return stopped();
   }
 
   @override
@@ -1808,10 +1780,10 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
     TResult? Function(VideoModel? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
-    TResult? Function(AudioService audioService)? stopped,
+    TResult? Function()? stopped,
     TResult? Function()? error,
   }) {
-    return stopped?.call(audioService);
+    return stopped?.call();
   }
 
   @override
@@ -1821,12 +1793,12 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
     TResult Function(VideoModel? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
-    TResult Function(AudioService audioService)? stopped,
+    TResult Function()? stopped,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (stopped != null) {
-      return stopped(audioService);
+      return stopped();
     }
     return orElse();
   }
@@ -1876,16 +1848,7 @@ class _$PlayerStoppedImpl implements _PlayerStopped {
 }
 
 abstract class _PlayerStopped implements PlayerState {
-  const factory _PlayerStopped(final AudioService audioService) =
-      _$PlayerStoppedImpl;
-
-  AudioService get audioService;
-
-  /// Create a copy of PlayerState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$PlayerStoppedImplCopyWith<_$PlayerStoppedImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory _PlayerStopped() = _$PlayerStoppedImpl;
 }
 
 /// @nodoc
@@ -1933,7 +1896,7 @@ class _$PlayerErrorImpl implements _PlayerError {
     required TResult Function(VideoModel? video) loading,
     required TResult Function(AudioService audioService) playing,
     required TResult Function(AudioService audioService) paused,
-    required TResult Function(AudioService audioService) stopped,
+    required TResult Function() stopped,
     required TResult Function() error,
   }) {
     return error();
@@ -1946,7 +1909,7 @@ class _$PlayerErrorImpl implements _PlayerError {
     TResult? Function(VideoModel? video)? loading,
     TResult? Function(AudioService audioService)? playing,
     TResult? Function(AudioService audioService)? paused,
-    TResult? Function(AudioService audioService)? stopped,
+    TResult? Function()? stopped,
     TResult? Function()? error,
   }) {
     return error?.call();
@@ -1959,7 +1922,7 @@ class _$PlayerErrorImpl implements _PlayerError {
     TResult Function(VideoModel? video)? loading,
     TResult Function(AudioService audioService)? playing,
     TResult Function(AudioService audioService)? paused,
-    TResult Function(AudioService audioService)? stopped,
+    TResult Function()? stopped,
     TResult Function()? error,
     required TResult orElse(),
   }) {

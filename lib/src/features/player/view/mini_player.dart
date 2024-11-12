@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:midnight_suspense/src/constants/colors.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/features/player/view/player_view.dart';
@@ -35,42 +36,61 @@ class _MiniPlayerState extends State<MiniPlayer> {
       builder: (context, state) {
         // log("state: $state @builder");
 
-        if (state == PlayerState.initial()) {
+        if (state == PlayerState.initial() || state == PlayerState.stopped()) {
           return SizedBox.shrink();
         }
 
         return Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            OpenContainer(
-              middleColor: Colors.black,
-              openColor: Colors.black,
-              tappable: state.mapOrNull(initial: (_) => false) ?? true,
-              openBuilder: (context, closedAction) {
-                return state != PlayerState.initial
-                    ? PlayerView(
-                        onBackPressed: closedAction,
-                      )
-                    : SizedBox.shrink();
-              },
-              closedShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25),
-                  topRight: Radius.circular(25),
-                ),
+            Slidable(
+              key: ValueKey('player'),
+              endActionPane: ActionPane(
+                motion: StretchMotion(),
+                extentRatio: 0.3,
+                // dismissible:
+                // DismissiblePane(onDismissed: () => context.read<PlayerBloc>().add(PlayerEvent.stop())),
+                children: [
+                  SlidableAction(
+                    // An action can be bigger than the others.
+                    flex: 1,
+                    spacing: 0,
+                    onPressed: (context) => context.read<PlayerBloc>().add(PlayerEvent.stop()),
+                    backgroundColor: Colors.black,
+                    foregroundColor: SpxdAppConstants.primaryColor,
+                    icon: Icons.cancel_outlined,
+                  ),
+                ],
               ),
-              closedColor: Colors.black,
-              transitionType: ContainerTransitionType.fadeThrough,
-              transitionDuration: Duration(milliseconds: 500),
-              closedBuilder: (context, openContainerAction) {
-                return miniPlayerControls(openContainerAction, state, textTheme);
-              },
+              child: OpenContainer(
+                middleColor: Colors.black,
+                openColor: Colors.black,
+                tappable: state.mapOrNull(initial: (_) => false) ?? true,
+                openBuilder: (context, closedAction) {
+                  return state != PlayerState.initial
+                      ? PlayerView(
+                          onBackPressed: closedAction,
+                        )
+                      : SizedBox.shrink();
+                },
+                closedShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25),
+                  ),
+                ),
+                closedColor: Colors.black,
+                transitionType: ContainerTransitionType.fadeThrough,
+                transitionDuration: Duration(milliseconds: 500),
+                closedBuilder: (context, openContainerAction) {
+                  return miniPlayerControls(openContainerAction, state, textTheme);
+                },
+              ),
             ),
             state.whenOrNull(
                   loading: (state) => Divider(color: Colors.grey.shade900, height: 0.5, thickness: 0.5),
                   playing: (audioService) => playerSlider(audioService),
                   paused: (audioService) => playerSlider(audioService),
-                  stopped: (audioService) => playerSlider(audioService),
                 ) ??
                 SizedBox.shrink(),
           ],
@@ -119,11 +139,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 thumbnailUrl: pausedState.audioService.currentThumbnail,
                 title: pausedState.audioService.currentlyPlaying?.title ?? '',
               ),
-              stopped: (stoppedState) => thumbnailAndTitle(
-                textTheme,
-                thumbnailUrl: stoppedState.audioService.currentThumbnail,
-                title: stoppedState.audioService.currentlyPlaying?.title ?? '',
-              ),
             ),
           ),
           const Spacer(),
@@ -134,7 +149,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 ),
                 playing: (_) => playerControls(isPlaying: true),
                 paused: (_) => playerControls(isPlaying: false),
-                stopped: (_) => playerControls(isPlaying: false),
               ) ??
               SizedBox.shrink(),
         ],

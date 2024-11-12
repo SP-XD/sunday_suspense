@@ -97,7 +97,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Future<void> _stop(_Stop event, Emitter<PlayerState> emit) async {
     await _audioService.stop();
-    emit(PlayerState.stopped(_audioService));
+    emit(PlayerState.stopped());
   }
 
   Future<void> _seek(_Seek event, Emitter<PlayerState> emit) async {

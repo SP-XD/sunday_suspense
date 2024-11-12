@@ -96,7 +96,6 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
                       ),
                       playing: (playingState) => playerControls(context, playingState.audioService, true),
                       paused: (pausedState) => playerControls(context, pausedState.audioService, false),
-                      stopped: (stoppedState) => playerControls(context, stoppedState.audioService, false),
                     ) ??
                     SizedBox.shrink(),
               ],
