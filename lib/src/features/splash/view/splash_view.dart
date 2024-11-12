@@ -43,7 +43,15 @@ class _SplashViewState extends State<SplashView> {
         fetchUrl: EnvVariables.DEFAULTS_URL.isNotEmpty ? Uri.parse(EnvVariables.DEFAULTS_URL) : null,
       );
 
-      Future.delayed(const Duration(milliseconds: 4500), () {
+      // preloading fonts
+      await GoogleFonts.pendingFonts([
+        GoogleFonts.creepster(),
+        GoogleFonts.inter(),
+        GoogleFonts.ptSerif(),
+        GoogleFonts.cinzel(),
+      ]);
+
+      Future.delayed(const Duration(milliseconds: 3500), () {
         AutoRouter.of(context).replace(NavigationTabRoute());
       });
     } catch (e) {
@@ -135,7 +143,7 @@ class _SplashViewState extends State<SplashView> {
                       )
                   .slideX(
                     duration: 10.seconds,
-                    begin: -0.1,
+                    begin: -0.2,
                     end: 0,
                     curve: Curves.easeInOut,
                   ),
@@ -160,7 +168,7 @@ class _SplashViewState extends State<SplashView> {
                     .slideX(
                       duration: 10.seconds,
                       begin: 0,
-                      end: -0.1,
+                      end: -0.2,
                       curve: Curves.decelerate,
                     ),
               ),
@@ -225,14 +233,14 @@ class _SplashViewState extends State<SplashView> {
   }
 
   List<Positioned> cloudCurtain(Size mediaQuery) {
+    final cloudInverted = Assets.images.cloudInverted.image(height: 300);
+    final cloudOriginal = Assets.images.cloudOriginal.image(height: 300);
+
     return [
       Positioned(
         top: mediaQuery.height * 0.03,
         left: 0,
-        child: Assets.images.cloudInverted
-            .image(
-              height: 300,
-            )
+        child: cloudInverted
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -246,10 +254,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.10,
         right: 0,
-        child: Assets.images.cloudOriginal
-            .image(
-              height: 300,
-            )
+        child: cloudOriginal
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -263,10 +268,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.2,
         left: 0,
-        child: Assets.images.cloudInverted
-            .image(
-              height: 300,
-            )
+        child: cloudInverted
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -280,10 +282,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.3,
         right: 0,
-        child: Assets.images.cloudOriginal
-            .image(
-              height: 300,
-            )
+        child: cloudOriginal
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -297,10 +296,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.35,
         left: 0,
-        child: Assets.images.cloudInverted
-            .image(
-              height: 300,
-            )
+        child: cloudInverted
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -314,10 +310,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.45,
         left: 0,
-        child: Assets.images.cloudOriginal
-            .image(
-              height: 300,
-            )
+        child: cloudOriginal
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -331,10 +324,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.4,
         right: 0,
-        child: Assets.images.cloudInverted
-            .image(
-              height: 300,
-            )
+        child: cloudInverted
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -348,10 +338,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.55,
         left: 0,
-        child: Assets.images.cloudOriginal
-            .image(
-              height: 300,
-            )
+        child: cloudOriginal
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -365,10 +352,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.6,
         right: 0,
-        child: Assets.images.cloudInverted
-            .image(
-              height: 300,
-            )
+        child: cloudInverted
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -382,10 +366,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.65,
         left: 0,
-        child: Assets.images.cloudOriginal
-            .image(
-              height: 300,
-            )
+        child: cloudOriginal
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
@@ -399,10 +380,7 @@ class _SplashViewState extends State<SplashView> {
       Positioned(
         top: mediaQuery.height * 0.75,
         left: 0,
-        child: Assets.images.cloudOriginal
-            .image(
-              height: 300,
-            )
+        child: cloudOriginal
             .animate(
                 //   onPlay: (controller) => controller.repeat(),
                 )
