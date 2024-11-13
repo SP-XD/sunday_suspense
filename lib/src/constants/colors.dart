@@ -10,6 +10,9 @@ class SpxdAppConstants {
 
   static var white = Colors.grey.shade300;
 
+  static var grey = Colors.grey.shade600;
+  static var greyDark = Colors.grey.shade800;
+
   static const primaryGradient = LinearGradient(
     colors: [Color.fromARGB(255, 255, 34, 34), Color.fromARGB(255, 201, 0, 0)],
     begin: Alignment.topCenter,

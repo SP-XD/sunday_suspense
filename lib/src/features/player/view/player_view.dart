@@ -4,16 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:midnight_suspense/bootstrap.dart';
-import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
-import 'package:midnight_suspense/src/features/common_widgets/blur_art.dart';
+import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
-import 'package:midnight_suspense/src/features/player/view/player_info_tab.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
+import 'package:midnight_suspense/src/shared_bloc/blur_art_cubit.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../bloc/player_bloc.dart';
+import 'widgets/media_info_buttons.dart';
 
 @RoutePage()
 class PlayerView extends StatefulWidget {
@@ -44,6 +43,9 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
     super.dispose();
   }
 
+  void setArtWork(VideoModel? video) =>
+      context.read<BlurArtCubit>().setBlurArt(video?.thumbnails?.lowResUrl ?? "");
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -63,11 +65,11 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
         ),
         body: BlocBuilder<PlayerBloc, PlayerState>(
           builder: (context, state) {
-            if (artWorkUrl.isEmpty) {
+            if (context.watch<BlurArtCubit>().imageUrl.isEmpty) {
               state.mapOrNull(
-                loading: (loadingState) {
-                  artWorkUrl = loadingState.video?.thumbnails?.lowResUrl ?? '';
-                },
+                loading: (loadingState) => setArtWork(loadingState.video),
+                playing: (value) => setArtWork(value.audioService.currentlyPlaying),
+                paused: (value) => setArtWork(value.audioService.currentlyPlaying),
               );
             }
 
@@ -87,7 +89,7 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
                         stops: [0.5, 0.99],
                       ),
                     ),
-                    child: BlurArtWidget(imageUrl: artWorkUrl),
+                    child: context.read<BlurArtCubit>().state,
                   ),
                 ),
                 state.mapOrNull(
@@ -238,11 +240,14 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
             ),
             IconButton(
               icon: Assets.icons.next.svg(height: 40, width: 40),
-              onPressed: () {},
+              onPressed: () {
+                context.read<PlayerBloc>().add(PlayerEvent.seek(position: 10.seconds));
+              },
             ),
           ],
         ),
-        PlayerInfoTab(videoId: audioService.currentlyPlaying?.videoId?.value ?? ""),
+        SizedBox(height: 5),
+        MediaInfoButtons(video: audioService.currentlyPlaying),
         SizedBox(height: 10)
       ],
     );

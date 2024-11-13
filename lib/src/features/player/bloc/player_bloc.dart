@@ -102,7 +102,7 @@ class PlayerBloc extends Bloc<PlayerEvent, PlayerState> {
 
   Future<void> _seek(_Seek event, Emitter<PlayerState> emit) async {
     // emit(PlayerState.loading(video: audioService.currentlyPlaying));
-    _audioService.seek(event.position);
-    emit(PlayerState.playing(_audioService));
+    await _audioService.seek(event.position);
+    emit(state);
   }
 }
