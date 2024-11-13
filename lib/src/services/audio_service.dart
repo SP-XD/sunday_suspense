@@ -146,7 +146,8 @@ class AudioService extends aps.BaseAudioHandler with aps.SeekHandler {
   }
 
   /// Seeks to a specific position in the audio.
-  Future<void> seekTo({required Duration position}) async {
+  Future<void> seek(Duration position) async {
+    log("seek @audioService => _player.playing: ${_player.playing} ${DateTime.timestamp()}");
     _player.seek(position);
   }
 
