@@ -68,11 +68,13 @@ class BlurArtWidget extends StatelessWidget {
               fit: BoxFit.cover,
               colorBlendMode: BlendMode.darken,
               color: Colors.black.withOpacity(0.5),
+              filterQuality: FilterQuality.none,
             )
           : Assets.images.hauntedHouseFrame1.image(
               fit: BoxFit.cover,
               colorBlendMode: BlendMode.darken,
               color: Colors.black.withOpacity(0.5),
+              filterQuality: FilterQuality.none,
             ),
     );
   }
