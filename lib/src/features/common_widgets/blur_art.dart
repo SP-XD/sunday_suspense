@@ -2,16 +2,15 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
+import 'package:midnight_suspense/src/shared_bloc/blur_art_cubit.dart';
 // import 'package:palette_generator/palette_generator.dart';
 
 class BlurArtWidget extends StatelessWidget {
   BlurArtWidget({
     super.key,
-    required this.imageUrl,
   });
-
-  final String imageUrl;
 
 //   final ImageProvider image;
 
@@ -60,22 +59,28 @@ class BlurArtWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ImageFiltered(
-      imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100, tileMode: TileMode.decal),
-      child: imageUrl.isNotEmpty
-          ? CachedNetworkImage(
-              imageUrl: imageUrl,
-              fit: BoxFit.cover,
-              colorBlendMode: BlendMode.darken,
-              color: Colors.black.withOpacity(0.5),
-              filterQuality: FilterQuality.none,
-            )
-          : Assets.images.hauntedHouseFrame1.image(
-              fit: BoxFit.cover,
-              colorBlendMode: BlendMode.darken,
-              color: Colors.black.withOpacity(0.5),
-              filterQuality: FilterQuality.none,
-            ),
+    return BlocBuilder<BlurArtCubit, BlurArtState>(
+      builder: (context, state) {
+        final imageUrl = state.imageUrl;
+
+        return ImageFiltered(
+          imageFilter: ImageFilter.blur(sigmaX: 100, sigmaY: 100, tileMode: TileMode.decal),
+          child: imageUrl.isNotEmpty
+              ? CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.cover,
+                  colorBlendMode: BlendMode.darken,
+                  color: Colors.black.withOpacity(0.5),
+                  filterQuality: FilterQuality.none,
+                )
+              : Assets.images.hauntedHouseFrame1.image(
+                  fit: BoxFit.cover,
+                  colorBlendMode: BlendMode.darken,
+                  color: Colors.black.withOpacity(0.5),
+                  filterQuality: FilterQuality.none,
+                ),
+        );
+      },
     );
   }
 }

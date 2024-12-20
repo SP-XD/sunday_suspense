@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/data/models/video_model.dart';
+import 'package:midnight_suspense/src/features/common_widgets/blur_art.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 import 'package:midnight_suspense/src/services/audio_service.dart';
@@ -43,8 +45,17 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
     super.dispose();
   }
 
-  void setArtWork(VideoModel? video) =>
-      context.read<BlurArtCubit>().setBlurArt(video?.thumbnails?.lowResUrl ?? "");
+  void setArtWork(VideoModel? video) {
+    final blurArtCubitState = context.watch<BlurArtCubit>().state;
+
+    if (blurArtCubitState.imageUrl.isEmpty) return;
+    if (blurArtCubitState.videoId == video?.videoId?.value) return;
+
+    context.read<BlurArtCubit>().setBlurArt(
+          imageUrl: video?.thumbnails?.lowResUrl ?? "",
+          videoId: video?.videoId?.value ?? "",
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,13 +76,11 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
         ),
         body: BlocBuilder<PlayerBloc, PlayerState>(
           builder: (context, state) {
-            if (context.watch<BlurArtCubit>().imageUrl.isEmpty) {
-              state.mapOrNull(
-                loading: (loadingState) => setArtWork(loadingState.video),
-                playing: (value) => setArtWork(value.audioService.currentlyPlaying),
-                paused: (value) => setArtWork(value.audioService.currentlyPlaying),
-              );
-            }
+            state.mapOrNull(
+              loading: (loadingState) => setArtWork(loadingState.video),
+              playing: (value) => setArtWork(value.audioService.currentlyPlaying),
+              paused: (value) => setArtWork(value.audioService.currentlyPlaying),
+            );
 
             return Stack(
               children: [
@@ -89,7 +98,7 @@ class _PlayerViewState extends State<PlayerView> with SingleTickerProviderStateM
                         stops: [0.5, 0.99],
                       ),
                     ),
-                    child: context.read<BlurArtCubit>().state,
+                    child: BlurArtWidget(),
                   ),
                 ),
                 state.mapOrNull(

@@ -1,19 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midnight_suspense/src/features/common_widgets/blur_art.dart';
 
-class BlurArtCubit extends Cubit<BlurArtWidget> {
-  BlurArtCubit()
-      : super(BlurArtWidget(
-          imageUrl: "",
-        ));
+class BlurArtCubit extends Cubit<BlurArtState> {
+  BlurArtCubit() : super(BlurArtState(imageUrl: "", videoId: ""));
 
-  String get imageUrl => state.imageUrl;
-
-  void setBlurArt(String imageUrl) {
-    emit(BlurArtWidget(imageUrl: imageUrl));
+  void setBlurArt({required String imageUrl, required String videoId}) {
+    emit(BlurArtState(imageUrl: imageUrl, videoId: videoId));
   }
 
   void resetBlurArt() {
-    emit(BlurArtWidget(imageUrl: ""));
+    emit(BlurArtState(imageUrl: "", videoId: ""));
   }
 }
+
+class BlurArtState {
+  final String imageUrl;
+  final String videoId;
+
+  BlurArtState({required this.imageUrl, required this.videoId});
+}
+
+// repaintboundary
