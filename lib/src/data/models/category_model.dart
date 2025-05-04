@@ -32,6 +32,7 @@ class CategoryModel with _$CategoryModel {
     required String category_id,
     @Enumerated(EnumType.name) required CategoryType type,
     required String title,
+    required String? artUrl,
     @Enumerated(EnumType.name) required CategorySourceType sourceType,
     @Enumerated(EnumType.name) required LanguageType language,
   }) = _CategoryModel;

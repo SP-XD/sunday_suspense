@@ -5,6 +5,7 @@ import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/data/data_provider/offline_db_provider.dart';
 import 'package:midnight_suspense/src/data/models/app_data_model.dart';
 import 'package:midnight_suspense/src/data/models/category_model.dart';
+import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
 
 class CategoriesRepository {
   final OfflineDbProvider offlineDbProvider;
@@ -54,5 +55,31 @@ class CategoriesRepository {
 
   Future<CategoryModel?> getHistoryList() async {
     return await offlineDbProvider.getHistoryList();
+  }
+
+  Future<void> fetchAndSaveCategoryArtWork({required VideosRepository videosRepo}) async {
+    final categories = await offlineDbProvider.getCategories();
+
+    for (int i = 0; i < categories.length; i++) {
+      String? artWork;
+
+      final category = categories[i];
+      //   if (category.artUrl != null) continue;
+
+      if (category.type == CategoryType.channel) {
+        artWork = await videosRepo.getChannelLogo(category.category_id);
+      } else if (category.type == CategoryType.playlist) {
+        var playlistDetails = await videosRepo.getPlaylistDetails(category.category_id);
+        artWork = playlistDetails.thumbnails?.mediumResUrl;
+      }
+
+      if (artWork != null) {
+        logger.i("artWork: " + artWork);
+        categories[i] = category.copyWith(artUrl: artWork);
+      }
+    }
+
+    logger.d("modified Categories after fetching artWork: $categories");
+    await offlineDbProvider.upsertCategory(categories);
   }
 }

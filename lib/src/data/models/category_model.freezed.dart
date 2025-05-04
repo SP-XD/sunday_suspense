@@ -27,6 +27,7 @@ mixin _$CategoryModel {
   @Enumerated(EnumType.name)
   CategoryType get type => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
+  String? get artUrl => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
   CategorySourceType get sourceType => throw _privateConstructorUsedError;
   @Enumerated(EnumType.name)
@@ -54,6 +55,7 @@ abstract class $CategoryModelCopyWith<$Res> {
       String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
+      String? artUrl,
       @Enumerated(EnumType.name) CategorySourceType sourceType,
       @Enumerated(EnumType.name) LanguageType language});
 }
@@ -78,6 +80,7 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
     Object? category_id = null,
     Object? type = null,
     Object? title = null,
+    Object? artUrl = freezed,
     Object? sourceType = null,
     Object? language = null,
   }) {
@@ -102,6 +105,10 @@ class _$CategoryModelCopyWithImpl<$Res, $Val extends CategoryModel>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      artUrl: freezed == artUrl
+          ? _value.artUrl
+          : artUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       sourceType: null == sourceType
           ? _value.sourceType
           : sourceType // ignore: cast_nullable_to_non_nullable
@@ -128,6 +135,7 @@ abstract class _$$CategoryModelImplCopyWith<$Res>
       String category_id,
       @Enumerated(EnumType.name) CategoryType type,
       String title,
+      String? artUrl,
       @Enumerated(EnumType.name) CategorySourceType sourceType,
       @Enumerated(EnumType.name) LanguageType language});
 }
@@ -150,6 +158,7 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
     Object? category_id = null,
     Object? type = null,
     Object? title = null,
+    Object? artUrl = freezed,
     Object? sourceType = null,
     Object? language = null,
   }) {
@@ -174,6 +183,10 @@ class __$$CategoryModelImplCopyWithImpl<$Res>
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
               as String,
+      artUrl: freezed == artUrl
+          ? _value.artUrl
+          : artUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       sourceType: null == sourceType
           ? _value.sourceType
           : sourceType // ignore: cast_nullable_to_non_nullable
@@ -195,6 +208,7 @@ class _$CategoryModelImpl extends _CategoryModel {
       required this.category_id,
       @Enumerated(EnumType.name) required this.type,
       required this.title,
+      required this.artUrl,
       @Enumerated(EnumType.name) required this.sourceType,
       @Enumerated(EnumType.name) required this.language})
       : super._();
@@ -216,6 +230,8 @@ class _$CategoryModelImpl extends _CategoryModel {
   @override
   final String title;
   @override
+  final String? artUrl;
+  @override
   @Enumerated(EnumType.name)
   final CategorySourceType sourceType;
   @override
@@ -224,7 +240,7 @@ class _$CategoryModelImpl extends _CategoryModel {
 
   @override
   String toString() {
-    return 'CategoryModel(id: $id, internal_id: $internal_id, category_id: $category_id, type: $type, title: $title, sourceType: $sourceType, language: $language)';
+    return 'CategoryModel(id: $id, internal_id: $internal_id, category_id: $category_id, type: $type, title: $title, artUrl: $artUrl, sourceType: $sourceType, language: $language)';
   }
 
   @override
@@ -239,6 +255,7 @@ class _$CategoryModelImpl extends _CategoryModel {
                 other.category_id == category_id) &&
             (identical(other.type, type) || other.type == type) &&
             (identical(other.title, title) || other.title == title) &&
+            (identical(other.artUrl, artUrl) || other.artUrl == artUrl) &&
             (identical(other.sourceType, sourceType) ||
                 other.sourceType == sourceType) &&
             (identical(other.language, language) ||
@@ -248,7 +265,7 @@ class _$CategoryModelImpl extends _CategoryModel {
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(runtimeType, id, internal_id, category_id,
-      type, title, sourceType, language);
+      type, title, artUrl, sourceType, language);
 
   /// Create a copy of CategoryModel
   /// with the given fields replaced by the non-null parameter values.
@@ -273,6 +290,7 @@ abstract class _CategoryModel extends CategoryModel {
       required final String category_id,
       @Enumerated(EnumType.name) required final CategoryType type,
       required final String title,
+      required final String? artUrl,
       @Enumerated(EnumType.name) required final CategorySourceType sourceType,
       @Enumerated(EnumType.name)
       required final LanguageType language}) = _$CategoryModelImpl;
@@ -293,6 +311,8 @@ abstract class _CategoryModel extends CategoryModel {
   CategoryType get type;
   @override
   String get title;
+  @override
+  String? get artUrl;
   @override
   @Enumerated(EnumType.name)
   CategorySourceType get sourceType;

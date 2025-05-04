@@ -4,9 +4,19 @@ import 'package:midnight_suspense/src/data/data_provider/ytexplode_provider.dart
 import 'package:midnight_suspense/src/data/models/video_model.dart';
 import 'package:midnight_suspense/src/services/isolate_service.dart';
 
+import '../models/playlist_model.dart';
+
 class VideosRepository extends IsolateService {
   VideosRepository() {
     spawnIsolate();
+  }
+
+  Future<String> getChannelLogo(String channelHandle) async {
+    return await addJob<String>(operation: 'getChannelLogo', params: channelHandle);
+  }
+
+  Future<PlaylistModel> getPlaylistDetails(String playlistId) async {
+    return await addJob<PlaylistModel>(operation: 'getPlaylistDetails', params: playlistId);
   }
 
   Future<List<VideoModel>> getChannelVideos(String channelHandle) async {
@@ -52,6 +62,15 @@ class VideosRepository extends IsolateService {
     dynamic params,
   ) async {
     switch (operation) {
+      case 'getChannelLogo':
+        final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle("@${params as String}");
+        final channel = await ytProvider.ytExplodeInstance!.channels.get(channelId.id);
+        return channel.logoUrl;
+
+      case 'getPlaylistDetails':
+        var playlist = await ytProvider.ytExplodeInstance!.playlists.get(params as String);
+        return PlaylistModel.fromExplodePlaylistModel(playlist);
+
       case 'getChannelVideos':
         final channelId = await ytProvider.ytExplodeInstance!.channels.getByHandle("@${params as String}");
         final response = await ytProvider.ytExplodeInstance!.channels.getUploadsFromPage(channelId.id);

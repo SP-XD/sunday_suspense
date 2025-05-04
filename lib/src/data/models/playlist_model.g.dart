@@ -17,15 +17,37 @@ const PlaylistModelSchema = CollectionSchema(
   name: r'PlaylistModel',
   id: -3528207141634668389,
   properties: {
-    r'playlist_id': PropertySchema(
+    r'description': PropertySchema(
       id: 0,
+      name: r'description',
+      type: IsarType.string,
+    ),
+    r'engagement': PropertySchema(
+      id: 1,
+      name: r'engagement',
+      type: IsarType.object,
+      target: r'Engagement',
+    ),
+    r'playlist_id': PropertySchema(
+      id: 2,
       name: r'playlist_id',
       type: IsarType.string,
     ),
+    r'thumbnails': PropertySchema(
+      id: 3,
+      name: r'thumbnails',
+      type: IsarType.object,
+      target: r'ThumbnailSet',
+    ),
     r'title': PropertySchema(
-      id: 1,
+      id: 4,
       name: r'title',
       type: IsarType.string,
+    ),
+    r'videoCount': PropertySchema(
+      id: 5,
+      name: r'videoCount',
+      type: IsarType.long,
     )
   },
   estimateSize: _playlistModelEstimateSize,
@@ -56,7 +78,10 @@ const PlaylistModelSchema = CollectionSchema(
       single: false,
     )
   },
-  embeddedSchemas: {},
+  embeddedSchemas: {
+    r'ThumbnailSet': ThumbnailSetSchema,
+    r'Engagement': EngagementSchema
+  },
   getId: _playlistModelGetId,
   getLinks: _playlistModelGetLinks,
   attach: _playlistModelAttach,
@@ -69,7 +94,29 @@ int _playlistModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.description;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
+    final value = object.engagement;
+    if (value != null) {
+      bytesCount += 3 +
+          EngagementSchema.estimateSize(
+              value, allOffsets[Engagement]!, allOffsets);
+    }
+  }
   bytesCount += 3 + object.playlist_id.length * 3;
+  {
+    final value = object.thumbnails;
+    if (value != null) {
+      bytesCount += 3 +
+          ThumbnailSetSchema.estimateSize(
+              value, allOffsets[ThumbnailSet]!, allOffsets);
+    }
+  }
   bytesCount += 3 + object.title.length * 3;
   return bytesCount;
 }
@@ -80,8 +127,22 @@ void _playlistModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.playlist_id);
-  writer.writeString(offsets[1], object.title);
+  writer.writeString(offsets[0], object.description);
+  writer.writeObject<Engagement>(
+    offsets[1],
+    allOffsets,
+    EngagementSchema.serialize,
+    object.engagement,
+  );
+  writer.writeString(offsets[2], object.playlist_id);
+  writer.writeObject<ThumbnailSet>(
+    offsets[3],
+    allOffsets,
+    ThumbnailSetSchema.serialize,
+    object.thumbnails,
+  );
+  writer.writeString(offsets[4], object.title);
+  writer.writeLong(offsets[5], object.videoCount);
 }
 
 PlaylistModel _playlistModelDeserialize(
@@ -91,9 +152,21 @@ PlaylistModel _playlistModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = PlaylistModel(
+    description: reader.readStringOrNull(offsets[0]),
+    engagement: reader.readObjectOrNull<Engagement>(
+      offsets[1],
+      EngagementSchema.deserialize,
+      allOffsets,
+    ),
     id: id,
-    playlist_id: reader.readString(offsets[0]),
-    title: reader.readString(offsets[1]),
+    playlist_id: reader.readString(offsets[2]),
+    thumbnails: reader.readObjectOrNull<ThumbnailSet>(
+      offsets[3],
+      ThumbnailSetSchema.deserialize,
+      allOffsets,
+    ),
+    title: reader.readString(offsets[4]),
+    videoCount: reader.readLongOrNull(offsets[5]),
   );
   return object;
 }
@@ -106,9 +179,25 @@ P _playlistModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
+      return (reader.readObjectOrNull<Engagement>(
+        offset,
+        EngagementSchema.deserialize,
+        allOffsets,
+      )) as P;
+    case 2:
       return (reader.readString(offset)) as P;
+    case 3:
+      return (reader.readObjectOrNull<ThumbnailSet>(
+        offset,
+        ThumbnailSetSchema.deserialize,
+        allOffsets,
+      )) as P;
+    case 4:
+      return (reader.readString(offset)) as P;
+    case 5:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -311,6 +400,178 @@ extension PlaylistModelQueryWhere
 
 extension PlaylistModelQueryFilter
     on QueryBuilder<PlaylistModel, PlaylistModel, QFilterCondition> {
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'description',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'description',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'description',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'description',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'description',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      descriptionIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'description',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      engagementIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'engagement',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      engagementIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'engagement',
+      ));
+    });
+  }
+
   QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
@@ -502,6 +763,24 @@ extension PlaylistModelQueryFilter
   }
 
   QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      thumbnailsIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'thumbnails',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      thumbnailsIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'thumbnails',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
       titleEqualTo(
     String value, {
     bool caseSensitive = true,
@@ -636,10 +915,98 @@ extension PlaylistModelQueryFilter
       ));
     });
   }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      videoCountIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'videoCount',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      videoCountIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'videoCount',
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      videoCountEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'videoCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      videoCountGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'videoCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      videoCountLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'videoCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition>
+      videoCountBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'videoCount',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension PlaylistModelQueryObject
-    on QueryBuilder<PlaylistModel, PlaylistModel, QFilterCondition> {}
+    on QueryBuilder<PlaylistModel, PlaylistModel, QFilterCondition> {
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition> engagement(
+      FilterQuery<Engagement> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'engagement');
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterFilterCondition> thumbnails(
+      FilterQuery<ThumbnailSet> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.object(q, r'thumbnails');
+    });
+  }
+}
 
 extension PlaylistModelQueryLinks
     on QueryBuilder<PlaylistModel, PlaylistModel, QFilterCondition> {
@@ -707,6 +1074,19 @@ extension PlaylistModelQueryLinks
 
 extension PlaylistModelQuerySortBy
     on QueryBuilder<PlaylistModel, PlaylistModel, QSortBy> {
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy> sortByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy>
+      sortByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
   QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy> sortByPlaylist_id() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'playlist_id', Sort.asc);
@@ -731,10 +1111,36 @@ extension PlaylistModelQuerySortBy
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy> sortByVideoCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'videoCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy>
+      sortByVideoCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'videoCount', Sort.desc);
+    });
+  }
 }
 
 extension PlaylistModelQuerySortThenBy
     on QueryBuilder<PlaylistModel, PlaylistModel, QSortThenBy> {
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy> thenByDescription() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy>
+      thenByDescriptionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
   QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -771,10 +1177,30 @@ extension PlaylistModelQuerySortThenBy
       return query.addSortBy(r'title', Sort.desc);
     });
   }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy> thenByVideoCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'videoCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QAfterSortBy>
+      thenByVideoCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'videoCount', Sort.desc);
+    });
+  }
 }
 
 extension PlaylistModelQueryWhereDistinct
     on QueryBuilder<PlaylistModel, PlaylistModel, QDistinct> {
+  QueryBuilder<PlaylistModel, PlaylistModel, QDistinct> distinctByDescription(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<PlaylistModel, PlaylistModel, QDistinct> distinctByPlaylist_id(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -788,6 +1214,12 @@ extension PlaylistModelQueryWhereDistinct
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
     });
   }
+
+  QueryBuilder<PlaylistModel, PlaylistModel, QDistinct> distinctByVideoCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'videoCount');
+    });
+  }
 }
 
 extension PlaylistModelQueryProperty
@@ -798,15 +1230,41 @@ extension PlaylistModelQueryProperty
     });
   }
 
+  QueryBuilder<PlaylistModel, String?, QQueryOperations> descriptionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'description');
+    });
+  }
+
+  QueryBuilder<PlaylistModel, Engagement?, QQueryOperations>
+      engagementProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'engagement');
+    });
+  }
+
   QueryBuilder<PlaylistModel, String, QQueryOperations> playlist_idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'playlist_id');
     });
   }
 
+  QueryBuilder<PlaylistModel, ThumbnailSet?, QQueryOperations>
+      thumbnailsProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'thumbnails');
+    });
+  }
+
   QueryBuilder<PlaylistModel, String, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
+    });
+  }
+
+  QueryBuilder<PlaylistModel, int?, QQueryOperations> videoCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'videoCount');
     });
   }
 }
@@ -820,6 +1278,14 @@ _$PlaylistModelImpl _$$PlaylistModelImplFromJson(Map<String, dynamic> json) =>
       id: (json['id'] as num?)?.toInt() ?? Isar.autoIncrement,
       title: json['title'] as String,
       playlist_id: json['playlist_id'] as String,
+      description: json['description'] as String?,
+      thumbnails: json['thumbnails'] == null
+          ? null
+          : ThumbnailSet.fromJson(json['thumbnails'] as Map<String, dynamic>),
+      engagement: json['engagement'] == null
+          ? null
+          : Engagement.fromJson(json['engagement'] as Map<String, dynamic>),
+      videoCount: (json['videoCount'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$PlaylistModelImplToJson(_$PlaylistModelImpl instance) =>
@@ -827,4 +1293,8 @@ Map<String, dynamic> _$$PlaylistModelImplToJson(_$PlaylistModelImpl instance) =>
       'id': instance.id,
       'title': instance.title,
       'playlist_id': instance.playlist_id,
+      'description': instance.description,
+      'thumbnails': instance.thumbnails,
+      'engagement': instance.engagement,
+      'videoCount': instance.videoCount,
     };

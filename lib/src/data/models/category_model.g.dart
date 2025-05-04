@@ -17,35 +17,40 @@ const CategoryModelSchema = CollectionSchema(
   name: r'CategoryModel',
   id: 2062173352312629051,
   properties: {
-    r'category_id': PropertySchema(
+    r'artUrl': PropertySchema(
       id: 0,
+      name: r'artUrl',
+      type: IsarType.string,
+    ),
+    r'category_id': PropertySchema(
+      id: 1,
       name: r'category_id',
       type: IsarType.string,
     ),
     r'internal_id': PropertySchema(
-      id: 1,
+      id: 2,
       name: r'internal_id',
       type: IsarType.string,
     ),
     r'language': PropertySchema(
-      id: 2,
+      id: 3,
       name: r'language',
       type: IsarType.string,
       enumMap: _CategoryModellanguageEnumValueMap,
     ),
     r'sourceType': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'sourceType',
       type: IsarType.string,
       enumMap: _CategoryModelsourceTypeEnumValueMap,
     ),
     r'title': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'title',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'type',
       type: IsarType.string,
       enumMap: _CategoryModeltypeEnumValueMap,
@@ -98,6 +103,12 @@ int _categoryModelEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  {
+    final value = object.artUrl;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.category_id.length * 3;
   bytesCount += 3 + object.internal_id.length * 3;
   bytesCount += 3 + object.language.name.length * 3;
@@ -113,12 +124,13 @@ void _categoryModelSerialize(
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  writer.writeString(offsets[0], object.category_id);
-  writer.writeString(offsets[1], object.internal_id);
-  writer.writeString(offsets[2], object.language.name);
-  writer.writeString(offsets[3], object.sourceType.name);
-  writer.writeString(offsets[4], object.title);
-  writer.writeString(offsets[5], object.type.name);
+  writer.writeString(offsets[0], object.artUrl);
+  writer.writeString(offsets[1], object.category_id);
+  writer.writeString(offsets[2], object.internal_id);
+  writer.writeString(offsets[3], object.language.name);
+  writer.writeString(offsets[4], object.sourceType.name);
+  writer.writeString(offsets[5], object.title);
+  writer.writeString(offsets[6], object.type.name);
 }
 
 CategoryModel _categoryModelDeserialize(
@@ -128,17 +140,18 @@ CategoryModel _categoryModelDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = CategoryModel(
-    category_id: reader.readString(offsets[0]),
+    artUrl: reader.readStringOrNull(offsets[0]),
+    category_id: reader.readString(offsets[1]),
     id: id,
-    internal_id: reader.readString(offsets[1]),
+    internal_id: reader.readString(offsets[2]),
     language: _CategoryModellanguageValueEnumMap[
-            reader.readStringOrNull(offsets[2])] ??
+            reader.readStringOrNull(offsets[3])] ??
         LanguageType.english,
     sourceType: _CategoryModelsourceTypeValueEnumMap[
-            reader.readStringOrNull(offsets[3])] ??
+            reader.readStringOrNull(offsets[4])] ??
         CategorySourceType.builtInCategory,
-    title: reader.readString(offsets[4]),
-    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[5])] ??
+    title: reader.readString(offsets[5]),
+    type: _CategoryModeltypeValueEnumMap[reader.readStringOrNull(offsets[6])] ??
         CategoryType.channel,
   );
   return object;
@@ -152,20 +165,22 @@ P _categoryModelDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
       return (_CategoryModellanguageValueEnumMap[
               reader.readStringOrNull(offset)] ??
           LanguageType.english) as P;
-    case 3:
+    case 4:
       return (_CategoryModelsourceTypeValueEnumMap[
               reader.readStringOrNull(offset)] ??
           CategorySourceType.builtInCategory) as P;
-    case 4:
-      return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
       return (_CategoryModeltypeValueEnumMap[reader.readStringOrNull(offset)] ??
           CategoryType.channel) as P;
     default:
@@ -409,6 +424,160 @@ extension CategoryModelQueryWhere
 
 extension CategoryModelQueryFilter
     on QueryBuilder<CategoryModel, CategoryModel, QFilterCondition> {
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'artUrl',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'artUrl',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'artUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'artUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'artUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'artUrl',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'artUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'artUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'artUrl',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'artUrl',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'artUrl',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
+      artUrlIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'artUrl',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterFilterCondition>
       category_idEqualTo(
     String value, {
@@ -1409,6 +1578,18 @@ extension CategoryModelQueryLinks
 
 extension CategoryModelQuerySortBy
     on QueryBuilder<CategoryModel, CategoryModel, QSortBy> {
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortByArtUrl() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'artUrl', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortByArtUrlDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'artUrl', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> sortByCategory_id() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'category_id', Sort.asc);
@@ -1488,6 +1669,18 @@ extension CategoryModelQuerySortBy
 
 extension CategoryModelQuerySortThenBy
     on QueryBuilder<CategoryModel, CategoryModel, QSortThenBy> {
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenByArtUrl() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'artUrl', Sort.asc);
+    });
+  }
+
+  QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenByArtUrlDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'artUrl', Sort.desc);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QAfterSortBy> thenByCategory_id() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'category_id', Sort.asc);
@@ -1579,6 +1772,13 @@ extension CategoryModelQuerySortThenBy
 
 extension CategoryModelQueryWhereDistinct
     on QueryBuilder<CategoryModel, CategoryModel, QDistinct> {
+  QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByArtUrl(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'artUrl', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<CategoryModel, CategoryModel, QDistinct> distinctByCategory_id(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1627,6 +1827,12 @@ extension CategoryModelQueryProperty
   QueryBuilder<CategoryModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
+    });
+  }
+
+  QueryBuilder<CategoryModel, String?, QQueryOperations> artUrlProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'artUrl');
     });
   }
 
@@ -1680,6 +1886,7 @@ _$CategoryModelImpl _$$CategoryModelImplFromJson(Map<String, dynamic> json) =>
       category_id: json['category_id'] as String,
       type: $enumDecode(_$CategoryTypeEnumMap, json['type']),
       title: json['title'] as String,
+      artUrl: json['artUrl'] as String?,
       sourceType: $enumDecode(_$CategorySourceTypeEnumMap, json['sourceType']),
       language: $enumDecode(_$LanguageTypeEnumMap, json['language']),
     );
@@ -1691,6 +1898,7 @@ Map<String, dynamic> _$$CategoryModelImplToJson(_$CategoryModelImpl instance) =>
       'category_id': instance.category_id,
       'type': _$CategoryTypeEnumMap[instance.type]!,
       'title': instance.title,
+      'artUrl': instance.artUrl,
       'sourceType': _$CategorySourceTypeEnumMap[instance.sourceType]!,
       'language': _$LanguageTypeEnumMap[instance.language]!,
     };
