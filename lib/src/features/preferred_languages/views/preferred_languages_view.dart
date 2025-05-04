@@ -12,7 +12,6 @@ import 'package:midnight_suspense/src/data/models/category_model.dart';
 import 'package:midnight_suspense/src/data/repositories/app_data_repository.dart';
 import 'package:midnight_suspense/src/features/common_widgets/gradient_text.dart';
 import 'package:midnight_suspense/src/features/preferred_languages/bloc/preferred_languages_bloc.dart';
-import 'package:midnight_suspense/src/utils/extensions.dart';
 
 @RoutePage()
 class PreferredLanguagesView extends StatelessWidget {
@@ -22,88 +21,88 @@ class PreferredLanguagesView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // TODO: #1 stacked header with title
-            Container(
-              padding: const EdgeInsets.all(18.0),
-              alignment: Alignment.centerLeft,
-              height: 230,
-              clipBehavior: Clip.none,
-              child: Column(
-                children: [
-                  Container(
-                    height: 80,
-                    width: 80,
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                        offset: Offset(220, -10),
-                        color: const Color.fromARGB(255, 90, 9, 0),
-                        blurRadius: 100,
-                        spreadRadius: 40,
-                      ),
-                      BoxShadow(
-                        offset: Offset(-100, 180),
-                        color: const Color.fromARGB(255, 60, 10, 0),
-                        blurRadius: 100,
-                        spreadRadius: 30,
-                      )
-                    ]),
-                  ),
-                  GradientText(
-                    "YOUR PREFERRED\nAUDIO LANGUAGES",
-                    style: GoogleFonts.creepster(
-                      fontSize: 32,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(18.0),
+                alignment: Alignment.centerLeft,
+                height: 230,
+                clipBehavior: Clip.none,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                          offset: Offset(220, -10),
+                          color: const Color.fromARGB(255, 90, 9, 0),
+                          blurRadius: 100,
+                          spreadRadius: 40,
+                        ),
+                        BoxShadow(
+                          offset: Offset(-100, 180),
+                          color: const Color.fromARGB(255, 60, 10, 0),
+                          blurRadius: 100,
+                          spreadRadius: 30,
+                        )
+                      ]),
                     ),
-                    gradient: SpxdAppConstants.primaryGradient,
-                  ),
-                ],
+                    GradientText(
+                      "SELECT ALL YOUR PREFERRED\nAUDIO LANGUAGES",
+                      style: GoogleFonts.creepster(
+                        fontSize: 32,
+                      ),
+                      gradient: SpxdAppConstants.primaryGradient,
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // BUG: new selected language not appearing selected on ui
-            BlocBuilder<PreferredLanguagesBloc, PreferredLanguagesState>(
-              builder: (context, state) {
-                return languageButtons(state.availableLanguages, state.selectedLanguages, context);
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                        minimumSize: Size(150, 60),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                        backgroundColor: Colors.grey.shade900,
-                        backgroundBuilder: (context, states, child) => DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: GradientBoxBorder(
-                              gradient: SpxdAppConstants.LighterGrayToTransparentGradient,
-                              width: 2,
-                            ),
-                            shape: BoxShape.rectangle,
-                          ),
-                          child: child,
-                        ),
-                      ),
-                      onPressed: () {
-                        getIt<AppDataRepository>().saveOnboardingState(true);
-                      },
-                      child: Text("Done",
-                          style: GoogleFonts.inter(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          )),
-                    ),
+              BlocBuilder<PreferredLanguagesBloc, PreferredLanguagesState>(
+                builder: (context, state) {
+                  return languageButtons(state.availableLanguages, state.selectedLanguages, context);
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  minimumSize: Size(150, 60),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100),
                   ),
-                ],
+                  backgroundColor: Colors.grey.shade900,
+                  backgroundBuilder: (context, states, child) => DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      border: GradientBoxBorder(
+                        gradient: SpxdAppConstants.LighterGrayToTransparentGradient,
+                        width: 2,
+                      ),
+                      shape: BoxShape.rectangle,
+                    ),
+                    child: child,
+                  ),
+                ),
+                onPressed: () {
+                  getIt<AppDataRepository>().saveOnboardingState(true);
+                },
+                child: Text("Done",
+                    style: GoogleFonts.inter(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                    )),
               ),
             ),
           ],
@@ -121,7 +120,7 @@ class PreferredLanguagesView extends StatelessWidget {
       alignment: WrapAlignment.spaceBetween,
       runAlignment: WrapAlignment.spaceBetween,
       spacing: 15,
-      runSpacing: 25,
+      runSpacing: 20,
       children: AnimateList(
         interval: 300.ms,
         effects: [
@@ -157,7 +156,7 @@ class PreferredLanguagesView extends StatelessWidget {
                 },
                 child: FittedBox(
                   child: SizedBox(
-                    width: 150,
+                    width: 140,
                     height: 80,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
