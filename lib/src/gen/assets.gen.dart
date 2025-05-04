@@ -58,11 +58,17 @@ class $AssetsImagesGen {
   /// File path: assets/images/haunted_house_frame2.jpg
   AssetGenImage get hauntedHouseFrame2 => const AssetGenImage('assets/images/haunted_house_frame2.jpg');
 
+  /// File path: assets/images/logo.png
+  AssetGenImage get logo => const AssetGenImage('assets/images/logo.png');
+
   /// File path: assets/images/moon.png
   AssetGenImage get moon => const AssetGenImage('assets/images/moon.png');
 
   /// File path: assets/images/owl.png
   AssetGenImage get owl => const AssetGenImage('assets/images/owl.png');
+
+  /// File path: assets/images/settings_demo.jpg
+  AssetGenImage get settingsDemo => const AssetGenImage('assets/images/settings_demo.jpg');
 
   /// File path: assets/images/splash_bg blurs.png
   AssetGenImage get splashBgBlurs => const AssetGenImage('assets/images/splash_bg blurs.png');
@@ -79,8 +85,10 @@ class $AssetsImagesGen {
         cloudOriginal,
         hauntedHouseFrame1,
         hauntedHouseFrame2,
+        logo,
         moon,
         owl,
+        settingsDemo,
         splashBgBlurs,
         splashTitle,
         topLeftBgBlur

@@ -100,6 +100,7 @@ class CategoryCardWidget extends StatelessWidget {
 //     painter: RPSCustomPainter(),
 // )
 
+// !for Testing
 // Copyright 2013 The Flutter Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -110,9 +111,9 @@ const Color _kSelectionRectangleBorder = Color(0x80000000);
 const Color _kPlaceholderColor = Color(0x80404040);
 
 /// The main Application class.
-class MyApp extends StatelessWidget {
+class CheckPalleteGenerator extends StatelessWidget {
   /// Creates the main Application class.
-  const MyApp({super.key});
+  const CheckPalleteGenerator({super.key});
 
   // This widget is the root of your application.
   @override

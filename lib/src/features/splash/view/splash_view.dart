@@ -10,6 +10,7 @@ import 'package:midnight_suspense/bootstrap.dart';
 import 'package:midnight_suspense/src/configs/app_router.gr.dart';
 import 'package:midnight_suspense/src/constants/env_variables.dart';
 import 'package:midnight_suspense/src/data/repositories/categories_repository.dart';
+import 'package:midnight_suspense/src/data/repositories/videos_repository.dart';
 import 'package:midnight_suspense/src/features/common_widgets/loading.dart';
 import 'package:midnight_suspense/src/gen/assets.gen.dart';
 
@@ -42,6 +43,7 @@ class _SplashViewState extends State<SplashView> {
       await categoryRepo.fetchAndSaveCategories(
         fetchUrl: EnvVariables.DEFAULTS_URL.isNotEmpty ? Uri.parse(EnvVariables.DEFAULTS_URL) : null,
       );
+      await categoryRepo.fetchAndSaveCategoryArtWork(videosRepo: context.read<VideosRepository>());
 
       // preloading fonts
       await GoogleFonts.pendingFonts([
