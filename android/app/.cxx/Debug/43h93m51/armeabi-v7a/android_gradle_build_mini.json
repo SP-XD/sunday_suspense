@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/somnathpaul/fvm/versions/stable/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/somnathpaul/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Volumes/Samsung_PSSD_T7_Media/Projects/Personal/sunday-suspense/midnight_suspense/android/app/.cxx/Debug/43h93m51/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/somnathpaul/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Volumes/Samsung_PSSD_T7_Media/Projects/Personal/sunday-suspense/midnight_suspense/android/app/.cxx/Debug/43h93m51/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}

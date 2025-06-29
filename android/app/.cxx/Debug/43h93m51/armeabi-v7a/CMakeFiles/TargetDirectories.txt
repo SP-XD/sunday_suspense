@@ -1,0 +1,2 @@
+/Volumes/Samsung_PSSD_T7_Media/Projects/Personal/sunday-suspense/midnight_suspense/android/app/.cxx/Debug/43h93m51/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Volumes/Samsung_PSSD_T7_Media/Projects/Personal/sunday-suspense/midnight_suspense/android/app/.cxx/Debug/43h93m51/armeabi-v7a/CMakeFiles/rebuild_cache.dir

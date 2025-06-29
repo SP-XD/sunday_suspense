@@ -51,10 +51,13 @@ class CategoryCardWidget extends StatelessWidget {
               children: [
                 Positioned(
                   child: SizedBox(
-                    height: 131,
+                    height: 141,
                   ),
                 ),
-                Positioned.fill(
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
                   child: CustomPaint(
                     //Add this CustomPaint widget to the Widget Tree
                     size: Size(331, 203),
@@ -79,12 +82,18 @@ class CategoryCardWidget extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  child: ClipOval(
-                    child: CachedNetworkImage(
-                      imageUrl: model.artUrl ?? "",
-                      height: 60,
-                      width: 60,
-                      fit: BoxFit.cover,
+                  left: 10,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade800),
+                    ),
+                    child: ClipOval(
+                      child: CachedNetworkImage(
+                        imageUrl: model.artUrl ?? "",
+                        height: 80,
+                        width: 80,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
